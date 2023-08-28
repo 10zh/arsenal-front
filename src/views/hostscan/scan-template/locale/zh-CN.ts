@@ -1,0 +1,52 @@
+export default {
+  'menu.list.scantemplate': '扫描模板',
+  'cardList.operation.create':'新建模板',
+  'cardList.list1':'主机发现',
+  'cardList.list2':'音频参数',
+  'cardList.list3':'填写说明',
+  'menu.list.addtemplate':'添加模板',
+
+
+  'form.enableArp':'是否开启ARP扫描',
+  'form.enableIcmp':'是否开启ICMP扫描',
+  'form.enablePu':'是否开启UDP检测',
+  'form.enableSyn':'是否开启SYN检测',
+  'form.maxRetries':'最大重试次数',
+  'form.puPort':'UDP检测端口范围',
+  'form.synPort':'TCP SYN检测端口范围',
+  'form.assetConcurrency':'主机扫描资产并发数量',
+  'form.portScanSpeed':'端口扫描速度',
+  'form.singleAssetThread':'单个主机扫描的线程数量',
+  'form.tcpPort':'TCP端口范围',
+  'form.udpPort':'TCP端口范围',
+  'form.templateName':'主机扫描模板名称',
+  'form.message':'参数说明',
+
+
+  'form.contentType.enableArp.true':'是',
+  'form.contentType.enableArp.false':'否',
+  'form.contentType.portScanSpeed.T1':'超慢速',
+  'form.contentType.portScanSpeed.T2':'慢速',
+  'form.contentType.portScanSpeed.T3':'正常',
+  'form.contentType.portScanSpeed.T4':'快速',
+  'form.contentType.portScanSpeed.T5':'超速',
+
+ 
+
+  'cardList.tab.title.all': '全部',
+  'cardList.tab.title.content': '内容质检',
+  'cardList.tab.title.service': '开通服务',
+  'cardList.tab.title.preset': '规则预置',
+  'cardList.searchInput.placeholder': '搜索',
+  // 'cardList.statistic.enable': '已启用',
+  // 'cardList.statistic.disable': '未启用',
+  'cardList.content.delete': '删除',
+  'cardList.content.inspection': '质检',
+  'cardList.content.action': '点击创建质检内容队列',
+  'cardList.service.open': '开通服务',
+  'cardList.service.cancel': '取消服务',
+  'cardList.service.renew': '续约服务',
+  'cardList.service.tag': '已开通',
+  'cardList.service.expiresTag': '已过期',
+  'cardList.preset.tag': '已启用',
+};
