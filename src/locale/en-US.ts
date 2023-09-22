@@ -26,6 +26,7 @@ import locale500 from '@/views/exception/500/locale/en-US';
 import localeUserInfo from '@/views/user/info/locale/en-US';
 import localeUserSetting from '@/views/user/setting/locale/en-US';
 
+import globalSettings from './en-US/global';
 import localeSettings from './en-US/settings';
 
 export default {
@@ -64,4 +65,5 @@ export default {
   ...locale500,
   ...localeUserInfo,
   ...localeUserSetting,
+  ...globalSettings,
 };

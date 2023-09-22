@@ -13,11 +13,21 @@ const HOSTSCAN: AppRouteRecordRaw = {
   },
   children: [
     {
+      path: 'scanConfig', // The midline path complies with SEO specifications
+      name: 'scanConfig',
+      component: () => import('@/views/hostscan/scan-config/index.vue'),
+      meta: {
+        locale: 'menu.list.scan.config',
+        requiresAuth: true,
+        roles: ['*'],
+      },
+    },
+    {
       path: 'scanEngine', // The midline path complies with SEO specifications
       name: 'scanEngine',
       component: () => import('@/views/hostscan/scan-engine/index.vue'),
       meta: {
-        locale: 'menu.list.searchTable',
+        locale: 'menu.list.scan.engine',
         requiresAuth: true,
         roles: ['*'],
       },
@@ -27,7 +37,7 @@ const HOSTSCAN: AppRouteRecordRaw = {
       name: 'scanTemplate',
       component: () => import('@/views/hostscan/scan-template/index.vue'),
       meta: {
-        locale: 'menu.list.scantemplate',
+        locale: 'menu.list.scan.template',
         requiresAuth: true,
         roles: ['*'],
       },
@@ -35,14 +45,25 @@ const HOSTSCAN: AppRouteRecordRaw = {
     {
       path: 'addTemplate',
       name: 'addTemplate',
-      
-      component: () => import('@/views/hostscan/scan-template/add-template.vue'),
+      component: () =>
+        import('@/views/hostscan/scan-template/add-template.vue'),
       meta: {
         locale: 'menu.list.addtemplate',
         requiresAuth: true,
         roles: ['*'],
         hideInMenu: true,
-       
+      },
+    },
+    {
+      path: 'scanConfigDetail',
+      name: 'scanConfigDetail',
+      component: () =>
+        import('@/views/hostscan/scan-config/scanConfigDetail.vue'),
+      meta: {
+        locale: 'menu.list.configDetail',
+        requiresAuth: true,
+        roles: ['*'],
+        hideInMenu: true,
       },
     },
   ],

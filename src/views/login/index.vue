@@ -28,7 +28,7 @@
   .container {
     display: flex;
     height: 100vh;
-    background: url('../../assets/images/login-bg.jpg') no-repeat;
+    // background: url('../../assets/images/login-bg.jpg') no-repeat;
     background-size: cover;
     background-position: 100%;
 

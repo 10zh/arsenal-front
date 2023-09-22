@@ -2,6 +2,7 @@ import { useRouter } from 'vue-router';
 import { Message } from '@arco-design/web-vue';
 
 import { useUserStore } from '@/store';
+import { registerLoading } from 'echarts';
 
 export default function useUser() {
   const router = useRouter();
@@ -16,8 +17,10 @@ export default function useUser() {
         ...router.currentRoute.value.query,
         redirect: currentRoute.name as string,
       },
-    });
+    })
+   
   };
+
   return {
     logout,
   };

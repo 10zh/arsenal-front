@@ -1,11 +1,19 @@
 export default {
-  'menu.list.scantemplate': '扫描模板',
-  'cardList.operation.create':'新建模板',
-  'cardList.list1':'主机发现',
-  'cardList.list2':'音频参数',
-  'cardList.list3':'填写说明',
-  'menu.list.addtemplate':'添加模板',
-
+  'menu.list.scan.template': '扫描模板',
+  'host.scan.template.name': '模板名称',
+  'asset.concurrent.number': '资产并发数量',
+  'single.asset.concurrent.number': '单个资产并发数',
+  'port.scan.speed': '端口扫描速度',
+  'service.tcp.port.list': '服务TCP端口',
+  'service.udp.port.list': '服务UDP端口',
+  'host.discovery.icmp.scan': 'ICMP扫描',
+  'host.discovery.arp.scan': 'ARP扫描',
+  'T1': '超慢速',
+  'T2': '慢速',
+  'T3': '适中',
+  'T4': '快速',
+  'T5': '超速',
+  'searchTable.scanTemplate.create':'新建模板',
 
   'form.enableArp':'是否开启ARP扫描',
   'form.enableIcmp':'是否开启ICMP扫描',
@@ -22,31 +30,27 @@ export default {
   'form.templateName':'主机扫描模板名称',
   'form.message':'参数说明',
 
+  'form.search.enableArp':'开启ARP扫描',
+  'form.search.enableIcmp':'开启ICMP扫描',
+  'form.search.templateName':'模板名称',
 
   'form.contentType.enableArp.true':'是',
   'form.contentType.enableArp.false':'否',
   'form.contentType.portScanSpeed.T1':'超慢速',
   'form.contentType.portScanSpeed.T2':'慢速',
-  'form.contentType.portScanSpeed.T3':'正常',
+  'form.contentType.portScanSpeed.T3':'适中',
   'form.contentType.portScanSpeed.T4':'快速',
   'form.contentType.portScanSpeed.T5':'超速',
+  
+  'cardList.list1':'主机发现',
+  'cardList.list2':'音频参数',
+  'cardList.list3':'填写说明',
+  'menu.list.addtemplate':'添加模板',
+  'menu.list.edittemplate':'编辑模板',
+  'menu.list.showtemplate':'查看模板',
+  
 
- 
+  'scanTemplate.form.errMsg':'请填写内容',
 
-  'cardList.tab.title.all': '全部',
-  'cardList.tab.title.content': '内容质检',
-  'cardList.tab.title.service': '开通服务',
-  'cardList.tab.title.preset': '规则预置',
-  'cardList.searchInput.placeholder': '搜索',
-  // 'cardList.statistic.enable': '已启用',
-  // 'cardList.statistic.disable': '未启用',
-  'cardList.content.delete': '删除',
-  'cardList.content.inspection': '质检',
-  'cardList.content.action': '点击创建质检内容队列',
-  'cardList.service.open': '开通服务',
-  'cardList.service.cancel': '取消服务',
-  'cardList.service.renew': '续约服务',
-  'cardList.service.tag': '已开通',
-  'cardList.service.expiresTag': '已过期',
-  'cardList.preset.tag': '已启用',
+
 };

@@ -13,7 +13,10 @@ export interface HttpResponse<T = unknown> {
 
 if (import.meta.env.VITE_API_BASE_URL) {
   const API_PROXY_PRIFIX = '/api';
-  axios.defaults.baseURL = import.meta.env.NODE_EVN === 'production' ? import.meta.env.VITE_API_BASE_URL: API_PROXY_PRIFIX ;
+  axios.defaults.baseURL =
+    import.meta.env.NODE_EVN === 'production'
+      ? import.meta.env.VITE_API_BASE_URL
+      : API_PROXY_PRIFIX;
 }
 
 axios.interceptors.request.use(

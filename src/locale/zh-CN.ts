@@ -7,6 +7,7 @@ import localeMonitor from '@/views/dashboard/monitor/locale/zh-CN';
 
 import localeSearchTable from '@/views/hostscan/scan-engine/locale/zh-CN';
 import localeCardList from '@/views/hostscan/scan-template/locale/zh-CN';
+import scanConfig from '@/views/hostscan/scan-config/locale/zh-CN';
 
 import localeStepForm from '@/views/form/step/locale/zh-CN';
 import localeGroupForm from '@/views/form/group/locale/zh-CN';
@@ -25,6 +26,8 @@ import locale500 from '@/views/exception/500/locale/zh-CN';
 
 import localeUserInfo from '@/views/user/info/locale/zh-CN';
 import localeUserSetting from '@/views/user/setting/locale/zh-CN';
+
+import globalSettings from './zh-CN/global';
 
 import localeSettings from './zh-CN/settings';
 
@@ -64,4 +67,6 @@ export default {
   ...locale500,
   ...localeUserInfo,
   ...localeUserSetting,
+  ...globalSettings,
+  ...scanConfig,
 };

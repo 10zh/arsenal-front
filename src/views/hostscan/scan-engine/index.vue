@@ -1,8 +1,11 @@
 <template>
   <div class="container">
-    <Breadcrumb :items="['menu.hostscan', 'menu.list.searchTable']" />
-    <a-card class="general-card" :title="$t('menu.list.searchTable')" :style="'height:'+cardHeight+'px'">
-      <a-row>
+    <Breadcrumb :items="['menu.hostscan', 'menu.list.scan.engine']" />
+    <a-card
+      class="general-card"
+      :title="$t('menu.list.scan.engine')"
+    >
+      <a-row ref="searchRef">
         <a-col :flex="1">
           <a-form
             :model="formModel"
@@ -12,10 +15,7 @@
           >
             <a-row :gutter="16">
               <a-col :span="8">
-                <a-form-item
-                  field="name"
-                  :label="$t('searchTable.form.name')"
-                >
+                <a-form-item field="name" :label="$t('searchTable.form.name')">
                   <a-input
                     v-model="formModel.name"
                     :placeholder="$t('searchTable.form.name.placeholder')"
@@ -23,7 +23,10 @@
                 </a-form-item>
               </a-col>
               <a-col :span="8">
-                <a-form-item field="address" :label="$t('searchTable.form.address')">
+                <a-form-item
+                  field="address"
+                  :label="$t('searchTable.form.address')"
+                >
                   <a-input
                     v-model="formModel.address"
                     :placeholder="$t('searchTable.form.address.placeholder')"
@@ -50,7 +53,7 @@
                   />
                 </a-form-item>
               </a-col>
-             
+
               <a-col :span="8">
                 <a-form-item
                   field="updateTime"
@@ -96,25 +99,23 @@
         </a-col>
       </a-row>
       <a-divider style="margin-top: 0" />
-      <a-row style="margin-bottom: 16px">
+      <a-row style="margin-bottom: 16px;align-items: center;">
         <a-col :span="12">
           <a-space>
             <a-button type="primary" @click="handleAdd('add')">
               <template #icon>
                 <icon-plus />
               </template>
-              {{ $t('searchTable.operation.create') }}
+              {{ $t('searchTable.scanEngine.create') }}
             </a-button>
-            <!-- <a-upload action="/">
-              <template #upload-button>
-                <a-button>
-                  {{ $t('searchTable.operation.import') }}
-                </a-button>
-              </template>
-            </a-upload> -->
           </a-space>
         </a-col>
-        <a-col
+        <a-col 
+        :span="12"
+          style="display: flex; align-items: center; justify-content: end">
+           <a-switch type="round" size="large" :checked-value="'asc'" :unchecked-value = "'desc'" checked-text="升序" :model-value="formModel.order" unchecked-text="降序"   @change="changeOrder($event)" />
+        </a-col>
+        <!-- <a-col
           :span="12"
           style="display: flex; align-items: center; justify-content: end"
         >
@@ -178,19 +179,19 @@
               </template>
             </a-popover>
           </a-tooltip>
-        </a-col>
+        </a-col> -->
       </a-row>
       <a-table
         row-key="id"
         :loading="loading"
-        :pagination="pagination"
         :columns="(cloneColumns as TableColumnData[])"
         :data="renderData"
         :bordered="false"
-        :style="'height:'+(cardHeight - 280)+'px'"
-        :size="size"
+        :style="'height:' + cardHeight + 'px'"
+        :pagination="false"
+     
         align="center"
-        @page-change="onPageChange"
+      
       >
         <template #index="{ rowIndex }">
           {{ rowIndex + 1 + (pagination.current - 1) * pagination.pageSize }}
@@ -199,51 +200,71 @@
           {{ $t(`searchTable.form.filterType.${record.filterType}`) }}
         </template>
         <template #status="{ record }">
-          <span v-if="record.status == '0'" style="color:red">下线</span>
-          <span v-else style="color: green;">在线</span>
+          <span v-if="record.status == '0'" style="color: green">  <a-badge status="success" style="margin-right:5px" />在线</span>
+          <span v-else style="color: red"> <a-badge status="danger" style="margin-right:5px" />下线</span>
           <!-- {{ $t(`searchTable.form.status.${record.status}`) }} -->
         </template>
         <template #isLocal="{ record }">
-          <span v-if="record.isLocal == false" >否</span>
+          <span v-if="record.isLocal == false">否</span>
           <span v-else>是</span>
           <!-- {{ $t(`searchTable.form.status.${record.status}`) }} -->
         </template>
         <template #updateTime="{ record }">
-          {{formatDate(record.updateTime,'YYYY-MM-DD hh:mm:ss') }}
+          {{ formatDate(record.updateTime, 'YYYY-MM-DD hh:mm:ss') }}
         </template>
         <template #operations="{ record }">
           <!-- v-permission="['admin']"  -->
-          <a-button type="text" size="small"  @click="handleAdd('edit',record)" style="padding:0px">
+          <a-button
+            type="text"
+            size="small"
+            style="padding: 0px"
+            @click="handleAdd('edit', record)"
+          >
+          <template #icon>
+              <icon-edit />
+            </template>
             {{ $t('searchTable.columns.operations.edit') }}
           </a-button>
           <a-popconfirm content="刷新该引擎" @ok="refresh(record)">
-              <a-button type="text" size="small">
+            <a-button type="text" size="small">
+              <template #icon>
+                <icon-refresh />
+              </template>
               {{ $t('searchTable.columns.operations.refresh') }}
             </a-button>
           </a-popconfirm>
-         
         </template>
       </a-table>
+      <a-pagination class="pagination-style"  :total="pagination.total" :current="pagination.current"  :page-size="pagination.pageSize" show-total show-jumper show-page-size />
     </a-card>
     <!-- 新增引擎对话框 -->
-    <AddEngineDialog ref="addEngineRef" :dialogType = "dialogType" :tableRow = "tableRow"  @refreshList="fetchData" />
+    <AddEngineDialog
+      ref="addEngineRef"
+      :dialog-type="dialogType"
+      :table-row="tableRow"
+      @refreshList="fetchData"
+    />
   </div>
 </template>
 
 <script lang="ts" setup>
   import { computed, ref, reactive, watch, nextTick, onMounted } from 'vue';
-  import formatDate from '@/utils/times'
+  import formatDate from '@/utils/times';
   import { useI18n } from 'vue-i18n';
   import useLoading from '@/hooks/loading';
-  import {  PolicyRecord, PolicyParams, getScanEngines,refreshScanEngines} from '@/api/list';
+  import {
+    PolicyRecord,
+    PolicyParams,
+    getScanEngines,
+    refreshScanEngines,
+  } from '@/api/scan/scan-engine';
   import { Pagination } from '@/types/global';
   import type { SelectOptionData } from '@arco-design/web-vue/es/select/interface';
   import type { TableColumnData } from '@arco-design/web-vue/es/table/interface';
   import cloneDeep from 'lodash/cloneDeep';
   import Sortable, { mount } from 'sortablejs';
   import { Message } from '@arco-design/web-vue';
-  import AddEngineDialog from './components/add-engine-dialog.vue'
-
+  import AddEngineDialog from './components/add-engine-dialog.vue';
 
   type SizeProps = 'mini' | 'small' | 'medium' | 'large';
   type Column = TableColumnData & { checked?: true };
@@ -251,13 +272,15 @@
     return {
       address: '',
       name: '',
-      port:'',
-      isLoal:'',
-      updateTime:'',
+      port: '',
+      isLoal: '',
+      updateTime: '',
       // contentType: '',
       // filterType: '',
       // createdTime: [],
       status: '',
+      order:'asc',
+      sort:'id',
     };
   };
   const { loading, setLoading } = useLoading(true);
@@ -266,16 +289,17 @@
   const formModel = ref(generateFormModel());
   const cloneColumns = ref<Column[]>([]);
   const showColumns = ref<Column[]>([]);
-  const addEngineRef = ref<InstanceType<typeof AddEngineDialog> | null>(null)
+  const addEngineRef = ref<InstanceType<typeof AddEngineDialog> | null>(null);
 
   const size = ref<SizeProps>('medium');
-  const dialogType = ref<string>('')
-  const tableRow = ref<PolicyRecord>()
+  const dialogType = ref<string>('');
+  const tableRow = ref<PolicyRecord>();
+  const searchRef = ref();
   const cardHeight = ref<number>();
-  cardHeight.value = document.documentElement.clientHeight - 180;
   const basePagination: Pagination = {
     current: 1,
-    pageSize: Math.floor((cardHeight.value - 300) / 43),
+    pageSize: 10,
+    total:1,
   };
   const pagination = reactive({
     ...basePagination,
@@ -320,7 +344,7 @@
     {
       title: t('searchTable.columns.isLocal'),
       dataIndex: 'isLocal',
-       slotName: 'isLocal',
+      slotName: 'isLocal',
     },
     {
       title: t('searchTable.columns.port'),
@@ -329,7 +353,7 @@
     {
       title: t('searchTable.columns.updateTime'),
       dataIndex: 'updateTime',
-      slotName:'updateTime',
+      slotName: 'updateTime',
     },
     {
       title: t('searchTable.columns.status'),
@@ -350,7 +374,7 @@
     {
       label: t('searchTable.form.contentType.online'),
       value: '1',
-    }
+    },
   ]);
   const statusOptions = computed<SelectOptionData[]>(() => [
     {
@@ -367,7 +391,8 @@
   ) => {
     setLoading(true);
     try {
-      const data = await getScanEngines(params);
+      console.log(pagination.pageSize)
+      const data = await getScanEngines(pagination);
       renderData.value = data.data;
       pagination.current = data.totalCount;
       pagination.total = data.totalPages;
@@ -387,11 +412,14 @@
   const onPageChange = (current: number) => {
     fetchData({ ...basePagination, current });
   };
-
-  fetchData();
   const reset = () => {
     formModel.value = generateFormModel();
   };
+  const changeOrder = (key:string)=>{
+    formModel.value.order = key;
+     search()
+
+  }
 
   const handleSelectDensity = (
     val: string | number | Record<string, any> | undefined,
@@ -446,22 +474,20 @@
       });
     }
   };
-  
-const handleAdd = (type : string,row ?: PolicyRecord) => {
-  dialogType.value = type;
-  tableRow.value = row;
-  addEngineRef.value?.setVisibleData(true);
-}
-const refresh = async (record:PolicyRecord)=>{
-  const data = await refreshScanEngines(record.id);
-    if(data.success){
-      Message.success("刷新成功");
-    }else{
-    Message.error(data.errMessage);
+
+  const handleAdd = (type: string, row?: PolicyRecord) => {
+    dialogType.value = type;
+    tableRow.value = row;
+    addEngineRef.value?.setVisibleData(true);
+  };
+  const refresh = async (record: PolicyRecord) => {
+    const data = await refreshScanEngines(record.id);
+    if (data.success) {
+      Message.success('刷新成功');
+    } else {
+      Message.error(data.errMessage);
     }
-
-
-}
+  };
   watch(
     () => columns.value,
     (val) => {
@@ -473,7 +499,11 @@ const refresh = async (record:PolicyRecord)=>{
     },
     { deep: true, immediate: true }
   );
-  
+  onMounted(()=>{
+    cardHeight.value = document.documentElement.clientHeight - searchRef.value.$el.clientHeight - 370;
+    pagination.pageSize = Math.floor(cardHeight.value / 43);
+     fetchData();
+  })
 </script>
 
 <script lang="ts">
@@ -512,6 +542,8 @@ const refresh = async (record:PolicyRecord)=>{
   }
   /deep/ .arco-table-container {
     height: 100%;
-
+  }
+  .pagination-style {
+    justify-content: end;
   }
 </style>

@@ -7,7 +7,6 @@ export interface LoginData {
   password: string;
   captcha: string;
   captchaKey: string;
-
 }
 
 export interface LoginRes {

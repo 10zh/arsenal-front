@@ -4,22 +4,22 @@ import type { DescData } from '@arco-design/web-vue/es/descriptions/interface';
 
 export interface PolicyRecord {
   id: string;
-  address:string;
-  assignedTaskNumber:number;
-  isLocal:boolean;
-  name:string;
-  port:number;
-  status:number;
-  updateTime:string
+  address: string;
+  assignedTaskNumber: number;
+  isLocal: boolean;
+  name: string;
+  port: number;
+  status: number;
+  updateTime: string;
 }
 export interface addEnginesRes {
-  address: string,
-  engineName: string,
-  port: string
+  address: string;
+  engineName: string;
+  port: string;
 }
 export interface enginesRes {
-  pageIndex: number,
-  pageSize: number,
+  pageIndex: number;
+  pageSize: number;
 }
 
 export interface PolicyParams extends Partial<PolicyRecord> {
@@ -32,10 +32,10 @@ export interface PolicyListRes {
   total: number;
 }
 export interface listRes {
-  errCode : string;
+  errCode: string;
   errMessage: string;
-  success : boolean;
-  data:null | string | boolean;
+  success: boolean;
+  data: any;
 }
 
 export function queryPolicyList(params: PolicyParams) {
@@ -70,16 +70,14 @@ export function queryRulesPresetList() {
   return axios.get('/api/list/rules-preset');
 }
 export function addScanEngines(data: addEnginesRes) {
-  return axios.post<listRes>('/scan/engines/new',data);
+  return axios.post<listRes>('/scan/engines/new', data);
 }
-export function editScanEngines(data:addEnginesRes,engineId:string) {
-  return axios.put<listRes>(`/scan/engines/${engineId}/engine`,data);
+export function editScanEngines(data: addEnginesRes, engineId: string) {
+  return axios.put<listRes>(`/scan/engines/${engineId}/engine`, data);
 }
-export function getScanEngines(data:enginesRes) {
-  return axios.post<any>('/scan/engines',data);
+export function getScanEngines(data: enginesRes) {
+  return axios.post<any>('/scan/engines', data);
 }
-export function refreshScanEngines(engineId:string) {
+export function refreshScanEngines(engineId: string) {
   return axios.get<any>(`/scan/engines/refresh/${engineId}`);
 }
-
-

@@ -6,12 +6,12 @@
           alt="logo"
           src="//p3-armor.byteimg.com/tos-cn-i-49unhts6dw/dfdba5317c0c20ce20e64fac803d52bc.svg~tplv-49unhts6dw-image.image"
         /> -->
-        <img class="logo-img" src="../../assets/images/logo.png"/>
+        <img class="logo-img" src="../../assets/images/logo.png" />
         <a-typography-title
-          :style="{ margin: 0, fontSize: '18px',fontWeight : 700 }"
+          :style="{ margin: 0, fontSize: '18px', fontWeight: 700 }"
           :heading="5"
         >
-          Aresnal | 安森纳
+          Arsenal | 安森纳
         </a-typography-title>
         <icon-menu-fold
           v-if="!topMenu && appStore.device === 'mobile'"
@@ -151,7 +151,7 @@
             :size="32"
             :style="{ marginRight: '8px', cursor: 'pointer' }"
           >
-            <img alt="avatar" :src="avatar" />
+            <img alt="avatar" src="../../assets/images/avator.jpg" />
           </a-avatar>
           <template #content>
             <a-doption>

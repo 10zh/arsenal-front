@@ -47,14 +47,14 @@
         :validate-trigger="['change', 'blur']"
         hide-label
       >
-      <a-input
+        <a-input
           v-model="userInfo.captcha"
           :placeholder="$t('login.form.captcha.placeholder')"
         >
         </a-input>
-       
+
         <div class="captcha-wrap" @click="getCaptcha">
-          <img :src="captchaImg" style="width:100%;height: 100%;" />
+          <img :src="captchaImg" style="width: 100%; height: 100%" />
         </div>
       </a-form-item>
       <a-space :size="16" direction="vertical">
@@ -80,7 +80,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, reactive } from 'vue';
+  import { ref, reactive, onMounted } from 'vue';
   import { useRouter } from 'vue-router';
   import { Message } from '@arco-design/web-vue';
   import { ValidatedError } from '@arco-design/web-vue/es/form/interface';
@@ -89,8 +89,7 @@
   import { useUserStore } from '@/store';
   import useLoading from '@/hooks/loading';
   import type { LoginData } from '@/api/user';
-  import {getCaptchaImg} from '@/api/user'
-  import { onMounted } from 'vue';
+  import { getCaptchaImg } from '@/api/user';
 
   const router = useRouter();
   const { t } = useI18n();
@@ -102,8 +101,8 @@
     rememberPassword: true,
     username: 'admin', // 演示默认值
     password: 'admin@123', // demo default value
-    captcha:'',
-    captchaKey:''
+    captcha: '',
+    captchaKey: '',
   });
   const userInfo = reactive({
     username: loginConfig.value.username,
@@ -112,14 +111,12 @@
     captchaKey: loginConfig.value.captchaKey,
   });
   const captchaImg = ref<string>('');
- // 获取验证码
- async function getCaptcha(){
-    const data  = await getCaptchaImg();
+  // 获取验证码
+  async function getCaptcha() {
+    const data = await getCaptchaImg();
     captchaImg.value = data.data.image;
     userInfo.captchaKey = data.data.key;
-
   }
-
 
   const handleSubmit = async ({
     errors,
@@ -147,10 +144,11 @@
         // The actual production environment requires encrypted storage.
         loginConfig.value.username = rememberPassword ? username : '';
         loginConfig.value.password = rememberPassword ? password : '';
+      
       } catch (err) {
+        getCaptcha();
         errorMessage.value = (err as Error).message;
-      } finally {
-        getCaptcha()
+      }finally {
         setLoading(false);
       }
     }
@@ -158,9 +156,9 @@
   const setRememberPassword = (value: boolean) => {
     loginConfig.value.rememberPassword = value;
   };
-  onMounted(()=>{
-    getCaptcha()
-  })
+  onMounted(() => {
+    getCaptcha();
+  });
 </script>
 
 <style lang="less" scoped>
@@ -203,9 +201,9 @@
     }
   }
   .captcha {
-    &-wrap{
-      width : 100px; 
-      border : 1px solid #ccc;
+    &-wrap {
+      width: 100px;
+      border: 1px solid #ccc;
       border-radius: 0 2px 2px 0;
       height: 30px;
     }
