@@ -61,8 +61,7 @@
         done(false);
       } else {
         // 添加引擎
-        const response = await addScanEngines(form);
-        console.log('response', response);
+        await addScanEngines(form);
         done();
       }
     });
