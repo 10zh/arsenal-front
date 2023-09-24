@@ -23,4 +23,5 @@ export default {
   'scan.engine.address.input': '请输入引擎地址',
   'scan.engine.port.input': '请输入引擎端口',
   'scan.engine.version.input': '请输入引擎版本',
+  'scan.engine.add': '新建扫描引擎',
 };

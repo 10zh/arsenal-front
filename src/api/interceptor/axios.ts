@@ -1,4 +1,6 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
+import { Message } from '@arco-design/web-vue';
+import { getToken } from '@/utils/auth';
 
 export interface HttpResponse<T = any> {
   errCode: string;
@@ -7,8 +9,23 @@ export interface HttpResponse<T = any> {
   data: T;
 }
 
+if (import.meta.env.VITE_API_BASE_URL) {
+  const API_PROXY_PRIFIX = '/api';
+  axios.defaults.baseURL =
+    import.meta.env.NODE_EVN === 'production'
+      ? import.meta.env.VITE_API_BASE_URL
+      : API_PROXY_PRIFIX;
+}
+
 axios.interceptors.request.use(
   (config: AxiosRequestConfig) => {
+    const token = getToken();
+    if (token) {
+      if (!config.headers) {
+        config.headers = {};
+      }
+      config.headers.Authorization = `Bearer ${token}`;
+    }
     return config;
   },
   (error) => {
@@ -19,13 +36,12 @@ axios.interceptors.response.use(
   (response: AxiosResponse<HttpResponse>) => {
     const res = response.data;
     // if the custom code is not 20000, it is judged as an error.
+    console.log('res: ', response);
     if (!res.success) {
-      if (['1001', '4001', '5001'].includes(res.errCode)) {
-        // do something
-      }
-      return Promise.reject(new Error(res.errMessage || 'Error'));
+      Message.error(res.errMessage);
+      return res;
     }
-    return res.data;
+    return res;
   },
   (error) => {
     return Promise.reject(error);

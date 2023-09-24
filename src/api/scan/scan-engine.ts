@@ -29,6 +29,13 @@ export interface HostScanEngineRes {
   updateTime: string;
 }
 
+// 添加引擎
+export interface addEnginesRes {
+  engineName: string;
+  address: string;
+  port: string;
+}
+
 export interface PolicyRecord {
   id: string;
   address: string;
@@ -38,11 +45,6 @@ export interface PolicyRecord {
   port: number;
   status: number;
   updateTime: string;
-}
-export interface addEnginesRes {
-  address: string;
-  engineName: string;
-  port: string;
 }
 export interface enginesRes {
   pageIndex: number;
@@ -57,12 +59,6 @@ export interface PolicyParams extends Partial<PolicyRecord> {
 export interface PolicyListRes {
   list: PolicyRecord[];
   total: number;
-}
-export interface listRes {
-  errCode: string;
-  errMessage: string;
-  success: boolean;
-  data: any;
 }
 
 export function queryPolicyList(params: PolicyParams) {
@@ -97,9 +93,11 @@ export function refreshScanEngine(engineId: string) {
   return axios.get<HttpResponse>(`/scan/engines/refresh/${engineId}`);
 }
 
+// 添加引擎
 export function addScanEngines(data: addEnginesRes) {
-  return axios.post<listRes>('/scan/engines/new', data);
+  return axios.post<HttpResponse>('/scan/engines/new', data);
 }
+
 export function editScanEngines(data: addEnginesRes, engineId: string) {
-  return axios.put<listRes>(`/scan/engines/${engineId}/engine`, data);
+  return axios.put<HttpResponse>(`/scan/engines/${engineId}/engine`, data);
 }

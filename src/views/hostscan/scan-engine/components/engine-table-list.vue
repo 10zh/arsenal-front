@@ -91,6 +91,25 @@
           </a-button>
         </a-col>
       </a-row>
+      <a-row style="margin-bottom: 16px">
+        <a-col
+          :span="24"
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          "
+        >
+          <a-space>
+            <a-button type="primary" @click="addScanEngine">
+              <template #icon>
+                <icon-plus />
+              </template>
+              {{ $t('scan.engine.add') }}
+            </a-button>
+          </a-space>
+        </a-col>
+      </a-row>
     </a-form>
   </a-row>
   <!--数据搜索模块 end-->
@@ -155,6 +174,9 @@
     show-page-size
   />
   <!--引擎数据表格 end-->
+  <!--添加引擎对话层 start-->
+  <AddEngienModel ref="addEngieRef" />
+  <!--添加引擎对话层 end-->
 </template>
 
 <script lang="ts" setup>
@@ -164,6 +186,7 @@
   import { Message } from '@arco-design/web-vue';
   import formatDate from '@/utils/times';
   import { aotuCompleteByTableField } from '@/api/common/common';
+  import AddEngienModel from '@/views/hostscan/scan-engine/components/add-engine.vue';
   import {
     HostScanEngineRes,
     getScanEngines,
@@ -287,6 +310,8 @@
   });
   // 输入框自动补全
   const autoCompleteData = ref([]);
+  // 添加引擎子组件
+  const addEngieRef = ref<any>({});
 
   // ==========================数据操纵模块==========================
   // 初始化引擎列表
@@ -346,6 +371,11 @@
     pagination.value.port = '';
     pagination.value.engineVersion = '';
     initEngineList();
+  };
+  // 新增引擎
+  const addScanEngine = () => {
+    console.log('add engine event!');
+    addEngieRef.value.handleAddEngineVisible(true);
   };
 </script>
 
