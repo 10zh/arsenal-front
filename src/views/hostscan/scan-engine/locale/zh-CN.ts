@@ -18,4 +18,9 @@ export default {
   'scan.engine.operator.refresh': '刷新',
   'scan.engine.operator.refresh.question': '刷新该引擎?',
   'scan.engie.refresh.success': '引擎刷新成功',
+  // 输入
+  'scan.engine.name.input': '请输入引擎名称',
+  'scan.engine.address.input': '请输入引擎地址',
+  'scan.engine.port.input': '请输入引擎端口',
+  'scan.engine.version.input': '请输入引擎版本',
 };

@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <Breadcrumb :items="['menu.hostscan', 'menu.list.scan.config']" />
-    <a-card class="general-card" :title="$t('menu.list.scan.config')">
+    <a-card :title="$t('menu.list.scan.config')">
       <!--搜索条件 start-->
       <a-row>
         <a-col :flex="1">
@@ -100,13 +100,13 @@
                   <template #icon>
                     <icon-search />
                   </template>
-                  {{ $t('searchTable.form.search') }}
+                  {{ $t('global.search') }}
                 </a-button>
                 <a-button style="margin: 0 10px" @click="reset">
                   <template #icon>
                     <icon-refresh />
                   </template>
-                  {{ $t('searchTable.form.reset') }}
+                  {{ $t('global.reset') }}
                 </a-button>
               </a-col>
             </a-row>
@@ -314,7 +314,7 @@
       },
     },
     {
-      title: t('searchTable.columns.operations'),
+      title: t('global.operations'),
       dataIndex: 'operations',
       slotName: 'operations',
     },

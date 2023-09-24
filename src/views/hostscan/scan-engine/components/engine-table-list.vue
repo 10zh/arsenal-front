@@ -1,4 +1,99 @@
 <template>
+  <!--数据搜索模块 start-->
+  <a-row :style="{ marginBottom: '20px' }">
+    <a-form :model="form" label-align="left" auto-label-width>
+      <a-row :gutter="24">
+        <a-col :span="4">
+          <a-form-item field="engineName" :label="t('scan.engine.name')">
+            <a-auto-complete
+              v-model="pagination.engineName"
+              :data="autoCompleteData"
+              :placeholder="t('scan.engine.name.input')"
+              @focus="
+                searchSingleField('scan_se', 'scan_en', pagination.engineName)
+              "
+              @change="
+                searchSingleField('scan_se', 'scan_en', pagination.engineName)
+              "
+            />
+          </a-form-item>
+        </a-col>
+        <a-col :span="4">
+          <a-form-item field="address" :label="t('scan.engine.address')">
+            <a-auto-complete
+              v-model="pagination.address"
+              :data="autoCompleteData"
+              :placeholder="t('scan.engine.address.input')"
+              @focus="
+                searchSingleField('scan_se', 'scan_se_as', pagination.address)
+              "
+              @change="
+                searchSingleField('scan_se', 'scan_se_as', pagination.address)
+              "
+            />
+          </a-form-item>
+        </a-col>
+        <a-col :span="4">
+          <a-form-item field="port" :label="t('scan.engine.port')">
+            <a-auto-complete
+              v-model="pagination.port"
+              :data="autoCompleteData"
+              :placeholder="t('scan.engine.port.input')"
+              @focus="
+                searchSingleField('scan_se', 'scan_se_pt', pagination.port)
+              "
+              @change="
+                searchSingleField('scan_se', 'scan_se_pt', pagination.port)
+              "
+            />
+          </a-form-item>
+        </a-col>
+        <a-col :span="4">
+          <a-form-item field="version" :label="t('scan.engine.version')">
+            <a-auto-complete
+              v-model="pagination.engineVersion"
+              :data="autoCompleteData"
+              :placeholder="t('scan.engine.version.input')"
+              @focus="
+                searchSingleField(
+                  'scan_se',
+                  'scan_se_ev',
+                  pagination.engineVersion
+                )
+              "
+              @change="
+                searchSingleField(
+                  'scan_se',
+                  'scan_se_ev',
+                  pagination.engineVersion
+                )
+              "
+            />
+          </a-form-item>
+        </a-col>
+        <a-col :span="6">
+          <a-button
+            type="primary"
+            default-checked
+            style="margin: 0 10px"
+            @click="initEngineList"
+          >
+            <template #icon>
+              <icon-search />
+            </template>
+            {{ $t('global.search') }}
+          </a-button>
+          <a-button style="margin: 0 10px" @click="reset">
+            <template #icon>
+              <icon-refresh />
+            </template>
+            {{ $t('global.reset') }}
+          </a-button>
+        </a-col>
+      </a-row>
+    </a-form>
+  </a-row>
+  <!--数据搜索模块 end-->
   <!--引擎数据表格 start-->
   <a-table
     row-key="id"
@@ -64,10 +159,11 @@
 
 <script lang="ts" setup>
   // ==========================声明模块==========================
-  import { ref, onMounted } from 'vue';
+  import { ref, reactive, onMounted } from 'vue';
   import { useI18n } from 'vue-i18n';
   import { Message } from '@arco-design/web-vue';
   import formatDate from '@/utils/times';
+  import { aotuCompleteByTableField } from '@/api/common/common';
   import {
     HostScanEngineRes,
     getScanEngines,
@@ -167,8 +263,32 @@
     pageSize: 10,
     order: 'desc',
     sort: 'createTime',
+    engineName: '',
+    address: '',
+    port: '',
+    engineVersion: '',
   });
+  // 搜索表单
+  const form = reactive({
+    value1: '',
+    value2: '',
+    value3: '',
+    value4: '',
+    value5: '',
+  });
+  // 单个参数检索 同输入框自动补全联动
+  const singleFieldPagination = ref({
+    total: 0,
+    pageIndex: 1,
+    pageSize: 15,
+    table: '',
+    field: '',
+    value: '',
+  });
+  // 输入框自动补全
+  const autoCompleteData = ref([]);
 
+  // ==========================数据操纵模块==========================
   // 初始化引擎列表
   const initEngineList = async () => {
     const response = await getScanEngines(pagination.value);
@@ -204,6 +324,27 @@
     pagination.value.sort = field;
     pagination.value.order = direction;
     // 重新刷新列表
+    initEngineList();
+  };
+  // 单个字段搜索事件
+  const searchSingleField = async (table, field, value) => {
+    autoCompleteData.value = [];
+    singleFieldPagination.value.table = table;
+    singleFieldPagination.value.field = field;
+    singleFieldPagination.value.value = value;
+    const response = await aotuCompleteByTableField(
+      singleFieldPagination.value
+    );
+    autoCompleteData.value = response.data;
+  };
+  // 重置事件
+  const reset = () => {
+    pagination.value.order = 'desc';
+    pagination.value.sort = 'createTime';
+    pagination.value.engineName = '';
+    pagination.value.address = '';
+    pagination.value.port = '';
+    pagination.value.engineVersion = '';
     initEngineList();
   };
 </script>

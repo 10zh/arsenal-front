@@ -9,6 +9,10 @@ export interface HostScanConfigPageRequest {
   pageSize: number;
   order: string;
   sort: string;
+  engineName: string;
+  address: string;
+  engineVersion: string;
+  port: number;
 }
 
 // 引擎对象
@@ -72,7 +76,19 @@ export function queryPolicyList(params: PolicyParams) {
 
 // 获取引擎列表
 export function getScanEngines(params: HostScanConfigPageRequest) {
-  const url = `/scan/engines?pageIndex=${params.pageIndex}&pageSize=${params.pageSize}&sort=${params.sort}&order=${params.order}`;
+  let url = `/scan/engines?pageIndex=${params.pageIndex}&pageSize=${params.pageSize}&sort=${params.sort}&order=${params.order}`;
+  if (params.engineName) {
+    url = `${url}&engineName-op=ct&engineName=${params.engineName}`;
+  }
+  if (params.engineVersion) {
+    url = `${url}&engineVersion-op=ct&engineVersion=${params.engineVersion}`;
+  }
+  if (params.port) {
+    url = `${url}&port-op=ct&port=${params.port}`;
+  }
+  if (params.address) {
+    url = `${url}&address-op=ct&address=${params.address}`;
+  }
   return axios.get<HttpResponse>(url);
 }
 
