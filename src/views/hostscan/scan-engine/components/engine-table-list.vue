@@ -145,7 +145,12 @@
       {{ formatDate(record.updateTime, 'YYYY-MM-DD hh:mm:ss') }}
     </template>
     <template #operations="{ record }">
-      <a-button type="text" size="small" style="padding: 0px">
+      <a-button
+        type="text"
+        size="small"
+        style="padding: 0px"
+        @click="editEngine(record)"
+      >
         <template #icon>
           <icon-edit />
         </template>
@@ -175,8 +180,11 @@
   />
   <!--引擎数据表格 end-->
   <!--添加引擎对话层 start-->
-  <AddEngienModel ref="addEngieRef" />
+  <AddEngienModel ref="addEngineRef" />
   <!--添加引擎对话层 end-->
+  <!--编辑引擎对话层 start-->
+  <EditEngienModel ref="editEngineRef" />
+  <!--编辑引擎对话层 end-->
 </template>
 
 <script lang="ts" setup>
@@ -187,6 +195,7 @@
   import formatDate from '@/utils/times';
   import { aotuCompleteByTableField } from '@/api/common/common';
   import AddEngienModel from '@/views/hostscan/scan-engine/components/add-engine.vue';
+  import EditEngienModel from '@/views/hostscan/scan-engine/components/edit-engine.vue';
   import {
     HostScanEngineRes,
     getScanEngines,
@@ -311,7 +320,9 @@
   // 输入框自动补全
   const autoCompleteData = ref([]);
   // 添加引擎子组件
-  const addEngieRef = ref<any>({});
+  const addEngineRef = ref<any>({});
+  // 编辑引擎子组件
+  const editEngineRef = ref<any>({});
 
   // ==========================数据操纵模块==========================
   // 初始化引擎列表
@@ -374,8 +385,12 @@
   };
   // 新增引擎
   const addScanEngine = () => {
-    console.log('add engine event!');
-    addEngieRef.value.handleAddEngineVisible(true);
+    addEngineRef.value.handleAddEngineVisible(true);
+  };
+  // 编辑引擎
+  const editEngine = (row) => {
+    editEngineRef.value.handleEditEngineVisible(true);
+    editEngineRef.value.editRowValue(row);
   };
 </script>
 

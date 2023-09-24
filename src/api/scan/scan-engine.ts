@@ -30,7 +30,14 @@ export interface HostScanEngineRes {
 }
 
 // 添加引擎
-export interface addEnginesRes {
+export interface addEnginesRequest {
+  engineName: string;
+  address: string;
+  port: string;
+}
+
+// 编辑引擎
+export interface editEnginesRequest {
   engineName: string;
   address: string;
   port: string;
@@ -94,10 +101,11 @@ export function refreshScanEngine(engineId: string) {
 }
 
 // 添加引擎
-export function addScanEngines(data: addEnginesRes) {
-  return axios.post<HttpResponse>('/scan/engines/new', data);
+export function addScanEngine(params: addEnginesRequest) {
+  return axios.post<HttpResponse>('/scan/engines/new', params);
 }
 
-export function editScanEngines(data: addEnginesRes, engineId: string) {
-  return axios.put<HttpResponse>(`/scan/engines/${engineId}/engine`, data);
+// 编辑引擎
+export function editScanEngine(params: editEnginesRequest) {
+  return axios.put<HttpResponse>(`/scan/engines/${params.id}/engine`, params);
 }

@@ -1,10 +1,10 @@
 <template>
-  <!--添加引擎表单对话层 start-->
+  <!--编辑引擎表单对话层 start-->
   <a-modal
     v-model:visible="visible"
     width="auto"
-    :title="t('scan.engine.add')"
-    @cancel="handleAddEngineVisible(false)"
+    :title="t('scan.engine.edit')"
+    @cancel="handleEditEngineVisible(false)"
     @before-ok="handleBeforeOk"
   >
     <a-form ref="formRef" auto-label-width :model="form">
@@ -31,19 +31,20 @@
       </a-form-item>
     </a-form>
   </a-modal>
-  <!--添加引擎表单对话层 end-->
+  <!--编辑引擎表单对话层 end-->
 </template>
 
 <script lang="ts" setup>
   // ==========================声明模块==========================
   import { ref, reactive } from 'vue';
   import { useI18n } from 'vue-i18n';
-  import { addScanEngine } from '@/api/scan/scan-engine';
+  import { editScanEngine } from '@/api/scan/scan-engine';
   import { Message } from '@arco-design/web-vue';
 
   const { t } = useI18n();
   // 表单参数
   const form = reactive({
+    id: '',
     engineName: '',
     address: '',
     port: '',
@@ -61,23 +62,30 @@
       if (valid) {
         done(false);
       } else {
-        // 添加引擎
-        const res = await addScanEngine(form);
+        // 编辑引擎
+        const res = await editScanEngine(form);
         if (res.success) {
-          Message.success(t('global.insert.success'));
+          Message.success(t('global.edit.success'));
         }
         done();
       }
     });
   };
   // 取消事件
-  const handleAddEngineVisible = (flag) => {
+  const handleEditEngineVisible = (flag) => {
     visible.value = flag;
   };
-
+  // 编辑行事件
+  const editRowValue = (row) => {
+    form.id = row.id;
+    form.engineName = row.engineName;
+    form.address = row.address;
+    form.port = row.port;
+  };
   // ==========================父子组件通信模块==========================
   defineExpose({
-    handleAddEngineVisible,
+    editRowValue,
+    handleEditEngineVisible,
   });
 </script>
 
