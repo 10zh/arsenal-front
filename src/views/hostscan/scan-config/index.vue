@@ -2,7 +2,8 @@
   <div class="container">
     <Breadcrumb :items="['menu.hostscan', 'menu.list.scan.config']" />
     <a-card class="general-card" :title="$t('menu.list.scan.config')">
-      <a-row ref="searchRef">
+      <!--搜索条件 start-->
+      <a-row>
         <a-col :flex="1">
           <a-form
             :model="pagination"
@@ -112,8 +113,11 @@
           </a-form>
         </a-col>
       </a-row>
-
+      <!--搜索条件 end-->
+      <!--分割线 start-->
       <a-divider style="margin-top: 0" />
+      <!--分割线 end-->
+      <!--添加主机扫描配置 start-->
       <a-row style="margin-bottom: 16px">
         <a-col
           :span="24"
@@ -124,7 +128,7 @@
           "
         >
           <a-space>
-            <a-button type="primary" @click="handleAdd('add')">
+            <a-button type="primary" @click="addHostScanConfig">
               <template #icon>
                 <icon-plus />
               </template>
@@ -133,13 +137,13 @@
           </a-space>
         </a-col>
       </a-row>
-      <!--主机扫描配置数据表格-->
+      <!--添加主机扫描配置 end-->
+      <!--主机扫描配置数据表格 start-->
       <a-table
         row-key="id"
         :columns="columns"
         :bordered="false"
         :data="tableData"
-        :row-selection="rowSelection"
         :style="'height:' + cardHeight + 'px'"
         :pagination="false"
         @sorter-change="sortedChangeEvent"
@@ -175,6 +179,16 @@
             <icon-exclamation-circle-fill v-else style="color: #ff7d00" />
           </div>
         </template>
+        <template #scanStartTime="{ record }">
+          {{
+            formatDate(record.lastScanStatic.updateTime, 'YYYY-MM-DD hh:mm:ss')
+          }}
+        </template>
+        <template #scanEndTime="{ record }">
+          {{
+            formatDate(record.lastScanStatic.updateTime, 'YYYY-MM-DD hh:mm:ss')
+          }}
+        </template>
         <template #operations="{ record }">
           <a-button
             type="text"
@@ -201,7 +215,7 @@
         </template>
       </a-table>
       <a-pagination
-        class="pagination-style"
+        class="paginationStyle"
         :total="pagination.total"
         :current="pagination.pageIndex"
         :page-size="pagination.pageSize"
@@ -209,49 +223,30 @@
         show-jumper
         show-page-size
       />
+      <!--主机扫描配置数据表格 end-->
     </a-card>
-    <!-- 新增引擎对话框 -->
-    <AddConfigDialog
-      ref="addConfigRef"
-      :dialog-type="dialogType"
-      :table-row="tableRow"
-      @refreshList="initConfigList"
-    />
-    <!-- 新增引擎对话框 -->
-    <ShowConfigListDialog ref="showConfigRef" :config-id="configId" />
   </div>
 </template>
 
 <script lang="ts" setup>
-  import { ref, reactive, onMounted } from 'vue';
+  // ==========================声明模块==========================
+  import { ref, onMounted } from 'vue';
   import { useI18n } from 'vue-i18n';
+  import { useRouter } from 'vue-router';
   import formatDate from '@/utils/times';
-  import { Message } from '@arco-design/web-vue';
   import { getStatusColor, getStatusText } from '@/hooks/status-options';
-  import { useConfigParamsStore } from '@/store';
-  // 远程接口调用
   import {
     HostScanConfigRes,
     getHostScanConfigPageList,
-    scanConfig,
-    getScanProgress,
   } from '@/api/scan/scan-config';
   import { aotuCompleteByTableField } from '@/api/common/common';
-  import AddConfigDialog from './components/add-config-dialog.vue';
-  import ShowConfigListDialog from './components/show-config-list-dialog.vue';
 
+  const router = useRouter();
   const { t } = useI18n();
-  const cardHeight = ref<number>([]);
-  const searchRef = ref();
 
-  const dialogType = ref<string>('');
-  // 当行数据
-  const tableRow = ref<HostScanConfigRes>([]);
+  // ==========================数据定义模块==========================
   // 配置模板表格数据
   const tableData = ref<HostScanConfigRes>([]);
-  const addConfigRef = ref<InstanceType<typeof AddConfigDialog>>(null);
-
-  // ==========================数据模块==========================
   // 扫描主机扫描配置表头
   const columns = [
     {
@@ -298,6 +293,7 @@
         sorter: true,
         sortDirections: ['descend'],
       },
+      slotName: 'scanStartTime',
     },
     {
       title: t('host.scan.config.scanEndTime'),
@@ -306,6 +302,7 @@
         sorter: true,
         sortDirections: ['descend'],
       },
+      slotName: 'scanEndTime',
     },
     {
       title: t('host.scan.config.scanStatus'),
@@ -322,7 +319,6 @@
       slotName: 'operations',
     },
   ];
-
   // 分页对象参数
   const pagination = ref({
     total: 0,
@@ -334,8 +330,7 @@
     engineName: '',
     templateName: '',
   });
-
-  // 单个参数检索
+  // 单个参数检索 同输入框自动补全联动
   const singleFieldPagination = ref({
     total: 0,
     pageIndex: 1,
@@ -344,32 +339,13 @@
     field: '',
     value: '',
   });
-
-  // 配置参数存储
-  const useConfigParams = useConfigParamsStore();
-
-  // 是否展示扫描配置界面
-  const showConfigRef = ref();
-
   // 输入框自动补全
   const autoCompleteData = ref([]);
 
-  // ==========================数据初始化模块==========================
+  // ==========================数据操纵模块==========================
   // 初始化主机扫描配置列表
   const initConfigList = async () => {
-    console.log(pagination.value);
     const response = await getHostScanConfigPageList(pagination.value);
-    // 日期函数转换
-    response.data.forEach((item) => {
-      item.lastScanStatic.scanStartTime = formatDate(
-        item.lastScanStatic.scanStartTime,
-        'YYYY-MM-DD hh:mm:ss'
-      );
-      item.lastScanStatic.scanEndTime = formatDate(
-        item.lastScanStatic.scanEndTime,
-        'YYYY-MM-DD hh:mm:ss'
-      );
-    });
     tableData.value = response.data;
     // 分页参数赋值
     pagination.value.total = response.totalCount;
@@ -379,76 +355,11 @@
 
   // 当页面加载时，显示数据
   onMounted(() => {
-    // 初始化页面表格数据
+    // 初始化主机扫描配置页面表格数据
     initConfigList();
-    if (useConfigParams.isShowDialog) {
-      showConfigRef.value?.setVisibleData(true);
-    }
-    cardHeight.value =
-      document.documentElement.clientHeight -
-      searchRef.value.$el.clientHeight -
-      370;
-    pagination.value.pageSize = Math.floor(cardHeight.value / 43);
   });
 
-  // 新增配置
-  const handleAdd = (type: string, row?: HostScanConfigRes) => {
-    dialogType.value = type;
-    // tableRow.value = row;
-    addConfigRef.value?.setVisibleData(true);
-  };
-  const configId = ref<string>('');
-
-  // 查看扫描配置的扫描记录
-  const handleConfigDialog = (record: HostScanConfigRes) => {
-    console.log(record);
-    configId.value = record.id;
-    showConfigRef.value?.setVisibleData(true);
-  };
-
-  // 行选择器
-  const rowSelection = reactive({
-    type: 'checkbox',
-    showCheckedAll: true,
-    onlyCurrent: false,
-  });
-
-  // 表格事件触发
-  function handleListener(event: string, record: HostScanConfigRes) {
-    dialogType.value = event;
-    if (dialogType.value !== 'detail') {
-      tableRow.value = record;
-      addConfigRef.value?.setVisibleData(true);
-    }
-  }
-  const timer = ref<any>(null);
-  // 扫描进度
-  const getScanProcessTimes = async (row: HostScanConfigRes) => {
-    const data = await getScanProgress(row.scanId);
-    row.progressNums = data.data.processBar;
-    if (data.data.scanStatus !== 2) {
-      // 如果状态不是扫描中则清除定时器
-      clearInterval(timer.value);
-    }
-  };
-  // 扫描
-  const handleScan = async (row: HostScanConfigRes) => {
-    const data = await scanConfig(row.id);
-    if (data.success) {
-      row.scanId = data.data.scanId;
-      initConfigList();
-      // Message.success('新增成功');
-      // 每秒进行刷新进度数据
-      timer.value = setInterval(() => {
-        getScanProcessTimes(row);
-        initConfigList();
-      }, 1000);
-    } else {
-      Message.error(data.errMessage);
-    }
-  };
-
-  // -----------------------事件触发模块-----------------------
+  // ==========================事件响应模块==========================
   // 过滤后端排序字段
   function filterSortedField(field) {
     if (field === 'lastScanStatic.liveHostNumber') {
@@ -475,7 +386,6 @@
     field = filterSortedField(field);
     pagination.value.sort = field;
     pagination.value.order = direction;
-    console.log('field: ', field, 'order: ', direction);
     // 重新刷新列表
     initConfigList();
   };
@@ -486,7 +396,6 @@
     pagination.value.configName = '';
     pagination.value.engineName = '';
     pagination.value.templateName = '';
-    // 重新刷新列表
     initConfigList();
   };
   // 单个字段搜索事件
@@ -500,9 +409,15 @@
     );
     autoCompleteData.value = response.data;
   };
+  // 新增事件
+  const addHostScanConfig = () => {
+    router.push({
+      name: 'addHostScanConfig',
+    });
+  };
 </script>
 
-<style scoped lang="less">
+<style lang="less">
   .container {
     padding: 0 20px 20px 20px;
   }
@@ -536,7 +451,7 @@
     }
   }
 
-  .pagination-style {
+  .paginationStyle {
     justify-content: end;
   }
 

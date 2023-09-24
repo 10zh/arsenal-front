@@ -26,6 +26,7 @@ import locale500 from '@/views/exception/500/locale/en-US';
 import localeUserInfo from '@/views/user/info/locale/en-US';
 import localeUserSetting from '@/views/user/setting/locale/en-US';
 
+import scanConfig from '@/views/hostscan/scan-config/locale/en-US';
 import globalSettings from './en-US/global';
 import localeSettings from './en-US/settings';
 
@@ -66,4 +67,5 @@ export default {
   ...localeUserInfo,
   ...localeUserSetting,
   ...globalSettings,
+  ...scanConfig,
 };

@@ -1,6 +1,29 @@
 import axios from 'axios';
 import qs from 'query-string';
-import type { DescData } from '@arco-design/web-vue/es/descriptions/interface';
+import { HttpResponse } from '../interceptor/axios';
+
+// 分页参数查询带条件
+export interface HostScanConfigPageRequest {
+  total: number;
+  pageIndex: number;
+  pageSize: number;
+  order: string;
+  sort: string;
+}
+
+// 引擎对象
+export interface HostScanEngineRes {
+  id: string;
+  address: string;
+  engienVersion: string;
+  assignedTaskNumber: number;
+  isLocal: boolean;
+  name: string;
+  port: number;
+  status: number;
+  failCause: string;
+  updateTime: string;
+}
 
 export interface PolicyRecord {
   id: string;
@@ -47,37 +70,20 @@ export function queryPolicyList(params: PolicyParams) {
   });
 }
 
-export interface ServiceRecord {
-  id: number;
-  title: string;
-  description: string;
-  name?: string;
-  actionType?: string;
-  icon?: string;
-  data?: DescData[];
-  enable?: boolean;
-  expires?: boolean;
-}
-export function queryInspectionList() {
-  return axios.get('/api/list/quality-inspection');
+// 获取引擎列表
+export function getScanEngines(params: HostScanConfigPageRequest) {
+  const url = `/scan/engines?pageIndex=${params.pageIndex}&pageSize=${params.pageSize}&sort=${params.sort}&order=${params.order}`;
+  return axios.get<HttpResponse>(url);
 }
 
-export function queryTheServiceList() {
-  return axios.get('/api/list/the-service');
+// 刷新引擎
+export function refreshScanEngine(engineId: string) {
+  return axios.get<HttpResponse>(`/scan/engines/refresh/${engineId}`);
 }
 
-export function queryRulesPresetList() {
-  return axios.get('/api/list/rules-preset');
-}
 export function addScanEngines(data: addEnginesRes) {
   return axios.post<listRes>('/scan/engines/new', data);
 }
 export function editScanEngines(data: addEnginesRes, engineId: string) {
   return axios.put<listRes>(`/scan/engines/${engineId}/engine`, data);
-}
-export function getScanEngines(data: enginesRes) {
-  return axios.post<any>('/scan/engines', data);
-}
-export function refreshScanEngines(engineId: string) {
-  return axios.get<any>(`/scan/engines/refresh/${engineId}`);
 }
