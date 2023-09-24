@@ -1,14 +1,16 @@
 import axios from 'axios';
 import { HttpResponse } from '../interceptor/axios';
 
-export interface HostScanConfigRes {
-  engineId: string;
+// 分页参数查询带条件
+export interface HostScanConfigPageRequest {
+  total: number;
+  pageIndex: number;
+  pageSize: number;
+  order: string;
+  sort: string;
   configName: string;
-  excludeTarget?: string;
-  hostCredentials: number[];
-  target: string;
-  templateId: string;
-  configNameOpt?: string;
+  engineName: string;
+  templateName: string;
 }
 
 export interface HostScanConfigForms {
@@ -20,14 +22,6 @@ export interface HostScanConfigForms {
 interface configRequest {
   pageIndex: number;
   pageSize: number;
-}
-interface configHostRes {
-  domain: string;
-  fqdn: string;
-  hostType: string;
-  hostname: string;
-  osName: string;
-  macAddress: string;
 }
 export interface HostScanDetailRes {
   engineName: string;
@@ -44,7 +38,6 @@ export interface HostServiceRes {
     hierarchical: string;
     name: string;
     version: string;
-
   };
 
   httpHeader: string;
@@ -55,9 +48,22 @@ export interface HostServiceRes {
   transportProtocol: string;
   unMatchBanner: string;
 }
-export function getScanConfig(data: configRequest, param: HostScanConfigRes) {
-  return axios.get<HttpResponse>(`/host/scan/configs`, { params: { ...data, ...param } });
+
+// 获取主机扫描配置列表(带分页)
+export function getHostScanConfigPageList(params: HostScanConfigPageRequest) {
+  let url = `/host/scan/configs?pageIndex=${params.pageIndex}&pageSize=${params.pageSize}&sort=${params.sort}&order=${params.order}`;
+  if (params.configName) {
+    url = `${url}&configName-op=ct&configName=${params.configName}`;
+  }
+  if (params.engineName) {
+    url = `${url}&engineName-op=ct&engineName=${params.engineName}`;
+  }
+  if (params.templateName) {
+    url = `${url}&templateName-op=ct&templateName=${params.templateName}`;
+  }
+  return axios.get<HttpResponse>(url);
 }
+
 export function addScanConfig(data: configRequest) {
   return axios.post<HttpResponse>(`/host/scan/configs/new`, data);
 }

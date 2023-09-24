@@ -35,8 +35,6 @@ export default {
   'host.scan.config.area': '所属区域',
   'host.scan.config.isp': '主机isp',
   'host.scan.config.fqdn': '主机fqdn',
-
-
   'host.scan.hostConfig.applicationProtocol': '应用协议',
   'host.scan.hostConfig.banner': 'bannar',
   'host.scan.hostConfig.certificate': '证书',
@@ -50,13 +48,5 @@ export default {
   'host.scan.hostConfig.proof': '服务证据信息',
   'host.scan.hostConfig.transportProtocol': '传输协议',
   'host.scan.hostConfig.unMatchBanner': '未匹配上的Banner',
-  'host.scan.hostConfig.componentsMessage': '组件信息'
-
-
-
-
-
-
-
-
+  'host.scan.hostConfig.componentsMessage': '组件信息',
 };
