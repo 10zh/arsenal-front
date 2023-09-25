@@ -33,6 +33,7 @@ interface TemplateRequest {
   pageSize: number;
   order: string;
   sort: string;
+  templateName: string;
 }
 
 // 端口扫描速度枚举
@@ -69,7 +70,10 @@ export interface HostScanTemplate {
 
 // 获取模板列表
 export function getScanTemplates(params: TemplateRequest) {
-  const url = `/host/scan/templates?pageIndex=${params.pageIndex}&pageSize=${params.pageSize}&sort=${params.sort}&order=${params.order}`;
+  let url = `/host/scan/templates?pageIndex=${params.pageIndex}&pageSize=${params.pageSize}&sort=${params.sort}&order=${params.order}`;
+  if (params.templateName) {
+    url = `${url}&configName-op=ct&configName=${params.templateName}`;
+  }
   return axios.get<HostScanTemplateRes[]>(url);
 }
 

@@ -19,4 +19,6 @@ export default {
   'scan.template.port.scan.t3': '正常',
   'scan.template.port.scan.t4': '快速',
   'scan.template.port.scan.t5': '超速',
+  // 搜索
+  'scan.template.name.input': '输入模板名称',
 };
