@@ -57,7 +57,7 @@ const HOSTSCAN: AppRouteRecordRaw = {
       path: 'addTemplate',
       name: 'addTemplate',
       component: () =>
-        import('@/views/hostscan/scan-template/add-template.vue'),
+        import('@/views/hostscan/scan-template/components/add-template.vue'),
       meta: {
         locale: 'menu.list.addtemplate',
         requiresAuth: true,

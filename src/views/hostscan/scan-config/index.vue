@@ -20,7 +20,7 @@
                   <a-auto-complete
                     v-model="pagination.configName"
                     :data="autoCompleteData"
-                    placeholder="please enter name"
+                    :placeholder="t('host.scan.config.configName.input')"
                     @focus="
                       searchSingleField(
                         'host_hsc',
@@ -46,7 +46,7 @@
                   <a-auto-complete
                     v-model="pagination.engineName"
                     :data="autoCompleteData"
-                    placeholder="please enter engine name"
+                    :placeholder="t('host.scan.config.engineName.input')"
                     @focus="
                       searchSingleField(
                         'scan_se',
@@ -72,7 +72,7 @@
                   <a-auto-complete
                     v-model="pagination.templateName"
                     :data="autoCompleteData"
-                    placeholder="please enter template name"
+                    :placeholder="t('host.scan.config.templateName.input')"
                     @focus="
                       searchSingleField(
                         'host_hst',

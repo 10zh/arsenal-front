@@ -301,13 +301,7 @@
     engineVersion: '',
   });
   // 搜索表单
-  const form = reactive({
-    value1: '',
-    value2: '',
-    value3: '',
-    value4: '',
-    value5: '',
-  });
+  const form = reactive({});
   // 单个参数检索 同输入框自动补全联动
   const singleFieldPagination = ref({
     total: 0,

@@ -1,6 +1,8 @@
 export default {
+  // 菜单
   'menu.list.scan.config': '主机扫描配置',
   'menu.list.scan.config.add': '新增主机扫描配置',
+  // 新增
   'button.scan': '扫描',
   'searchTable.scanConfig.create': '新建配置',
   'host.scan.config.basic.info': '配置信息',
@@ -8,11 +10,13 @@ export default {
   'host.scan.config.configName': '扫描配置名称',
   'host.scan.config.configName.input': '请输入扫描配置名称',
   'host.scan.config.engineName': '扫描引擎名称',
+  'host.scan.config.engineName.input': '请输入扫描引擎名称',
   'host.scan.config.liveHostNumber': '	主机存活数量',
   'host.scan.config.scanEndTime': '	扫描结束时间',
   'host.scan.config.scanStartTime': '扫描开始时间',
   'host.scan.config.template': '	扫描模板',
   'host.scan.config.templateName': '	扫描模板名称',
+  'host.scan.config.templateName.input': '请输入扫描模板名称',
   'host.scan.config.vulnerabilityNumber': '漏洞数量',
   'host.scan.config.target': '扫描目标',
   'host.scan.config.target.tooltip': '扫描主机目标 例如:127.0.0.1',
