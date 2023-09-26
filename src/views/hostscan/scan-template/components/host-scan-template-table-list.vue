@@ -3,7 +3,7 @@
   <a-row>
     <a-form :model="form" label-align="left" auto-label-width>
       <a-row :gutter="24">
-        <a-col :span="4">
+        <a-col :span="6">
           <a-form-item
             field="templateName"
             :label="t('scan.template.templateName')"
@@ -25,6 +25,80 @@
                   'host_hst_tn',
                   pagination.templateName
                 )
+              "
+            />
+          </a-form-item>
+        </a-col>
+        <a-col :span="6">
+          <a-form-item
+            field="synPort"
+            :label="t('scan.template.hostDiscovery.synPort')"
+          >
+            <a-auto-complete
+              v-model="pagination.synPort"
+              :data="autoCompleteData"
+              :placeholder="t('scan.template.synPort.input')"
+              @focus="
+                searchSingleField('host_hst', 'host_hst_sp', pagination.synPort)
+              "
+              @change="
+                searchSingleField('host_hst', 'host_hst_sp', pagination.synPort)
+              "
+            />
+          </a-form-item>
+        </a-col>
+        <a-col :span="6">
+          <a-form-item
+            field="puPort"
+            :label="t('scan.template.hostDiscovery.puPort')"
+          >
+            <a-auto-complete
+              v-model="pagination.puPort"
+              :data="autoCompleteData"
+              :placeholder="t('scan.template.puPort.input')"
+              @focus="
+                searchSingleField('host_hst', 'host_hst_pp', pagination.puPort)
+              "
+              @change="
+                searchSingleField('host_hst', 'host_hst_pp', pagination.puPort)
+              "
+            />
+          </a-form-item>
+        </a-col>
+        <a-col :span="6">
+          <a-form-item
+            field="tcpPort"
+            :label="t('scan.template.serviceDiscovery.tcpPort')"
+          >
+            <a-auto-complete
+              v-model="pagination.tcpPort"
+              :data="autoCompleteData"
+              :placeholder="t('scan.template.serviceDiscovery.input.tcpPort')"
+              @focus="
+                searchSingleField('host_hst', 'host_hst_tp', pagination.tcpPort)
+              "
+              @change="
+                searchSingleField('host_hst', 'host_hst_tp', pagination.tcpPort)
+              "
+            />
+          </a-form-item>
+        </a-col>
+      </a-row>
+      <a-row>
+        <a-col :span="6">
+          <a-form-item
+            field="udpPort"
+            :label="t('scan.template.serviceDiscovery.udpPort')"
+          >
+            <a-auto-complete
+              v-model="pagination.udpPort"
+              :data="autoCompleteData"
+              :placeholder="t('scan.template.serviceDiscovery.input.udpPort')"
+              @focus="
+                searchSingleField('host_hst', 'host_hst_pp', pagination.udpPort)
+              "
+              @change="
+                searchSingleField('host_hst', 'host_hst_pp', pagination.udpPort)
               "
             />
           </a-form-item>
@@ -63,7 +137,7 @@
               <template #icon>
                 <icon-plus />
               </template>
-              {{ $t('scan.engine.add') }}
+              {{ $t('scan.template.add') }}
             </a-button>
           </a-space>
         </a-col>
@@ -193,6 +267,7 @@
         sorter: true,
         sortDirections: ['ascend', 'descend'],
       },
+      slotName: 'synPort',
     },
     {
       title: t('scan.template.hostDiscovery.enablePu'),
@@ -210,6 +285,7 @@
         sorter: true,
         sortDirections: ['ascend', 'descend'],
       },
+      slotName: 'puPort',
     },
     {
       title: t('scan.template.hostDiscovery.maxRetries'),
@@ -226,14 +302,16 @@
         sorter: true,
         sortDirections: ['ascend', 'descend'],
       },
+      slotName: 'tcpPort',
     },
     {
       title: t('scan.template.serviceDiscovery.udpPort'),
-      dataIndex: 'serviceDiscovery.tcpPort',
+      dataIndex: 'serviceDiscovery.udpPort',
       sortable: {
         sorter: true,
         sortDirections: ['ascend', 'descend'],
       },
+      slotName: 'udpPort',
     },
   ];
   // 主机扫描模板表格数据
@@ -246,6 +324,10 @@
     order: 'desc',
     sort: 'createTime',
     templateName: '',
+    synPort: '',
+    puPort: '',
+    tcpPort: '',
+    udpPort: '',
   });
   // 单个参数检索 同输入框自动补全联动
   const singleFieldPagination = ref({
@@ -305,6 +387,17 @@
       singleFieldPagination.value
     );
     autoCompleteData.value = response.data;
+  };
+  // 重置事件
+  const reset = () => {
+    pagination.value.order = 'desc';
+    pagination.value.sort = 'createTime';
+    pagination.value.templateName = '';
+    pagination.value.synPort = '';
+    pagination.value.puPort = '';
+    pagination.value.tcpPort = '';
+    pagination.value.udpPort = '';
+    initHostScanTemplateList();
   };
 </script>
 

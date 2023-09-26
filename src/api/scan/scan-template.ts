@@ -34,6 +34,10 @@ interface TemplateRequest {
   order: string;
   sort: string;
   templateName: string;
+  synPort: string;
+  puPort: string;
+  tcpPort: string;
+  udpPort: string;
 }
 
 // 端口扫描速度枚举
@@ -72,7 +76,19 @@ export interface HostScanTemplate {
 export function getScanTemplates(params: TemplateRequest) {
   let url = `/host/scan/templates?pageIndex=${params.pageIndex}&pageSize=${params.pageSize}&sort=${params.sort}&order=${params.order}`;
   if (params.templateName) {
-    url = `${url}&configName-op=ct&configName=${params.templateName}`;
+    url = `${url}&templateName-op=ct&templateName=${params.templateName}`;
+  }
+  if (params.synPort) {
+    url = `${url}&synPort-op=ct&synPort=${params.synPort}`;
+  }
+  if (params.puPort) {
+    url = `${url}&puPort-op=ct&puPort=${params.puPort}`;
+  }
+  if (params.tcpPort) {
+    url = `${url}&puPort-op=ct&puPort=${params.tcpPort}`;
+  }
+  if (params.udpPort) {
+    url = `${url}&puPort-op=ct&puPort=${params.udpPort}`;
   }
   return axios.get<HostScanTemplateRes[]>(url);
 }

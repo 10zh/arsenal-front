@@ -21,4 +21,10 @@ export default {
   'scan.template.port.scan.t5': '超速',
   // 搜索
   'scan.template.name.input': '输入模板名称',
+  'scan.template.synPort.input': '输入Syn端口',
+  'scan.template.puPort.input': '输入Udp端口',
+  'scan.template.serviceDiscovery.input.tcpPort': '输入服务TCP端口',
+  'scan.template.serviceDiscovery.input.udpPort': '输入服务UDP端口',
+  // 操作栏
+  'scan.template.add': '新建扫描模板',
 };
