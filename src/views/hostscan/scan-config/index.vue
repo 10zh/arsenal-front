@@ -215,7 +215,6 @@
           <a-popconfirm
             :content="
               t('host.scan.config.operator.delete.ack') +
-              +' ' +
               record.configName +
               '?'
             "
