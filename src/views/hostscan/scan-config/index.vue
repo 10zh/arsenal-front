@@ -212,6 +212,27 @@
             </template>
             {{ $t('button.edit') }}
           </a-button>
+          <a-popconfirm
+            :content="
+              t('host.scan.config.operator.delete.ack') +
+              +' ' +
+              record.configName +
+              '?'
+            "
+            @ok="deleteSingleHostScanConfig(record)"
+          >
+            <a-button
+              type="text"
+              status="danger"
+              size="small"
+              style="padding: 10px"
+            >
+              <template #icon>
+                <icon-delete />
+              </template>
+              {{ $t('button.delete') }}
+            </a-button>
+          </a-popconfirm>
         </template>
       </a-table>
       <a-pagination
@@ -235,9 +256,11 @@
   import { useRouter } from 'vue-router';
   import formatDate from '@/utils/times';
   import { getStatusColor, getStatusText } from '@/hooks/status-options';
+  import { Message } from '@arco-design/web-vue';
   import {
     HostScanConfigRes,
     getHostScanConfigPageList,
+    deleteHostScanConfig,
   } from '@/api/scan/scan-config';
   import { aotuCompleteByTableField } from '@/api/common/common';
 
@@ -414,6 +437,16 @@
     router.push({
       name: 'addHostScanConfig',
     });
+  };
+  // 删除单个扫描配置事件
+  const deleteSingleHostScanConfig = async (record) => {
+    const response = await deleteHostScanConfig(record.id);
+    if (!response.success) {
+      return;
+    }
+    Message.success(t('host.scan.config.delete.success'));
+    // 重新刷新列表
+    initConfigList();
   };
 </script>
 

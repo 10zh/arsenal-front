@@ -12,4 +12,5 @@ export default {
   'golbal.reset': '重置',
   'button.detail': '详情',
   'button.edit': '编辑',
+  'button.delete': '删除',
 };

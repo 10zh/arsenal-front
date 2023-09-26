@@ -113,12 +113,12 @@
     templateId: '',
   });
 
+  // 表单提交事件
   const handleSubmit = async (data) => {
     if (data.errors) {
       console.log('errors ', data.errors);
       return;
     }
-    console.log('submit: ', data.values);
     const response = await insertHostScanConfig(data.values);
     // 调用新增扫描配置接口
     if (!response.success) {

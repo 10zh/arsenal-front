@@ -65,4 +65,6 @@ export default {
   'host.scan.hostConfig.componentsMessage': '组件信息',
   // api
   'host.scan.config.add.success': '添加主机扫描配置成功',
+  'host.scan.config.delete.success': '删除主机扫描配置成功',
+  'host.scan.config.operator.delete.ack': '删除主机扫描配置',
 };
