@@ -8,6 +8,8 @@ export default {
   'global.false': '否',
   'global.edit.success': '编辑成功',
   'global.add.success': '新增成功',
+  'golbal.submit': '提交',
+  'golbal.reset': '重置',
   'button.detail': '详情',
   'button.edit': '编辑',
 };

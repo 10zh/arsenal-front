@@ -65,18 +65,6 @@ const HOSTSCAN: AppRouteRecordRaw = {
         hideInMenu: true,
       },
     },
-    {
-      path: 'scanConfigDetail',
-      name: 'scanConfigDetail',
-      component: () =>
-        import('@/views/hostscan/scan-config/scanConfigDetail.vue'),
-      meta: {
-        locale: 'menu.list.configDetail',
-        requiresAuth: true,
-        roles: ['*'],
-        hideInMenu: true,
-      },
-    },
   ],
 };
 

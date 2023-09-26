@@ -63,4 +63,6 @@ export default {
   'host.scan.hostConfig.transportProtocol': '传输协议',
   'host.scan.hostConfig.unMatchBanner': '未匹配上的Banner',
   'host.scan.hostConfig.componentsMessage': '组件信息',
+  // api
+  'host.scan.config.add.success': '添加主机扫描配置成功',
 };
