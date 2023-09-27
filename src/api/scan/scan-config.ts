@@ -44,7 +44,13 @@ export function insertHostScanConfig(params: HostScanConfigInsertRequest) {
 }
 
 // 删除主机扫描配置
-export function deleteHostScanConfig(configId: number){
+export function deleteHostScanConfig(configId: number) {
   const url = `/host/scan/configs/${configId}/config`;
   return axios.delete<HttpResponse>(url);
+}
+
+// 发起扫描
+export function hostScan(configId: number) {
+  const url = `/host/scan/${configId}`;
+  return axios.get<HttpResponse>(url);
 }

@@ -190,17 +190,17 @@
           }}
         </template>
         <template #operations="{ record }">
-          <a-button
-            type="text"
-            size="small"
-            style="padding: 0px"
-            @click="handleScan(record)"
+          <a-popconfirm
+            :content="t('host.scan.config.operator.scan.ack')"
+            @ok="startHostScan(record)"
           >
-            <template #icon>
-              <icon-fullscreen />
-            </template>
-            {{ $t('button.scan') }}
-          </a-button>
+            <a-button type="text" size="small" style="padding: 0px">
+              <template #icon>
+                <icon-fullscreen />
+              </template>
+              {{ $t('button.scan') }}
+            </a-button>
+          </a-popconfirm>
           <a-button
             type="text"
             size="small"
@@ -250,7 +250,7 @@
 
 <script lang="ts" setup>
   // ==========================声明模块==========================
-  import { ref, onMounted } from 'vue';
+  import { ref, onMounted, onBeforeUnmount } from 'vue';
   import { useI18n } from 'vue-i18n';
   import { useRouter } from 'vue-router';
   import formatDate from '@/utils/times';
@@ -260,6 +260,7 @@
     HostScanConfigRes,
     getHostScanConfigPageList,
     deleteHostScanConfig,
+    hostScan,
   } from '@/api/scan/scan-config';
   import { aotuCompleteByTableField } from '@/api/common/common';
 
@@ -375,10 +376,24 @@
     pagination.value.pageSize = response.pageSize;
   };
 
+  // 设置页面加载定时器
+  let initListTimer;
+
   // 当页面加载时，显示数据
   onMounted(() => {
     // 初始化主机扫描配置页面表格数据
     initConfigList();
+    // 每10s刷新数据
+    initListTimer = setInterval(() => {
+      initConfigList();
+    }, 10000);
+  });
+
+  // 当页面卸载时
+  onBeforeUnmount(() => {
+    console.log('clear timer');
+    clearInterval(initListTimer);
+    initListTimer = null;
   });
 
   // ==========================事件响应模块==========================
@@ -446,6 +461,17 @@
     Message.success(t('host.scan.config.delete.success'));
     // 重新刷新列表
     initConfigList();
+  };
+  // 开始主机扫描配置
+  const startHostScan = async (record) => {
+    const response = await hostScan(record.id);
+    if (!response.success) {
+      return;
+    }
+    // 重新刷新列表
+    initConfigList();
+    // 前往扫描记录页面
+    console.log('goto host scan reocrd page');
   };
 </script>
 

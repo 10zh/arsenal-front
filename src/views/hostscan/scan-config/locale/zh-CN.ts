@@ -67,4 +67,5 @@ export default {
   'host.scan.config.add.success': '添加主机扫描配置成功',
   'host.scan.config.delete.success': '删除主机扫描配置成功',
   'host.scan.config.operator.delete.ack': '删除主机扫描配置 ',
+  'host.scan.config.operator.scan.ack': '是否发起扫描?',
 };
