@@ -391,7 +391,6 @@
 
   // 当页面卸载时
   onBeforeUnmount(() => {
-    console.log('clear timer');
     clearInterval(initListTimer);
     initListTimer = null;
   });
