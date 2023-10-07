@@ -3,8 +3,8 @@
     <Breadcrumb
       :items="[
         'menu.hostscan',
-        'menu.list.scan.config',
-        'menu.list.scan.config.add',
+        'menu.hostscan.config',
+        'menu.hostscan.config.add',
       ]"
     />
     <a-card class="general-card">

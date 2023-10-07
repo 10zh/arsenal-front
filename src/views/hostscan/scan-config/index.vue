@@ -144,12 +144,11 @@
         :columns="columns"
         :bordered="false"
         :data="tableData"
-        :style="'height:' + cardHeight + 'px'"
         :pagination="false"
         @sorter-change="sortedChangeEvent"
       >
         <template #configName="{ record }">
-          <a-link href="#" @click="handleConfigDialog(record)">{{
+          <a-link @click="gotoScanConfigDetail(record)">{{
             record.configName
           }}</a-link>
         </template>
@@ -471,6 +470,17 @@
     initConfigList();
     // 前往扫描记录页面
     console.log('goto host scan reocrd page');
+  };
+  // 去扫描配置详情界面
+  const gotoScanConfigDetail = (record) => {
+    console.log('goto hostScanConfigDetail', record);
+    router.push({
+      path: '/hostscan/hostScanConfigDetail',
+      query: {
+        configId: record.id,
+      },
+    });
+    console.log(router);
   };
 </script>
 

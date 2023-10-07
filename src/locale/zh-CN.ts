@@ -32,11 +32,14 @@ import globalSettings from './zh-CN/global';
 import localeSettings from './zh-CN/settings';
 
 export default {
+  'menu.hostscan': '主机扫描',
+  'menu.hostscan.config': '主机扫描配置',
+  'menu.hostscan.config.add': '添加主机扫描配置',
+  'menu.hostscan.config.detail': '主机扫描配置详情',
   'menu.dashboard': '仪表盘',
   'menu.server.dashboard': '仪表盘-服务端',
   'menu.server.workplace': '工作台-服务端',
   'menu.server.monitor': '实时监控-服务端',
-  'menu.hostscan': '主机扫描',
   'menu.result': '结果页',
   'menu.exception': '异常页',
   'menu.form': '表单页',

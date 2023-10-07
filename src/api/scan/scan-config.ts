@@ -54,3 +54,9 @@ export function hostScan(configId: number) {
   const url = `/host/scan/${configId}`;
   return axios.get<HttpResponse>(url);
 }
+
+// 扫描配置详情
+export function getHostScanConfigDetail(configId: number) {
+  const url = `/host/scan/configs/${configId}/detail`;
+  return axios.get<HttpResponse>(url);
+}

@@ -68,4 +68,13 @@ export default {
   'host.scan.config.delete.success': '删除主机扫描配置成功',
   'host.scan.config.operator.delete.ack': '删除主机扫描配置 ',
   'host.scan.config.operator.scan.ack': '是否发起扫描?',
+  'host.scan.config.detail': '扫描配置详情',
+  // 扫描状态
+  'scan.status.not.start': '未开始',
+  'scan.status.prepare': '准备中',
+  'scan.status.progress': '进行中',
+  'scan.status.suspend': '暂停',
+  'scan.status.stop': '停止',
+  'scan.status.fail': '失败',
+  'scan.status.finish': '完成',
 };
