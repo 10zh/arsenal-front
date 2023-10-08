@@ -33,6 +33,18 @@ export interface HostScanConfigRecordPageRequest {
   sort: string;
 }
 
+// 主机列表分页参数查询带条件
+export interface HostListRecordPageRequest {
+  pageIndex: number;
+  pageSize: number;
+}
+
+// 主机漏洞列表分页参数查询条件
+export interface HostVulnerabilityListRecordPageRequest {
+  pageIndex: number;
+  pageSize: number;
+}
+
 // 扫描配置详情
 export function getHostScanRecordList(
   configId: number,
@@ -45,5 +57,23 @@ export function getHostScanRecordList(
 // 获取扫描记录详情
 export function getHostScanRecordDetail(scanId: string) {
   const url = `/host/scan/${scanId}/record/detail`;
+  return axios.get<HttpResponse>(url);
+}
+
+// 获取主机列表数据
+export function getHostListRecordByScanId(
+  scanId: string,
+  params: HostListRecordPageRequest
+) {
+  const url = `/host/scan/${scanId}/host/records?pageIndex=${params.pageIndex}&pageSize=${params.pageSize}`;
+  return axios.get<HttpResponse>(url);
+}
+
+// 获取漏洞列表数据
+export function getHostVulnerabilityListRecordByScanId(
+  scanId: string,
+  params: HostVulnerabilityListRecordPageRequest
+) {
+  const url = `/host/scan/${scanId}/vulnerability/records?pageIndex=${params.pageIndex}&pageSize=${params.pageSize}`;
   return axios.get<HttpResponse>(url);
 }

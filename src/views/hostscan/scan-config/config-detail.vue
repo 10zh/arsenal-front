@@ -101,6 +101,45 @@
                 </a-col>
               </a-row>
             </a-card>
+            <a-card>
+              <a-tabs>
+                <a-tab-pane key="1">
+                  <template #title>
+                    <icon-calendar /> {{ t('scan.record.host.list') }}
+                  </template>
+                  <a-table
+                    :columns="hostTableColumns"
+                    :data="hostData"
+                    :bordered="{ cell: true }"
+                    :pagination="hostPagination"
+                    @page-change="handleHostTablePageChange"
+                  ></a-table>
+                </a-tab-pane>
+                <a-tab-pane key="2">
+                  <template #title>
+                    <icon-clock-circle />
+                    {{ t('scan.record.host.vulnerability.list') }}
+                  </template>
+                  <a-table
+                    :columns="vulnerabilityTableColumns"
+                    :data="vulnerabilityData"
+                    column-resize
+                    :bordered="{ cell: true }"
+                    :pagination="vulnerabilityPagination"
+                    @page-change="handleHostVulnerabilityTablePageChange"
+                  >
+                    <template #potential="{ record }">
+                      {{
+                        record.potential ? t('global.true') : t('global.false')
+                      }}
+                    </template>
+                    <template #safe="{ record }">
+                      {{ record.safe ? t('global.true') : t('global.false') }}
+                    </template>
+                  </a-table>
+                </a-tab-pane>
+              </a-tabs>
+            </a-card>
           </a-layout-content>
         </a-layout>
       </a-layout>
@@ -110,7 +149,7 @@
 
 <script lang="ts" setup>
   // ==========================声明模块==========================
-  import { ref, onMounted } from 'vue';
+  import { ref, reactive, onMounted } from 'vue';
   import { useI18n } from 'vue-i18n';
   import { useRoute } from 'vue-router';
   import { formatSeconds } from '@/utils/times';
@@ -120,6 +159,8 @@
     ScanStatus,
     ScanStatusColor,
     getHostScanRecordDetail,
+    getHostListRecordByScanId,
+    getHostVulnerabilityListRecordByScanId,
   } from '@/api/scan/scan-record';
 
   const { t } = useI18n();
@@ -134,6 +175,8 @@
   const configRecordData = ref([]);
   // 当前选中的扫描记录
   const selected = ref(0);
+  // 进度条文本展示
+  const progressTextData = ref({});
   // 分页对象参数
   const pagination = ref({
     total: 0,
@@ -142,8 +185,93 @@
     order: 'desc',
     sort: 'scanStartTime',
   });
-  // 进度条文本展示
-  const progressTextData = ref({});
+  // 主机列表表头
+  const hostTableColumns = reactive([
+    {
+      title: t('scan.record.hostname'),
+      dataIndex: 'hostname',
+    },
+    {
+      title: t('scan.record.ipv4'),
+      dataIndex: 'ipv4',
+    },
+    {
+      title: t('scan.record.ipv6'),
+      dataIndex: 'ipv6',
+    },
+    {
+      title: t('scan.record.macAddress'),
+      dataIndex: 'osName',
+    },
+    {
+      title: t('scan.record.osName'),
+      dataIndex: 'macAddress',
+    },
+  ]);
+  // 主机列表分页参数
+  const hostPagination = ref({
+    total: 0,
+    pageIndex: 1,
+    pageSize: 10,
+  });
+  // 主机列表数据
+  const hostData = ref([]);
+  // 漏洞列表表头
+  const vulnerabilityTableColumns = reactive([
+    {
+      title: t('scan.record.vulnName'),
+      dataIndex: 'vulnName',
+    },
+    {
+      title: t('scan.record.ipv4'),
+      dataIndex: 'ipv4',
+      width: '150',
+    },
+    {
+      title: t('scan.record.ipv6'),
+      dataIndex: 'ipv6',
+      width: '300',
+    },
+    {
+      title: t('scan.record.port'),
+      dataIndex: 'port',
+    },
+    {
+      title: t('scan.record.componentName'),
+      dataIndex: 'componentName',
+      width: '150',
+    },
+    {
+      title: t('scan.record.proof'),
+      dataIndex: 'proof',
+    },
+    {
+      title: t('scan.record.safe'),
+      dataIndex: 'safe',
+      slotName: 'safe',
+    },
+    {
+      title: t('scan.record.potential'),
+      dataIndex: 'potential',
+      slotName: 'potential',
+    },
+    {
+      title: t('scan.record.accuracy'),
+      dataIndex: 'accuracy',
+    },
+    {
+      title: t('scan.record.severity'),
+      dataIndex: 'severity',
+    },
+  ]);
+  // 漏洞列表分页参数
+  const vulnerabilityPagination = ref({
+    total: 0,
+    pageIndex: 1,
+    pageSize: 10,
+  });
+  // 漏洞列表数据
+  const vulnerabilityData = ref([]);
   // ==========================数据操纵模块==========================
   // 初始化扫描配置详情
   const initScanConfigDetail = async () => {
@@ -186,26 +314,69 @@
     progressTextData.value = response.data;
     console.log(progressTextData.value);
   };
+  // 初始化主机列表数据
+  const initHostData = async () => {
+    const response = await getHostListRecordByScanId(
+      configRecordData.value[selected.value].scanId,
+      hostPagination.value
+    );
+    hostData.value = response.data;
+    // 分页参数赋值
+    hostPagination.value.total = response.totalCount;
+    hostPagination.value.pageIndex = response.pageIndex;
+    hostPagination.value.pageSize = response.pageSize;
+  };
+  // 初始化漏洞列表数据
+  const initHostVulnerabilityData = async () => {
+    const response = await getHostVulnerabilityListRecordByScanId(
+      configRecordData.value[selected.value].scanId,
+      vulnerabilityPagination.value
+    );
+    vulnerabilityData.value = response.data;
+    console.log('host vulnerability info', response);
+    vulnerabilityPagination.value.total = response.totalCount;
+    vulnerabilityPagination.value.pageIndex = response.pageIndex;
+    vulnerabilityPagination.value.pageSize = response.pageSize;
+  };
   // 当页面加载时，显示数据
   onMounted(async () => {
-    // 扫描配置详情
-    await initScanConfigDetail();
     // 当前扫描配置详情的扫描记录列表
     await initScanConfigRecordData();
+    // 扫描配置详情
+    initScanConfigDetail();
     // 当前选中的扫描记录详情
     initProgressTextData();
+    // 初始化主机列表数据
+    initHostData();
+    // 初始化主机漏洞列表数据
+    initHostVulnerabilityData();
   });
   // ==========================事件响应模块==========================
   const handleClickRecordCard = (item, index) => {
     selected.value = index;
     // 当前选中的扫描记录详情
     initProgressTextData();
+    // 当前选中的扫描记录主机列表
+    initHostData();
+    // 当前选中的漏洞列表
+    initHostVulnerabilityData();
   };
   // 页数发生改变
   const changePageIndex = (index) => {
     pagination.value.pageIndex = index;
     // 刷新扫描配置记录列表
     initScanConfigRecordData();
+  };
+  // 主机列表分页
+  const handleHostTablePageChange = (index) => {
+    hostPagination.value.pageIndex = index;
+    initHostData();
+  };
+  // 漏洞列表分页
+  const handleHostVulnerabilityTablePageChange = (index) => {
+    console.log(index);
+    vulnerabilityPagination.value.pageIndex = index;
+    initHostVulnerabilityData();
   };
 </script>
 
