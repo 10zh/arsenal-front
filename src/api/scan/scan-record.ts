@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { HttpResponse } from '../interceptor/axios';
 
-// 端口扫描速度枚举
+// 扫描状态枚举
 // eslint-disable-next-line no-shadow
 export enum ScanStatus {
   'scan.status.not.start',
@@ -11,6 +11,18 @@ export enum ScanStatus {
   'scan.status.stop',
   'scan.status.fail',
   'scan.status.finish',
+}
+
+// 状态对应颜色枚举
+// eslint-disable-next-line no-shadow
+export enum ScanStatusColor {
+  '#0fc6c2',
+  '#168cff',
+  '#7bc616',
+  '#ff7d00',
+  '#7816ff',
+  '#f53f3f',
+  '#00b42a',
 }
 
 // 分页参数查询带条件

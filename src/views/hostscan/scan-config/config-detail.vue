@@ -30,7 +30,9 @@
               @click="handleClickRecordCard(item, index)"
             >
               <template #extra>
-                <a-link>{{ t(ScanStatus[item.scanStatus]) }}</a-link>
+                <a-tag :color="ScanStatusColor[item.scanStatus]">{{
+                  t(ScanStatus[item.scanStatus])
+                }}</a-tag>
               </template>
               <a-row>
                 <a-space>
@@ -58,7 +60,11 @@
   import { useRoute } from 'vue-router';
   import { formatSeconds } from '@/utils/times';
   import { getHostScanConfigDetail } from '@/api/scan/scan-config';
-  import { getHostScanRecordList, ScanStatus } from '@/api/scan/scan-record';
+  import {
+    getHostScanRecordList,
+    ScanStatus,
+    ScanStatusColor,
+  } from '@/api/scan/scan-record';
 
   const { t } = useI18n();
   const route = useRoute();
