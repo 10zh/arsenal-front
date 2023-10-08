@@ -497,27 +497,6 @@
     }
   }
 
-  .action-icon {
-    margin-left: 12px;
-    cursor: pointer;
-  }
-
-  .active {
-    color: #0960bd;
-    background-color: #e3f4fc;
-  }
-
-  .setting {
-    display: flex;
-    align-items: center;
-    width: 200px;
-
-    .title {
-      margin-left: 12px;
-      cursor: pointer;
-    }
-  }
-
   .paginationStyle {
     justify-content: end;
   }
@@ -525,16 +504,5 @@
   .progress-wrap {
     display: flex;
     align-items: center;
-  }
-
-  .search-rows {
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
-
-    .search-label {
-      display: inline-block;
-      width: 200px;
-    }
   }
 </style>

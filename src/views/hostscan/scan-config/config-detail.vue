@@ -7,54 +7,47 @@
         'menu.hostscan.config.detail',
       ]"
     />
-    <a-layout>
-      <a-layout-header>
-        <a-space direction="vertical" size="large" fill>
-          <a-descriptions
-            :data="cofigDetailData"
-            :title="t('host.scan.config.detail')"
-            layout="inline-horizontal"
-          />
-        </a-space>
-      </a-layout-header>
-      <a-layout>
-        <a-layout-sider class="side-layout">
-          <a-card
-            v-for="(item, index) in configRecordData"
-            :key="item.scanId"
-            :bordered="false"
-            class="card-record"
-            :class="{ select: selected === index }"
-            @click="handleClickRecordCard(item, index)"
-          >
-            <div
-              :style="{
-                display: 'flex',
-                flexDirection: 'column',
-              }"
+    <a-card :title="$t('host.scan.config.detail')">
+      <a-layout class="config-detail-layuout">
+        <a-layout-header>
+          <a-space direction="vertical" size="large" fill>
+            <a-descriptions
+              :data="cofigDetailData"
+              layout="vertical"
+              bordered
+            />
+          </a-space>
+        </a-layout-header>
+        <a-layout>
+          <a-layout-sider class="side-layout">
+            <a-card
+              v-for="(item, index) in configRecordData"
+              :key="item.scanId"
+              :bordered="false"
+              class="card-record"
+              :class="{ select: selected === index }"
+              :title="formatSeconds(item.scanCostTime)"
+              @click="handleClickRecordCard(item, index)"
             >
-              <a-typography-text>{{
-                t('host.scan.config.scanCostTime') +
-                ':' +
-                formatSeconds(item.scanCostTime)
-              }}</a-typography-text>
-              <a-typography-text>{{
-                t('host.scan.config.engineName') + ':' + item.engineName
-              }}</a-typography-text>
-              <a-typography-text>{{
-                t('host.scan.config.templateName') + ':' + item.templateName
-              }}</a-typography-text>
-              <a-typography-text>{{
-                t('host.scan.config.scanStatus') +
-                ':' +
-                t(ScanStatus[item.scanStatus])
-              }}</a-typography-text>
-            </div>
-          </a-card>
-        </a-layout-sider>
-        <a-layout-content>Content</a-layout-content>
+              <template #extra>
+                <a-link>{{ t(ScanStatus[item.scanStatus]) }}</a-link>
+              </template>
+              <a-row>
+                <a-space>
+                  <a-typography-text>
+                    {{ t('engine') + ': ' + item.engineName }}
+                  </a-typography-text>
+                  <a-typography-text>
+                    {{ t('template') + ': ' + item.templateName }}
+                  </a-typography-text>
+                </a-space>
+              </a-row>
+            </a-card>
+          </a-layout-sider>
+          <a-layout-content>Content</a-layout-content>
+        </a-layout>
       </a-layout>
-    </a-layout>
+    </a-card>
   </div>
 </template>
 
@@ -128,18 +121,27 @@
   };
 </script>
 
-<style lang="less" scoped>
+<style scoped>
   .container {
     padding: 0 20px 20px 20px;
   }
+
   .side-layout {
-    width: auto;
-    background-color: rgb(237, 244, 251);
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffff;
+    border: 1px solid #f3f5f6;
   }
+
   .card-record {
-    background-color: rgb(237, 244, 251);
+    background-color: #ffffff;
+    margin-top: 10px;
+    border: 2px solid #f3f5f6;
+    border-left: none;
+    border-right: none;
   }
+
   .select {
-    background-color: rgb(255, 255, 255);
+    background-color: rgb(237, 244, 251);
   }
 </style>

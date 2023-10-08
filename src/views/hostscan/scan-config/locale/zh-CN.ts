@@ -77,4 +77,6 @@ export default {
   'scan.status.stop': '停止',
   'scan.status.fail': '失败',
   'scan.status.finish': '完成',
+  'engine': '引擎',
+  'template': '模板',
 };
