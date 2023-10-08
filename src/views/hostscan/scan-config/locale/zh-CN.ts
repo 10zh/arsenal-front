@@ -44,6 +44,7 @@ export default {
   'host.scan.hostConfig.vulnName': '漏洞名称',
   'host.scan.config.scanGoal': '扫描目标',
   'host.scan.config.hostNumber': '主机数量',
+  'host.scan.config.vulnerabilityNumber': '漏洞数量',
   'host.scan.config.hostType': '主机类型',
   'host.scan.config.domain': '主机域名',
   'host.scan.config.area': '所属区域',
@@ -79,4 +80,5 @@ export default {
   'scan.status.finish': '完成',
   'engine': '引擎',
   'template': '模板',
+  'scan.progress': '扫描进度',
 };

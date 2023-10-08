@@ -29,6 +29,8 @@ export enum ScanStatusColor {
 export interface HostScanConfigRecordPageRequest {
   pageIndex: number;
   pageSize: number;
+  order: string;
+  sort: string;
 }
 
 // 扫描配置详情
@@ -36,6 +38,12 @@ export function getHostScanRecordList(
   configId: number,
   params: HostScanConfigRecordPageRequest
 ) {
-  const url = `/host/scan/${configId}/records?pageIndex=${params.pageIndex}&pageSize=${params.pageSize}`;
+  const url = `/host/scan/${configId}/records?pageIndex=${params.pageIndex}&pageSize=${params.pageSize}&sort=${params.sort}&order=${params.order}`;
+  return axios.get<HttpResponse>(url);
+}
+
+// 获取扫描记录详情
+export function getHostScanRecordDetail(scanId: string) {
+  const url = `/host/scan/${scanId}/record/detail`;
   return axios.get<HttpResponse>(url);
 }
