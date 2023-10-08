@@ -77,3 +77,21 @@ export function getHostVulnerabilityListRecordByScanId(
   const url = `/host/scan/${scanId}/vulnerability/records?pageIndex=${params.pageIndex}&pageSize=${params.pageSize}`;
   return axios.get<HttpResponse>(url);
 }
+
+// 根据扫描ID和主机ID获取主机详情信息
+export function getHostRecordDetailByScanHostId(
+  scanId: string,
+  hostId: string
+) {
+  const url = `/host/scan/${scanId}/${hostId}/host/detail`;
+  return axios.get<HttpResponse>(url);
+}
+
+// 根据扫描ID和主机ID获取服务详情信息
+export function getHostServiceRecordDetailByScanHostId(
+  scanId: string,
+  hostId: string
+) {
+  const url = `/host/scan/${scanId}/${hostId}/service/records`;
+  return axios.get<HttpResponse>(url);
+}

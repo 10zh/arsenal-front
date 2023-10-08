@@ -45,6 +45,18 @@ const HOSTSCAN: AppRouteRecordRaw = {
       },
     },
     {
+      path: 'hostScanRecordDetail',
+      name: 'hostScanRecordDetail',
+      component: () =>
+        import('@/views/hostscan/scan-config/host-record-detail.vue'),
+      meta: {
+        locale: 'menu.hostscan.config.record.host.detail',
+        requiresAuth: true,
+        roles: ['*'],
+        hideInMenu: true,
+      },
+    },
+    {
       path: 'scanEngine', // The midline path complies with SEO specifications
       name: 'scanEngine',
       component: () => import('@/views/hostscan/scan-engine/index.vue'),

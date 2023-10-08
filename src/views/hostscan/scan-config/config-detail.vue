@@ -113,7 +113,18 @@
                     :bordered="{ cell: true }"
                     :pagination="hostPagination"
                     @page-change="handleHostTablePageChange"
-                  ></a-table>
+                  >
+                    <template #ipv4="{ record }">
+                      <a-link @click="gotoHostDetail(record)">{{
+                        record.ipv4
+                      }}</a-link>
+                    </template>
+                    <template #ipv6="{ record }">
+                      <a-link @click="gotoHostDetail(record)">{{
+                        record.ipv6
+                      }}</a-link>
+                    </template>
+                  </a-table>
                 </a-tab-pane>
                 <a-tab-pane key="2">
                   <template #title>
@@ -151,7 +162,7 @@
   // ==========================声明模块==========================
   import { ref, reactive, onMounted } from 'vue';
   import { useI18n } from 'vue-i18n';
-  import { useRoute } from 'vue-router';
+  import { useRoute, useRouter } from 'vue-router';
   import { formatSeconds } from '@/utils/times';
   import { getHostScanConfigDetail } from '@/api/scan/scan-config';
   import {
@@ -163,10 +174,10 @@
     getHostVulnerabilityListRecordByScanId,
   } from '@/api/scan/scan-record';
 
+  // ==========================数据定义模块==========================
   const { t } = useI18n();
   const route = useRoute();
-
-  // ==========================数据定义模块==========================
+  const router = useRouter();
   // 扫描配置ID
   const id = route.query.configId;
   // 扫描配置详情
@@ -194,10 +205,12 @@
     {
       title: t('scan.record.ipv4'),
       dataIndex: 'ipv4',
+      slotName: 'ipv4',
     },
     {
       title: t('scan.record.ipv6'),
       dataIndex: 'ipv6',
+      slotName: 'ipv6',
     },
     {
       title: t('scan.record.macAddress'),
@@ -221,6 +234,7 @@
     {
       title: t('scan.record.vulnName'),
       dataIndex: 'vulnName',
+      width: '300',
     },
     {
       title: t('scan.record.ipv4'),
@@ -244,6 +258,8 @@
     {
       title: t('scan.record.proof'),
       dataIndex: 'proof',
+      ellipsis: true,
+      tooltip: { position: 'top' },
     },
     {
       title: t('scan.record.safe'),
@@ -374,9 +390,18 @@
   };
   // 漏洞列表分页
   const handleHostVulnerabilityTablePageChange = (index) => {
-    console.log(index);
     vulnerabilityPagination.value.pageIndex = index;
     initHostVulnerabilityData();
+  };
+  // 跳转主机详情界面
+  const gotoHostDetail = (record) => {
+    router.push({
+      path: '/hostscan/hostScanRecordDetail',
+      query: {
+        scanId: configRecordData.value[selected.value].scanId,
+        hostId: record.id,
+      },
+    });
   };
 </script>
 

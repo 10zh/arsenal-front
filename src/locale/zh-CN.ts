@@ -36,6 +36,7 @@ export default {
   'menu.hostscan.config': '主机扫描配置',
   'menu.hostscan.config.add': '添加主机扫描配置',
   'menu.hostscan.config.detail': '主机扫描配置详情',
+  'menu.hostscan.config.record.host.detail': '主机记录详情',
   'menu.dashboard': '仪表盘',
   'menu.server.dashboard': '仪表盘-服务端',
   'menu.server.workplace': '工作台-服务端',

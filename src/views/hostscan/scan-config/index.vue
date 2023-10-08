@@ -473,14 +473,12 @@
   };
   // 去扫描配置详情界面
   const gotoScanConfigDetail = (record) => {
-    console.log('goto hostScanConfigDetail', record);
     router.push({
       path: '/hostscan/hostScanConfigDetail',
       query: {
         configId: record.id,
       },
     });
-    console.log(router);
   };
 </script>
 
