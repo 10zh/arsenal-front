@@ -115,7 +115,12 @@
                     item.transportProtocol
                   }}</a-breadcrumb-item>
                   <a-breadcrumb-item>{{ item.accuracy }}</a-breadcrumb-item>
-                  <a-breadcrumb-item v-if="item.applicationProtocol === 'HTTP'">
+                  <a-breadcrumb-item
+                    v-if="
+                      item.applicationProtocol === 'HTTP' ||
+                      item.applicationProtocol === 'HTTPS'
+                    "
+                  >
                     <a-tooltip
                       :content="item.httpUrl"
                       background-color="#3491FA"
@@ -123,14 +128,21 @@
                       <a-link :href="item.httpUrl"><icon-link /></a-link>
                     </a-tooltip>
                   </a-breadcrumb-item>
-                  <a-tooltip
-                    :content="item.httpTitle"
-                    background-color="#3491FA"
+                  <a-breadcrumb-item
+                    v-if="
+                      item.applicationProtocol === 'HTTP' ||
+                      item.applicationProtocol === 'HTTPS'
+                    "
                   >
-                    <span class="ellip-text">{{
-                      'title:' + item.httpTitle
-                    }}</span>
-                  </a-tooltip>
+                    <a-tooltip
+                      :content="item.httpTitle"
+                      background-color="#3491FA"
+                    >
+                      <span class="ellip-text">{{
+                        'title:' + item.httpTitle
+                      }}</span>
+                    </a-tooltip>
+                  </a-breadcrumb-item>
                   <a-breadcrumb-item />
                 </a-breadcrumb>
               </a-col>
@@ -143,6 +155,7 @@
                 <a-col
                   v-for="component in item.components"
                   :key="component.name"
+                  :style="{ marginTop: '-30px' }"
                   flex="auto"
                   :span="4"
                 >
@@ -151,15 +164,34 @@
                   }}</a-typography-title>
                 </a-col>
               </a-row>
-              <a-row v-if="item.applicationProtocol === 'HTTP'"
-                ><a-typography-paragraph bold class="wrap-text" copyable>{{
-                  item.httpHeader
-                }}</a-typography-paragraph></a-row
+              <a-row
+                v-if="
+                  item.applicationProtocol === 'HTTP' ||
+                  item.applicationProtocol === 'HTTPS'
+                "
+                ><a-typography :style="{ marginTop: '-30px' }">
+                  <a-typography-title :heading="3">
+                    {{ t('scan.record.service.header') }}
+                  </a-typography-title>
+                  <a-typography-paragraph bold class="wrap-text" copyable>{{
+                    item.httpHeader
+                  }}</a-typography-paragraph>
+                </a-typography></a-row
               >
-              <a-row v-if="item.applicationProtocol !== 'HTTP'">
-                <a-typography-paragraph bold class="wrap-text" copyable>{{
-                  item.banner
-                }}</a-typography-paragraph>
+              <a-row
+                v-if="
+                  item.applicationProtocol !== 'HTTP' &&
+                  item.applicationProtocol !== 'HTTPS'
+                "
+              >
+                <a-typography :style="{ marginTop: '-30px' }">
+                  <a-typography-title :heading="3">
+                    {{ t('scan.record.service.banner') }}
+                  </a-typography-title>
+                  <a-typography-paragraph bold class="wrap-text" copyable>{{
+                    item.banner
+                  }}</a-typography-paragraph>
+                </a-typography>
               </a-row>
               <a-row v-if="item.unMatchBanner !== ''">
                 <a-typography :style="{ marginTop: '-30px' }">
@@ -262,26 +294,29 @@
     width: auto;
     margin-right: 20px;
   }
+
   .wrap-text {
     position: relative;
     white-space: pre-wrap;
   }
+
   .arco-typography-operation-copy {
     position: absolute;
     right: 0px;
     top: -2px;
   }
+
   .arco-typography-operation-copied {
     position: absolute;
     right: 0px;
     top: -2px;
   }
+
   .ellip-text {
     white-space: nowrap;
     cursor: pointer;
     text-overflow: ellipsis;
     overflow: hidden;
-    display: inline-block;
     width: 100px;
   }
 </style>
