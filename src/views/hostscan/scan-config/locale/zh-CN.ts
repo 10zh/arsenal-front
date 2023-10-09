@@ -108,4 +108,7 @@ export default {
   'scan.record.accuracy': '准确度',
   'scan.record.host.basic.info': '主机基本信息',
   'scan.record.port.open': '端口开放情况',
+  'scan.record.service.unmatch.banner': 'UnMatch Banner',
+  'scan.record.service.ssl.certificate': 'SSL证书',
+  'scan.record.service.proof': '证据',
 };

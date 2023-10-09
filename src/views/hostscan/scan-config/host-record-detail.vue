@@ -86,7 +86,7 @@
         </a-col>
         <a-col :span="1"></a-col>
         <a-col :span="12">
-          <a-card class="right-card">
+          <a-card class="right-card" hoverable>
             <a-row>
               <span>
                 <icon-thunderbolt />
@@ -114,6 +114,23 @@
                   <a-breadcrumb-item>{{
                     item.transportProtocol
                   }}</a-breadcrumb-item>
+                  <a-breadcrumb-item>{{ item.accuracy }}</a-breadcrumb-item>
+                  <a-breadcrumb-item v-if="item.applicationProtocol === 'HTTP'">
+                    <a-tooltip
+                      :content="item.httpUrl"
+                      background-color="#3491FA"
+                    >
+                      <a-link :href="item.httpUrl"><icon-link /></a-link>
+                    </a-tooltip>
+                  </a-breadcrumb-item>
+                  <a-tooltip
+                    :content="item.httpTitle"
+                    background-color="#3491FA"
+                  >
+                    <span class="ellip-text">{{
+                      'title:' + item.httpTitle
+                    }}</span>
+                  </a-tooltip>
                   <a-breadcrumb-item />
                 </a-breadcrumb>
               </a-col>
@@ -121,10 +138,59 @@
                 {{ formatDate(item.updateTime) }}
               </a-col>
             </a-row>
-            <a-card>
-              <a-anchor line-less>
-                <a-anchor-link href="#80">80</a-anchor-link>
-              </a-anchor>
+            <a-card :id="item.port">
+              <a-row>
+                <a-col
+                  v-for="component in item.components"
+                  :key="component.name"
+                  flex="auto"
+                  :span="4"
+                >
+                  <a-typography-title :heading="3">{{
+                    component.name + ' ' + component.version
+                  }}</a-typography-title>
+                </a-col>
+              </a-row>
+              <a-row v-if="item.applicationProtocol === 'HTTP'"
+                ><a-typography-paragraph bold class="wrap-text" copyable>{{
+                  item.httpHeader
+                }}</a-typography-paragraph></a-row
+              >
+              <a-row v-if="item.applicationProtocol !== 'HTTP'">
+                <a-typography-paragraph bold class="wrap-text" copyable>{{
+                  item.banner
+                }}</a-typography-paragraph>
+              </a-row>
+              <a-row v-if="item.unMatchBanner !== ''">
+                <a-typography :style="{ marginTop: '-30px' }">
+                  <a-typography-title :heading="3">
+                    {{ t('scan.record.service.unmatch.banner') }}
+                  </a-typography-title>
+                  <a-typography-paragraph bold class="wrap-text" copyable>{{
+                    item.unMatchBanner
+                  }}</a-typography-paragraph>
+                </a-typography>
+              </a-row>
+              <a-row v-if="item.certificate !== ''">
+                <a-typography :style="{ marginTop: '-30px' }">
+                  <a-typography-title :heading="3">
+                    {{ t('scan.record.service.ssl.certificate') }}
+                  </a-typography-title>
+                  <a-typography-paragraph bold class="wrap-text" copyable>{{
+                    item.certificate
+                  }}</a-typography-paragraph>
+                </a-typography>
+              </a-row>
+              <a-row v-if="item.proof !== ''">
+                <a-typography :style="{ marginTop: '-30px' }">
+                  <a-typography-title :heading="3">
+                    {{ t('scan.record.service.proof') }}
+                  </a-typography-title>
+                  <a-typography-paragraph bold class="wrap-text">{{
+                    item.proof
+                  }}</a-typography-paragraph>
+                </a-typography>
+              </a-row>
             </a-card>
           </div>
         </a-col>
@@ -186,12 +252,36 @@
   .right-card {
     border-top: 2px solid #41a4db;
   }
+
   .arco-anchor-link-item .arco-anchor-link {
     padding: 0px;
     width: 50px;
   }
+
   .arco-anchor {
     width: auto;
     margin-right: 20px;
+  }
+  .wrap-text {
+    position: relative;
+    white-space: pre-wrap;
+  }
+  .arco-typography-operation-copy {
+    position: absolute;
+    right: 0px;
+    top: -2px;
+  }
+  .arco-typography-operation-copied {
+    position: absolute;
+    right: 0px;
+    top: -2px;
+  }
+  .ellip-text {
+    white-space: nowrap;
+    cursor: pointer;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: inline-block;
+    width: 100px;
   }
 </style>
