@@ -355,6 +355,7 @@
             column-resize
             :pagination="false"
             :bordered="{ cell: true }"
+            @sorter-change="sortedChangeEvent"
           >
             <template #potential="{ record }">
               {{ record.potential ? t('global.true') : t('global.false') }}
@@ -412,25 +413,45 @@
       title: t('scan.record.vulnName'),
       dataIndex: 'vulnName',
       width: '300',
+      sortable: {
+        sorter: true,
+        sortDirections: ['descend', 'ascend'],
+      },
     },
     {
       title: t('scan.record.ipv4'),
       dataIndex: 'ipv4',
       width: '150',
+      sortable: {
+        sorter: true,
+        sortDirections: ['descend', 'ascend'],
+      },
     },
     {
       title: t('scan.record.ipv6'),
       dataIndex: 'ipv6',
       width: '300',
+      sortable: {
+        sorter: true,
+        sortDirections: ['descend', 'ascend'],
+      },
     },
     {
       title: t('scan.record.port'),
       dataIndex: 'port',
+      sortable: {
+        sorter: true,
+        sortDirections: ['descend', 'ascend'],
+      },
     },
     {
       title: t('scan.record.componentName'),
       dataIndex: 'componentName',
       width: '150',
+      sortable: {
+        sorter: true,
+        sortDirections: ['descend', 'ascend'],
+      },
     },
     {
       title: t('scan.record.proof'),
@@ -451,10 +472,18 @@
     {
       title: t('scan.record.accuracy'),
       dataIndex: 'accuracy',
+      sortable: {
+        sorter: true,
+        sortDirections: ['descend', 'ascend'],
+      },
     },
     {
       title: t('scan.record.severity'),
       dataIndex: 'severity',
+      sortable: {
+        sorter: true,
+        sortDirections: ['descend'],
+      },
     },
   ]);
   // 漏洞列表分页参数
@@ -462,6 +491,8 @@
     total: 0,
     pageIndex: 1,
     pageSize: 10,
+    order: 'desc',
+    sort: 'severity',
     vulnName: '',
     ipv4: '',
     ipv6: '',
@@ -534,6 +565,14 @@
   // 漏洞分页事件
   const handleVulnerabilityPageSizeChange = (pageSize) => {
     vulnerabilityPagination.value.pageSize = pageSize;
+    initHostVulnerabilityData();
+  };
+  // 排序事件
+  const sortedChangeEvent = (field, direction) => {
+    direction = direction === 'descend' ? 'desc' : 'asc';
+    vulnerabilityPagination.value.sort = field;
+    vulnerabilityPagination.value.order = direction;
+    // 重新刷新列表
     initHostVulnerabilityData();
   };
 </script>

@@ -44,6 +44,8 @@ export interface HostVulnerabilityListRecordPageRequest {
   total: number;
   pageIndex: number;
   pageSize: number;
+  order: string;
+  sort: string;
   vulnName: string;
   ipv4: string;
   ipv6: string;
@@ -93,7 +95,7 @@ export function getHostVulnerabilityListRecordByScanHostId(
   params: HostVulnerabilityListRecordPageRequest
 ) {
   console.log('params potential', params.potential);
-  let url = `/host/scan/${scanId}/${hostId}/vulnerability/records?pageIndex=${params.pageIndex}&pageSize=${params.pageSize}`;
+  let url = `/host/scan/${scanId}/${hostId}/vulnerability/records?pageIndex=${params.pageIndex}&pageSize=${params.pageSize}&sort=${params.sort}&order=${params.order}`;
   if (params.vulnName) {
     url = `${url}&vulnerabilityName-op=ct&vulnerabilityName=${params.vulnName}`;
   }
