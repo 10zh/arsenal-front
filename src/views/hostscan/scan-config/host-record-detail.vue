@@ -254,40 +254,91 @@
                 <a-row :gutter="24">
                   <a-col :span="8">
                     <a-form-item :label="$t('scan.record.vulnName')">
-                      <a-auto-complete
+                      <a-input
                         v-model="vulnerabilityPagination.vulnName"
-                        :data="autoCompleteData"
                         :placeholder="t('scan.record.vulnName.input')"
-                        @focus="
-                          searchSingleField(
-                            'host_hsc',
-                            'host_hsc_cn',
-                            vulnerabilityPagination.vulnName
-                          )
-                        "
-                        @change="
-                          searchSingleField(
-                            'host_hsc',
-                            'host_hsc_cn',
-                            vulnerabilityPagination.vulnName
-                          )
-                        "
                       />
                     </a-form-item>
                   </a-col>
-                  <a-col :span="6">
+                  <a-col :span="8">
+                    <a-form-item :label="$t('scan.record.ipv4')">
+                      <a-input
+                        v-model="vulnerabilityPagination.ipv4"
+                        :placeholder="t('scan.record.ipv4.input')"
+                      />
+                    </a-form-item>
+                  </a-col>
+                  <a-col :span="8">
+                    <a-form-item :label="$t('scan.record.ipv6')">
+                      <a-input
+                        v-model="vulnerabilityPagination.ipv6"
+                        :placeholder="t('scan.record.ipv6.input')"
+                      />
+                    </a-form-item>
+                  </a-col>
+                </a-row>
+                <a-row :gutter="24">
+                  <a-col :span="8">
+                    <a-form-item :label="$t('scan.record.componentName')">
+                      <a-input
+                        v-model="vulnerabilityPagination.componentName"
+                        :placeholder="t('scan.record.componentName.input')"
+                      />
+                    </a-form-item>
+                  </a-col>
+                  <a-col :span="8">
+                    <a-form-item :label="$t('scan.record.port')">
+                      <a-input
+                        v-model="vulnerabilityPagination.port"
+                        :placeholder="t('scan.record.port.input')"
+                      />
+                    </a-form-item>
+                  </a-col>
+                  <a-col :span="8">
+                    <a-form-item
+                      field="section"
+                      :label="t('scan.record.potential')"
+                    >
+                      <a-select
+                        v-model="vulnerabilityPagination.potential"
+                        placeholder="Please select"
+                        allow-clear
+                      >
+                        <a-option value="1">{{ t('global.true') }}</a-option>
+                        <a-option value="0">{{ t('global.false') }}</a-option>
+                      </a-select>
+                    </a-form-item>
+                  </a-col>
+                </a-row>
+                <a-row :gutter="24">
+                  <a-col :span="8">
+                    <a-form-item field="section" :label="t('scan.record.safe')">
+                      <a-select
+                        v-model="vulnerabilityPagination.safe"
+                        placeholder="Please select"
+                        allow-clear
+                      >
+                        <a-option value="1">{{ t('global.true') }}</a-option>
+                        <a-option value="0">{{ t('global.false') }}</a-option>
+                      </a-select>
+                    </a-form-item>
+                  </a-col>
+                  <a-col :span="8">
                     <a-button
                       type="primary"
                       default-checked
                       style="margin: 0 10px"
-                      @click="initConfigList"
+                      @click="initHostVulnerabilityData"
                     >
                       <template #icon>
                         <icon-search />
                       </template>
                       {{ $t('global.search') }}
                     </a-button>
-                    <a-button style="margin: 0 10px" @click="reset">
+                    <a-button
+                      style="margin: 0 10px"
+                      @click="resetVulnerabilityList"
+                    >
                       <template #icon>
                         <icon-refresh />
                       </template>
@@ -302,6 +353,7 @@
             :columns="vulnerabilityTableColumns"
             :data="vulnerabilityData"
             column-resize
+            :pagination="false"
             :bordered="{ cell: true }"
           >
             <template #potential="{ record }">
@@ -311,6 +363,17 @@
               {{ record.safe ? t('global.true') : t('global.false') }}
             </template>
           </a-table>
+          <a-pagination
+            class="paginationStyle"
+            :total="vulnerabilityPagination.total"
+            :current="vulnerabilityPagination.pageIndex"
+            :page-size="vulnerabilityPagination.pageSize"
+            show-total
+            show-jumper
+            show-page-size
+            @change="handleVulnerabilityPageIndexChange"
+            @page-size-change="handleVulnerabilityPageSizeChange"
+          />
         </a-tab-pane>
         <!--主机漏洞列表 end-->
       </a-tabs>
@@ -326,10 +389,9 @@
   import {
     getHostRecordDetailByScanHostId,
     getHostServiceRecordDetailByScanHostId,
-    getHostVulnerabilityListRecordByScanId,
+    getHostVulnerabilityListRecordByScanHostId,
   } from '@/api/scan/scan-record';
   import formatDate from '@/utils/times';
-  import { aotuCompleteByTableField } from '@/api/common/common';
 
   // ==========================数据定义模块==========================
   const { t } = useI18n();
@@ -401,20 +463,15 @@
     pageIndex: 1,
     pageSize: 10,
     vulnName: '',
+    ipv4: '',
+    ipv6: '',
+    componentName: '',
+    port: '',
+    potential: '',
+    safe: '',
   });
   // 漏洞列表数据
   const vulnerabilityData = ref([]);
-  // 单个参数检索 同输入框自动补全联动
-  const singleFieldPagination = ref({
-    total: 0,
-    pageIndex: 1,
-    pageSize: 15,
-    table: '',
-    field: '',
-    value: '',
-  });
-  // 输入框自动补全
-  const autoCompleteData = ref([]);
 
   // ==========================数据操纵模块==========================
   // 初始化主机详情
@@ -432,8 +489,9 @@
   };
   // 初始化漏洞列表数据
   const initHostVulnerabilityData = async () => {
-    const response = await getHostVulnerabilityListRecordByScanId(
+    const response = await getHostVulnerabilityListRecordByScanHostId(
       scanId,
+      hostId,
       vulnerabilityPagination.value
     );
     vulnerabilityData.value = response.data;
@@ -457,16 +515,26 @@
       initHostVulnerabilityData();
     }
   };
-  // 单个字段搜索事件
-  const searchSingleField = async (table, field, value) => {
-    autoCompleteData.value = [];
-    singleFieldPagination.value.table = table;
-    singleFieldPagination.value.field = field;
-    singleFieldPagination.value.value = value;
-    const response = await aotuCompleteByTableField(
-      singleFieldPagination.value
-    );
-    autoCompleteData.value = response.data;
+  // 重置漏洞列表事件
+  const resetVulnerabilityList = () => {
+    vulnerabilityPagination.value.vulnName = '';
+    vulnerabilityPagination.value.ipv4 = '';
+    vulnerabilityPagination.value.ipv6 = '';
+    vulnerabilityPagination.value.componentName = '';
+    vulnerabilityPagination.value.port = '';
+    vulnerabilityPagination.value.potential = '';
+    vulnerabilityPagination.value.safe = '';
+    initHostVulnerabilityData();
+  };
+  // 漏洞列表分页事件
+  const handleVulnerabilityPageIndexChange = (pageIndex) => {
+    vulnerabilityPagination.value.pageIndex = pageIndex;
+    initHostVulnerabilityData();
+  };
+  // 漏洞分页事件
+  const handleVulnerabilityPageSizeChange = (pageSize) => {
+    vulnerabilityPagination.value.pageSize = pageSize;
+    initHostVulnerabilityData();
   };
 </script>
 
@@ -512,5 +580,9 @@
     text-overflow: ellipsis;
     overflow: hidden;
     width: 100px;
+  }
+  .paginationStyle {
+    margin-top: 10px;
+    justify-content: end;
   }
 </style>
