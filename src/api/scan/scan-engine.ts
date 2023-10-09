@@ -1,6 +1,47 @@
 import axios from 'axios';
 import qs from 'query-string';
-import type { DescData } from '@arco-design/web-vue/es/descriptions/interface';
+import { HttpResponse } from '../interceptor/axios';
+
+// 分页参数查询带条件
+export interface HostScanConfigPageRequest {
+  total: number;
+  pageIndex: number;
+  pageSize: number;
+  order: string;
+  sort: string;
+  engineName: string;
+  address: string;
+  engineVersion: string;
+  port: number;
+}
+
+// 引擎对象
+export interface HostScanEngineRes {
+  id: string;
+  address: string;
+  engienVersion: string;
+  assignedTaskNumber: number;
+  isLocal: boolean;
+  name: string;
+  port: number;
+  status: number;
+  failCause: string;
+  updateTime: string;
+}
+
+// 添加引擎
+export interface addEnginesRequest {
+  engineName: string;
+  address: string;
+  port: string;
+}
+
+// 编辑引擎
+export interface editEnginesRequest {
+  engineName: string;
+  address: string;
+  port: string;
+}
 
 export interface PolicyRecord {
   id: string;
@@ -11,11 +52,6 @@ export interface PolicyRecord {
   port: number;
   status: number;
   updateTime: string;
-}
-export interface addEnginesRes {
-  address: string;
-  engineName: string;
-  port: string;
 }
 export interface enginesRes {
   pageIndex: number;
@@ -31,12 +67,6 @@ export interface PolicyListRes {
   list: PolicyRecord[];
   total: number;
 }
-export interface listRes {
-  errCode: string;
-  errMessage: string;
-  success: boolean;
-  data: any;
-}
 
 export function queryPolicyList(params: PolicyParams) {
   return axios.get<PolicyListRes>('/api/list/policy', {
@@ -47,37 +77,35 @@ export function queryPolicyList(params: PolicyParams) {
   });
 }
 
-export interface ServiceRecord {
-  id: number;
-  title: string;
-  description: string;
-  name?: string;
-  actionType?: string;
-  icon?: string;
-  data?: DescData[];
-  enable?: boolean;
-  expires?: boolean;
-}
-export function queryInspectionList() {
-  return axios.get('/api/list/quality-inspection');
+// 获取引擎列表
+export function getScanEngines(params: HostScanConfigPageRequest) {
+  let url = `/scan/engines?pageIndex=${params.pageIndex}&pageSize=${params.pageSize}&sort=${params.sort}&order=${params.order}`;
+  if (params.engineName) {
+    url = `${url}&engineName-op=ct&engineName=${params.engineName}`;
+  }
+  if (params.engineVersion) {
+    url = `${url}&engineVersion-op=ct&engineVersion=${params.engineVersion}`;
+  }
+  if (params.port) {
+    url = `${url}&port-op=ct&port=${params.port}`;
+  }
+  if (params.address) {
+    url = `${url}&address-op=ct&address=${params.address}`;
+  }
+  return axios.get<HttpResponse>(url);
 }
 
-export function queryTheServiceList() {
-  return axios.get('/api/list/the-service');
+// 刷新引擎
+export function refreshScanEngine(engineId: string) {
+  return axios.get<HttpResponse>(`/scan/engines/refresh/${engineId}`);
 }
 
-export function queryRulesPresetList() {
-  return axios.get('/api/list/rules-preset');
+// 添加引擎
+export function addScanEngine(params: addEnginesRequest) {
+  return axios.post<HttpResponse>('/scan/engines/new', params);
 }
-export function addScanEngines(data: addEnginesRes) {
-  return axios.post<listRes>('/scan/engines/new', data);
-}
-export function editScanEngines(data: addEnginesRes, engineId: string) {
-  return axios.put<listRes>(`/scan/engines/${engineId}/engine`, data);
-}
-export function getScanEngines(data: enginesRes) {
-  return axios.post<any>('/scan/engines', data);
-}
-export function refreshScanEngines(engineId: string) {
-  return axios.get<any>(`/scan/engines/refresh/${engineId}`);
+
+// 编辑引擎
+export function editScanEngine(params: editEnginesRequest) {
+  return axios.put<HttpResponse>(`/scan/engines/${params.id}/engine`, params);
 }

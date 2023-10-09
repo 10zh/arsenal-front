@@ -26,15 +26,17 @@ import locale500 from '@/views/exception/500/locale/en-US';
 import localeUserInfo from '@/views/user/info/locale/en-US';
 import localeUserSetting from '@/views/user/setting/locale/en-US';
 
+import scanConfig from '@/views/hostscan/scan-config/locale/en-US';
 import globalSettings from './en-US/global';
 import localeSettings from './en-US/settings';
 
 export default {
+  'menu.hostscan': 'Host-Scan',
+  'menu.hostscan.config.detail': 'Host Scan Config Detail',
   'menu.dashboard': 'Dashboard',
   'menu.server.dashboard': 'Dashboard-Server',
   'menu.server.workplace': 'Workplace-Server',
   'menu.server.monitor': 'Monitor-Server',
-  'menu.hostscan': 'Host-Scan',
   'menu.result': 'Result',
   'menu.exception': 'Exception',
   'menu.form': 'Form',
@@ -66,4 +68,5 @@ export default {
   ...localeUserInfo,
   ...localeUserSetting,
   ...globalSettings,
+  ...scanConfig,
 };
