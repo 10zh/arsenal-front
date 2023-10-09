@@ -180,12 +180,15 @@
         </template>
         <template #scanStartTime="{ record }">
           {{
-            formatDate(record.lastScanStatic.updateTime, 'YYYY-MM-DD hh:mm:ss')
+            formatDate(
+              record.lastScanStatic.scanStartTime,
+              'YYYY-MM-DD hh:mm:ss'
+            )
           }}
         </template>
         <template #scanEndTime="{ record }">
           {{
-            formatDate(record.lastScanStatic.updateTime, 'YYYY-MM-DD hh:mm:ss')
+            formatDate(record.lastScanStatic.scanEndTime, 'YYYY-MM-DD hh:mm:ss')
           }}
         </template>
         <template #operations="{ record }">

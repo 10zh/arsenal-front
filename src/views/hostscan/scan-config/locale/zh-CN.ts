@@ -44,7 +44,6 @@ export default {
   'host.scan.hostConfig.vulnName': '漏洞名称',
   'host.scan.config.scanGoal': '扫描目标',
   'host.scan.config.hostNumber': '主机数量',
-  'host.scan.config.vulnerabilityNumber': '漏洞数量',
   'host.scan.config.hostType': '主机类型',
   'host.scan.config.domain': '主机域名',
   'host.scan.config.area': '所属区域',
@@ -99,6 +98,7 @@ export default {
   'scan.record.os': '操作系统',
   'scan.record.host.vulnerability.list': '漏洞列表',
   'scan.record.vulnName': '漏洞名称',
+  'scan.record.vulnName.input': '请输入漏洞名称',
   'scan.record.port': '端口',
   'scan.record.componentName': '组件名称',
   'scan.record.proof': '证据',
@@ -113,4 +113,6 @@ export default {
   'scan.record.service.ssl.certificate': 'SSL证书',
   'scan.record.service.header': 'Header',
   'scan.record.service.proof': '证据',
+  'scan.record.network.discovery': '网络空间测绘',
+  'scan.record.host.risk': '主机风险',
 };

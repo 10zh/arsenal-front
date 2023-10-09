@@ -37,6 +37,13 @@
               <a-row>
                 <a-space>
                   <a-typography-text>
+                    {{ t('host.scan.config.scanGoal') + ': ' + item.scanGoal }}
+                  </a-typography-text>
+                </a-space>
+              </a-row>
+              <a-row>
+                <a-space>
+                  <a-typography-text>
                     {{ t('engine') + ': ' + item.engineName }}
                   </a-typography-text>
                   <a-typography-text>
@@ -336,6 +343,7 @@
       configRecordData.value[selected.value].scanId,
       hostPagination.value
     );
+    console.log('---', configRecordData);
     hostData.value = response.data;
     // 分页参数赋值
     hostPagination.value.total = response.totalCount;
@@ -349,7 +357,6 @@
       vulnerabilityPagination.value
     );
     vulnerabilityData.value = response.data;
-    console.log('host vulnerability info', response);
     vulnerabilityPagination.value.total = response.totalCount;
     vulnerabilityPagination.value.pageIndex = response.pageIndex;
     vulnerabilityPagination.value.pageSize = response.pageSize;
