@@ -12,6 +12,8 @@ export interface HostScanConfigPageRequest {
   engineName: string;
   address: string;
   engineVersion: string;
+  status:string;
+  createTime:Array<string>;
   port: number;
 }
 
@@ -91,6 +93,12 @@ export function getScanEngines(params: HostScanConfigPageRequest) {
   }
   if (params.address) {
     url = `${url}&address-op=ct&address=${params.address}`;
+  }
+  if(params.status){
+    url = `${url}&status-op=eq&status=${params.status}`;
+  }
+  if(params.createTime.length > 0){
+    url = `${url}&createTime-op=bt&createTime-0=${params.createTime[0]}&createTime-1=${params.createTime[1]}`;
   }
   return axios.get<HttpResponse>(url);
 }
