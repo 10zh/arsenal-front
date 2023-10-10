@@ -13,40 +13,13 @@ export interface HostScanConfigPageRequest {
   templateName: string;
 }
 
-export interface HostScanConfigForms {
+// 新增扫描配置
+export interface HostScanConfigInsertRequest {
   configName: string;
-  excludeTarget?: string;
-  hostCredentials: string;
   target: string;
-}
-interface configRequest {
-  pageIndex: number;
-  pageSize: number;
-}
-export interface HostScanDetailRes {
-  engineName: string;
-  scanCostTime: string;
-  scanStatus: string;
-  templateName: string;
-}
-export interface HostServiceRes {
-  accuracy: string;
-  applicationProtocol: string;
-  banner: string;
-  certificate: string;
-  components: {
-    hierarchical: string;
-    name: string;
-    version: string;
-  };
-
-  httpHeader: string;
-  httpTitle: string;
-  httpUrl: string;
-  port: string;
-  proof: string;
-  transportProtocol: string;
-  unMatchBanner: string;
+  excludeTarget: string;
+  engineId: number;
+  templateId: number;
 }
 
 // 获取主机扫描配置列表(带分页)
@@ -64,55 +37,26 @@ export function getHostScanConfigPageList(params: HostScanConfigPageRequest) {
   return axios.get<HttpResponse>(url);
 }
 
-export function addScanConfig(data: configRequest) {
-  return axios.post<HttpResponse>(`/host/scan/configs/new`, data);
-}
-export function editScanConfig(data: configRequest, configId: string) {
-  return axios.put<HttpResponse>(`/host/scan/configs/${configId}/config`, data);
-}
-export function scanConfig(configId: string) {
-  return axios.get<HttpResponse>(`/host/scan/${configId}`);
-}
-export function getScanDetail(configId: string, data: configRequest) {
-  return axios.get<HttpResponse>(
-    `/host/scan/${configId}/records?pageIndex=${data.pageIndex}&pageSize=${data.pageSize}`
-  );
-}
-export function getScanDetailInfo(configId: string) {
-  return axios.get<HttpResponse>(`/host/scan/configs/${configId}/detail`);
-}
-export function getScanHostList(scanId: string, data: configRequest) {
-  return axios.get<HttpResponse>(
-    `/host/scan/${scanId}/host/records?pageIndex=${data.pageIndex}&pageSize=${data.pageSize}`
-  );
-}
-export function getScanBugList(scanId: string, data: configRequest) {
-  return axios.get<HttpResponse>(
-    `/host/scan/${scanId}/vulnerability/records?pageIndex=${data.pageIndex}&pageSize=${data.pageSize}`
-  );
-}
-export function getScanProgress(scanId: string) {
-  return axios.get<HttpResponse>(`/host/scan/${scanId}/record/detail`);
+// 新增主机扫描配置
+export function insertHostScanConfig(params: HostScanConfigInsertRequest) {
+  const url = '/host/scan/configs/new';
+  return axios.post<HttpResponse>(url, params);
 }
 
-export function getHostDetail(scanId: string, hostId: string) {
-  return axios.get<HttpResponse>(`/host/scan/${scanId}/${hostId}/host/detail`);
+// 删除主机扫描配置
+export function deleteHostScanConfig(configId: number) {
+  const url = `/host/scan/configs/${configId}/config`;
+  return axios.delete<HttpResponse>(url);
 }
-export function getHostServiceList(
-  scanId: string,
-  hostId: string,
-  data: configRequest
-) {
-  return axios.get<HttpResponse>(
-    `/host/scan/${scanId}/${hostId}/service/records?pageIndex=${data.pageIndex}&pageSize=${data.pageSize}`
-  );
+
+// 发起扫描
+export function hostScan(configId: number) {
+  const url = `/host/scan/${configId}`;
+  return axios.get<HttpResponse>(url);
 }
-export function getHostBugList(
-  scanId: string,
-  hostId: string,
-  data: configRequest
-) {
-  return axios.get<HttpResponse>(
-    `/host/scan/${scanId}/${hostId}/vulnerability/records?pageIndex=${data.pageIndex}&pageSize=${data.pageSize}`
-  );
+
+// 扫描配置详情
+export function getHostScanConfigDetail(configId: number) {
+  const url = `/host/scan/configs/${configId}/detail`;
+  return axios.get<HttpResponse>(url);
 }

@@ -20,7 +20,7 @@
                   <a-auto-complete
                     v-model="pagination.configName"
                     :data="autoCompleteData"
-                    placeholder="please enter name"
+                    :placeholder="t('host.scan.config.configName.input')"
                     @focus="
                       searchSingleField(
                         'host_hsc',
@@ -46,7 +46,7 @@
                   <a-auto-complete
                     v-model="pagination.engineName"
                     :data="autoCompleteData"
-                    placeholder="please enter engine name"
+                    :placeholder="t('host.scan.config.engineName.input')"
                     @focus="
                       searchSingleField(
                         'scan_se',
@@ -72,7 +72,7 @@
                   <a-auto-complete
                     v-model="pagination.templateName"
                     :data="autoCompleteData"
-                    placeholder="please enter template name"
+                    :placeholder="t('host.scan.config.templateName.input')"
                     @focus="
                       searchSingleField(
                         'host_hst',
@@ -144,12 +144,11 @@
         :columns="columns"
         :bordered="false"
         :data="tableData"
-        :style="'height:' + cardHeight + 'px'"
         :pagination="false"
         @sorter-change="sortedChangeEvent"
       >
         <template #configName="{ record }">
-          <a-link href="#" @click="handleConfigDialog(record)">{{
+          <a-link @click="gotoScanConfigDetail(record)">{{
             record.configName
           }}</a-link>
         </template>
@@ -181,26 +180,29 @@
         </template>
         <template #scanStartTime="{ record }">
           {{
-            formatDate(record.lastScanStatic.updateTime, 'YYYY-MM-DD hh:mm:ss')
+            formatDate(
+              record.lastScanStatic.scanStartTime,
+              'YYYY-MM-DD hh:mm:ss'
+            )
           }}
         </template>
         <template #scanEndTime="{ record }">
           {{
-            formatDate(record.lastScanStatic.updateTime, 'YYYY-MM-DD hh:mm:ss')
+            formatDate(record.lastScanStatic.scanEndTime, 'YYYY-MM-DD hh:mm:ss')
           }}
         </template>
         <template #operations="{ record }">
-          <a-button
-            type="text"
-            size="small"
-            style="padding: 0px"
-            @click="handleScan(record)"
+          <a-popconfirm
+            :content="t('host.scan.config.operator.scan.ack')"
+            @ok="startHostScan(record)"
           >
-            <template #icon>
-              <icon-fullscreen />
-            </template>
-            {{ $t('button.scan') }}
-          </a-button>
+            <a-button type="text" size="small" style="padding: 0px">
+              <template #icon>
+                <icon-fullscreen />
+              </template>
+              {{ $t('button.scan') }}
+            </a-button>
+          </a-popconfirm>
           <a-button
             type="text"
             size="small"
@@ -212,6 +214,26 @@
             </template>
             {{ $t('button.edit') }}
           </a-button>
+          <a-popconfirm
+            :content="
+              t('host.scan.config.operator.delete.ack') +
+              record.configName +
+              '?'
+            "
+            @ok="deleteSingleHostScanConfig(record)"
+          >
+            <a-button
+              type="text"
+              status="danger"
+              size="small"
+              style="padding: 10px"
+            >
+              <template #icon>
+                <icon-delete />
+              </template>
+              {{ $t('button.delete') }}
+            </a-button>
+          </a-popconfirm>
         </template>
       </a-table>
       <a-pagination
@@ -230,14 +252,17 @@
 
 <script lang="ts" setup>
   // ==========================声明模块==========================
-  import { ref, onMounted } from 'vue';
+  import { ref, onMounted, onBeforeUnmount } from 'vue';
   import { useI18n } from 'vue-i18n';
   import { useRouter } from 'vue-router';
   import formatDate from '@/utils/times';
   import { getStatusColor, getStatusText } from '@/hooks/status-options';
+  import { Message } from '@arco-design/web-vue';
   import {
     HostScanConfigRes,
     getHostScanConfigPageList,
+    deleteHostScanConfig,
+    hostScan,
   } from '@/api/scan/scan-config';
   import { aotuCompleteByTableField } from '@/api/common/common';
 
@@ -353,10 +378,23 @@
     pagination.value.pageSize = response.pageSize;
   };
 
+  // 设置页面加载定时器
+  let initListTimer;
+
   // 当页面加载时，显示数据
   onMounted(() => {
     // 初始化主机扫描配置页面表格数据
     initConfigList();
+    // 每10s刷新数据
+    initListTimer = setInterval(() => {
+      initConfigList();
+    }, 10000);
+  });
+
+  // 当页面卸载时
+  onBeforeUnmount(() => {
+    clearInterval(initListTimer);
+    initListTimer = null;
   });
 
   // ==========================事件响应模块==========================
@@ -415,6 +453,36 @@
       name: 'addHostScanConfig',
     });
   };
+  // 删除单个扫描配置事件
+  const deleteSingleHostScanConfig = async (record) => {
+    const response = await deleteHostScanConfig(record.id);
+    if (!response.success) {
+      return;
+    }
+    Message.success(t('host.scan.config.delete.success'));
+    // 重新刷新列表
+    initConfigList();
+  };
+  // 开始主机扫描配置
+  const startHostScan = async (record) => {
+    const response = await hostScan(record.id);
+    if (!response.success) {
+      return;
+    }
+    // 重新刷新列表
+    initConfigList();
+    // 前往扫描记录页面
+    console.log('goto host scan reocrd page');
+  };
+  // 去扫描配置详情界面
+  const gotoScanConfigDetail = (record) => {
+    router.push({
+      path: '/hostscan/hostScanConfigDetail',
+      query: {
+        configId: record.id,
+      },
+    });
+  };
 </script>
 
 <style lang="less">
@@ -430,27 +498,6 @@
     }
   }
 
-  .action-icon {
-    margin-left: 12px;
-    cursor: pointer;
-  }
-
-  .active {
-    color: #0960bd;
-    background-color: #e3f4fc;
-  }
-
-  .setting {
-    display: flex;
-    align-items: center;
-    width: 200px;
-
-    .title {
-      margin-left: 12px;
-      cursor: pointer;
-    }
-  }
-
   .paginationStyle {
     justify-content: end;
   }
@@ -458,16 +505,5 @@
   .progress-wrap {
     display: flex;
     align-items: center;
-  }
-
-  .search-rows {
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
-
-    .search-label {
-      display: inline-block;
-      width: 200px;
-    }
   }
 </style>

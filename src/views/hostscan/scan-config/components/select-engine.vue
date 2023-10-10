@@ -1,6 +1,6 @@
 <template>
   <!--数据搜索模块 start-->
-  <a-row :style="{ marginBottom: '20px' }">
+  <a-row :style="{ marginBottom: '20px', marginLeft: '15px' }">
     <a-form :model="form" label-align="left" auto-label-width>
       <a-row :gutter="24">
         <a-col :span="4">
@@ -91,25 +91,6 @@
           </a-button>
         </a-col>
       </a-row>
-      <a-row style="margin-bottom: 16px">
-        <a-col
-          :span="24"
-          style="
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-          "
-        >
-          <a-space>
-            <a-button type="primary" @click="addScanEngine">
-              <template #icon>
-                <icon-plus />
-              </template>
-              {{ $t('scan.engine.add') }}
-            </a-button>
-          </a-space>
-        </a-col>
-      </a-row>
     </a-form>
   </a-row>
   <!--数据搜索模块 end-->
@@ -120,6 +101,9 @@
     :data="tableData"
     :bordered="false"
     :pagination="false"
+    :row-selection="rowSelection"
+    :style="{ marginBottom: '20px', marginLeft: '15px' }"
+    @select="selectRowKey"
     @sorter-change="sortedChangeEvent"
   >
     <template #status="{ record }">
@@ -179,23 +163,15 @@
     show-page-size
   />
   <!--引擎数据表格 end-->
-  <!--添加引擎对话层 start-->
-  <AddEngienModel ref="addEngineRef" />
-  <!--添加引擎对话层 end-->
-  <!--编辑引擎对话层 start-->
-  <EditEngienModel ref="editEngineRef" />
-  <!--编辑引擎对话层 end-->
 </template>
 
 <script lang="ts" setup>
   // ==========================声明模块==========================
-  import { ref, reactive, onMounted } from 'vue';
+  import { ref, reactive, onMounted, defineEmits } from 'vue';
   import { useI18n } from 'vue-i18n';
   import { Message } from '@arco-design/web-vue';
   import formatDate from '@/utils/times';
   import { aotuCompleteByTableField } from '@/api/common/common';
-  import AddEngienModel from '@/views/hostscan/scan-engine/components/add-engine.vue';
-  import EditEngienModel from '@/views/hostscan/scan-engine/components/edit-engine.vue';
   import {
     HostScanEngineRes,
     getScanEngines,
@@ -313,16 +289,28 @@
   });
   // 输入框自动补全
   const autoCompleteData = ref([]);
-  // 添加引擎子组件
-  const addEngineRef = ref<any>({});
-  // 编辑引擎子组件
-  const editEngineRef = ref<any>({});
-
+  // 当前选择的引擎key
+  const currentSelectRowKey = ref();
+  // 行选择器
+  const rowSelection = {
+    type: 'radio',
+    defaultSelectedRowKeys: [],
+  };
+  // 定义子组件传值
+  const emits = defineEmits(['receiveSelect']);
   // ==========================数据操纵模块==========================
+  // 将选择内容传递给父组件
+  const sendParentComponentSelectRowKey = () => {
+    emits('receiveSelect', currentSelectRowKey);
+  };
   // 初始化引擎列表
   const initEngineList = async () => {
     const response = await getScanEngines(pagination.value);
     tableData.value = response.data;
+    // 默认选中为第一个引擎
+    currentSelectRowKey.value = tableData.value[0].id;
+    rowSelection.defaultSelectedRowKeys[0] = currentSelectRowKey.value;
+    sendParentComponentSelectRowKey();
     // 分页参数赋值
     pagination.value.total = response.totalCount;
     pagination.value.pageIndex = response.pageIndex;
@@ -377,14 +365,14 @@
     pagination.value.engineVersion = '';
     initEngineList();
   };
-  // 新增引擎
-  const addScanEngine = () => {
-    addEngineRef.value.handleAddEngineVisible(true);
-  };
-  // 编辑引擎
-  const editEngine = (row) => {
-    editEngineRef.value.handleEditEngineVisible(true);
-    editEngineRef.value.editRowValue(row);
+  // 单选事件 默认选择和将选择内容传递给父组件
+  const selectRowKey = (key) => {
+    if (key instanceof Array) {
+      const [item] = key;
+      key = item;
+    }
+    currentSelectRowKey.value = key;
+    sendParentComponentSelectRowKey();
   };
 </script>
 
