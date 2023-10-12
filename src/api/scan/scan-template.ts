@@ -22,7 +22,7 @@ export interface HostScanTemplateRes {
   serviceDiscovery: {
     tcpPort: string;
     udpPort: string;
-    tcpDetectType:string;
+    tcpDetectType: string;
   };
   message?: string;
 }
@@ -35,8 +35,8 @@ interface TemplateRequest {
   order: string;
   sort: string;
   templateName: string;
-  enableArp: string,
-  enableIcmp: string,
+  enableArp: string;
+  enableIcmp: string;
   portScanSpeed: string;
   tcpPort: string;
   udpPort: string;
@@ -81,20 +81,18 @@ export function getScanTemplates(params: TemplateRequest) {
     url = `${url}&templateName-op=ct&templateName=${params.templateName}`;
   }
   if (params.tcpPort) {
-    url = `${url}&puPort-op=ct&puPort=${params.tcpPort}`;
+    url = `${url}&tcpPort-op=ct&tcpPort=${params.tcpPort}`;
   }
   if (params.udpPort) {
     url = `${url}&udpPort-op=ct&udpPort=${params.udpPort}`;
   }
-  if(params.enableArp){
+  if (params.enableArp) {
     url = `${url}&enableARP-op=eq&enableArp=${params.enableArp}`;
   }
-
-  if(params.enableIcmp){
-    url = `${url}&enableICMP-op=eq&enableArp=${params.enableIcmp}`;
+  if (params.enableIcmp) {
+    url = `${url}&enableIcmp-op=eq&enableIcmp=${params.enableIcmp}`;
   }
-
-  if(params.portScanSpeed){
+  if (params.portScanSpeed) {
     url = `${url}&portScanSpeed-op=eq&portScanSpeed=${params.portScanSpeed}`;
   }
   return axios.get<HostScanTemplateRes[]>(url);
@@ -111,14 +109,12 @@ export function editScanTemplates(data: HostScanTemplateRes) {
   );
 }
 // 查看单个模板数据
-export function getSingleScanTemplates(templateId:string) {
-  return axios.get<HttpResponse>(
-    `/host/scan/templates/${templateId}/template`,
-  );
+export function getSingleScanTemplates(templateId: string) {
+  return axios.get<HttpResponse>(`/host/scan/templates/${templateId}/template`);
 }
 // 删除模板
-export function deleteScanTemplates(templateId:string) {
+export function deleteScanTemplates(templateId: string) {
   return axios.delete<HttpResponse>(
-    `/host/scan/templates/${templateId}/template`,
+    `/host/scan/templates/${templateId}/template`
   );
 }
