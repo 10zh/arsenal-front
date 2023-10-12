@@ -1,98 +1,103 @@
 <template>
   <!--数据搜索模块 start-->
-  <a-row>
-    <a-col :flex="1">
-      <a-form :model="form" label-align="left" auto-label-width>
-        <a-row :gutter="24">
-          <a-col :span="8">
-            <a-form-item field="templateName" :label="t('scan.template.templateName')">
-              <a-input v-model="pagination.templateName" :placeholder="t('scan.template.name.input')"></a-input>
-            </a-form-item>
-          </a-col>
-          <a-col :span="8">
-            <a-form-item field="tcpPort" :label="t('scan.template.serviceDiscovery.tcpPort')">
-              <a-input v-model="pagination.tcpPort"
-                :placeholder="t('scan.template.serviceDiscovery.input.tcpPort')"></a-input>
-            </a-form-item>
-          </a-col>
-          <a-col :span="8">
-            <a-form-item field="udpPort" :label="t('scan.template.serviceDiscovery.udpPort')">
-              <a-input v-model="pagination.udpPort"
-                :placeholder="t('scan.template.serviceDiscovery.input.udpPort')"></a-input>
-            </a-form-item>
-          </a-col>
+  <div ref="header">
+    <a-row>
+      <a-col :flex="1">
+        <a-form :model="pagination" label-align="left" auto-label-width>
+          <a-row :gutter="24">
+            <a-col :span="8">
+              <a-form-item field="templateName" :label="t('scan.template.templateName')">
+                <a-input v-model="pagination.templateName" :placeholder="t('scan.template.name.input')"></a-input>
+              </a-form-item>
+            </a-col>
+            <a-col :span="8">
+              <a-form-item field="tcpPort" :label="t('scan.template.serviceDiscovery.tcpPort')">
+                <a-input v-model="pagination.tcpPort"
+                  :placeholder="t('scan.template.serviceDiscovery.input.tcpPort')"></a-input>
+              </a-form-item>
+            </a-col>
+            <a-col :span="8">
+              <a-form-item field="udpPort" :label="t('scan.template.serviceDiscovery.udpPort')">
+                <a-input v-model="pagination.udpPort"
+                  :placeholder="t('scan.template.serviceDiscovery.input.udpPort')"></a-input>
+              </a-form-item>
+            </a-col>
 
-        </a-row>
-        <a-row :gutter="24">
-          <a-col :span="8">
-            <a-form-item field="enableIcmp" :label="t('scan.template.hostDiscovery.enableIcmp')">
-              <a-select v-model="pagination.enableIcmp" :placeholder="t('scan.template.hostDiscovery.enableIcmp.input')"
-                allow-clear :options="commonOptions">
-              </a-select>
-            </a-form-item>
-          </a-col>
-          <a-col :span="8">
-            <a-form-item field="enableArp" :label="t('scan.template.hostDiscovery.enableArp')">
-              <a-select v-model="pagination.enableArp" :placeholder="t('scan.template.hostDiscovery.enableArp.input')"
-                allow-clear :options="commonOptions">
-              </a-select>
-            </a-form-item>
-          </a-col>
-          <a-col :span="8">
-            <a-form-item field="portScanSpeed" :label="t('scan.template.performance.portScanSpeed')">
-              <a-select v-model="pagination.portScanSpeed"
-                :placeholder="t('scan.template.performance.portScanSpeed.input')" allow-clear :options="speedOptions">
-              </a-select>
-            </a-form-item>
-          </a-col>
+          </a-row>
+          <a-row :gutter="24">
+            <a-col :span="8">
+              <a-form-item field="enableIcmp" :label="t('scan.template.hostDiscovery.enableIcmp')">
+                <a-select v-model="pagination.enableIcmp" :placeholder="t('scan.template.hostDiscovery.enableIcmp.input')"
+                  allow-clear :options="commonOptions">
+                </a-select>
+              </a-form-item>
+            </a-col>
+            <a-col :span="8">
+              <a-form-item field="enableArp" :label="t('scan.template.hostDiscovery.enableArp')">
+                <a-select v-model="pagination.enableArp" :placeholder="t('scan.template.hostDiscovery.enableArp.input')"
+                  allow-clear :options="commonOptions">
+                </a-select>
+              </a-form-item>
+            </a-col>
+            <a-col :span="8">
+              <a-form-item field="portScanSpeed" :label="t('scan.template.performance.portScanSpeed')">
+                <a-select v-model="pagination.portScanSpeed"
+                  :placeholder="t('scan.template.performance.portScanSpeed.input')" allow-clear :options="speedOptions">
+                </a-select>
+              </a-form-item>
+            </a-col>
 
-        </a-row>
-      </a-form>
-    </a-col>
-    <!-- 查询&重置按钮start -->
-    <a-divider style="height:84px" direction="vertical"></a-divider>
-    <a-col :flex="'86px'" style="text-align:right">
-      <a-space direction="vertical" :size="18">
-        <a-button type="primary" default-checked style="margin: 0 10px" @click="initHostScanTemplateList">
-          <template #icon>
-            <icon-search />
-          </template>
-          {{ $t('global.search') }}
-        </a-button>
-        <a-button style="margin: 0 10px" @click="reset">
-          <template #icon>
-            <icon-refresh />
-          </template>
-          {{ $t('global.reset') }}
-        </a-button>
+          </a-row>
+        </a-form>
+      </a-col>
+      <!-- 查询&重置按钮start -->
+      <a-divider style="height:84px" direction="vertical"></a-divider>
+      <a-col :flex="'86px'" style="text-align:right">
+        <a-space direction="vertical" :size="18">
+          <a-button type="primary" default-checked style="margin: 0 10px" @click="initHostScanTemplateList">
+            <template #icon>
+              <icon-search />
+            </template>
+            {{ $t('global.search') }}
+          </a-button>
+          <a-button style="margin: 0 10px" @click="reset">
+            <template #icon>
+              <icon-refresh />
+            </template>
+            {{ $t('global.reset') }}
+          </a-button>
 
-      </a-space>
+        </a-space>
 
-    </a-col>
-    <!-- 查询&重置按钮end -->
-  </a-row>
-  <!--数据搜索模块 end-->
-  <a-divider></a-divider>
-  <!-- 新增按钮start -->
-  <a-row style="margin-bottom: 16px">
-    <a-col :span="24" style="
+      </a-col>
+      <!-- 查询&重置按钮end -->
+    </a-row>
+    <!--数据搜索模块 end-->
+    <a-divider style="margin-top: 0"></a-divider>
+    <!-- 新增按钮start -->
+    <a-row style="margin-bottom: 16px">
+      <a-col :span="24" style="
             display: flex;
             justify-content: space-between;
             align-items: center;
           ">
-      <a-space>
-        <a-button type="primary" @click="addScanTemplate">
-          <template #icon>
-            <icon-plus />
-          </template>
-          {{ $t('scan.template.add') }}
-        </a-button>
-      </a-space>
-    </a-col>
-  </a-row>
+        <a-space>
+          <a-button type="primary" @click="addScanTemplate">
+            <template #icon>
+              <icon-plus />
+            </template>
+            {{ $t('scan.template.add') }}
+          </a-button>
+        </a-space>
+      </a-col>
+    </a-row>
+  </div>
   <!--主机扫描模板数据表格 start-->
-  <a-table row-key="id" :columns="columns" :data="tableData" :bordered="false" :pagination="false"
-    @sorter-change="sortedChangeEvent">
+  <a-table row-key="id" :columns="columns" :style="{ height: tableHeight + 'px' }" :data="tableData" :bordered="false"
+    :pagination="false" @sorter-change="sortedChangeEvent">
+    <template #templateName="{ record }">
+      <a-link @click="handleDetail(record.id)" :hoverable="false">{{ record.templateName }}</a-link>
+    </template>
     <template #portScanSpeed="{ record }">
       {{ t(PortScanSpeedEnum[record.portScanSpeed]) }}
     </template>
@@ -119,8 +124,8 @@
       </a-popconfirm>
     </template>
   </a-table>
-  <a-pagination class="paginationStyle" :total="pagination.total" :current="pagination.current"
-    :page-size="pagination.pageSize" show-total show-jumper show-page-size />
+  <a-pagination class="paginationStyle" :total="pagination.total" :current="pagination.pageIndex"
+    :page-size="pagination.pageSize" @change="changePageIndex" show-total />
   <!--主机扫描模板数据表格 end-->
 </template>
 
@@ -150,6 +155,7 @@ const columns = [
     sortable: {
       sorter: true,
     },
+    slotName: 'templateName',
   },
   {
     title: t('scan.template.hostDiscovery.enableIcmp'),
@@ -200,6 +206,10 @@ const columns = [
     slotName: 'operations',
   },
 ];
+// 头部实例用来动态计算高度
+const header = ref()
+// 表格高度
+const tableHeight = ref(0)
 // 主机扫描模板表格数据
 const tableData = ref<HostScanTemplateRes>([]);
 // 分页对象参数
@@ -259,8 +269,17 @@ const initHostScanTemplateList = async () => {
 
 // 当页面加载时，显示数据
 onMounted(() => {
+
+  // 动态计算表格的高度并进行分页
+  const height = document.documentElement.clientHeight - header.value.offsetHeight - 300;
+  tableHeight.value = height;
+  pagination.value.pageSize = Math.floor(height / 50);
   // 初始化页面表格数据
   initHostScanTemplateList();
+  // window.onresize = () => {
+  //   const height = document.documentElement.clientHeight - header.value.offsetHeight - 200;
+  //   pagination.value.pageIndex = Math.floor(height / 50);
+  // }
 });
 
 // ==========================事件响应模块==========================
@@ -287,10 +306,11 @@ const reset = () => {
   pagination.value.order = 'desc';
   pagination.value.sort = 'createTime';
   pagination.value.templateName = '';
-  pagination.value.synPort = '';
-  pagination.value.puPort = '';
   pagination.value.tcpPort = '';
   pagination.value.udpPort = '';
+  pagination.value.enableArp = '';
+  pagination.value.enableIcmp = '';
+  pagination.value.portScanSpeed = '';
   initHostScanTemplateList();
 };
 // 编辑
@@ -319,15 +339,30 @@ const deleteTemplate = async (record) => {
 // 新增
 const addScanTemplate = () => {
   router.push({
-    name: 'addTemplate'
+    name: 'addTemplate',
   })
 
+}
+// 详情
+const handleDetail = (templateId: string) => {
+  router.push({
+    name: 'showTemplate',
+    query: {
+      templateId,
+    }
+  })
+
+}
+// 改变页码
+const changePageIndex = (val) => {
+  pagination.value.pageIndex = val;
+  initHostScanTemplateList()
 }
 </script>
 
 <style scoped lang="less">
 .paginationStyle {
   justify-content: end;
-  margin-top: 50px;
+  margin-top: 20px;
 }
 </style>

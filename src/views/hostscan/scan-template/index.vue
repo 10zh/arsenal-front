@@ -15,11 +15,11 @@ import TemplateTable from '@/views/hostscan/scan-template/components/host-scan-t
 <style scoped lang="less">
 .container {
   padding: 0 20px 20px 20px;
-  height: calc(100vh - 100px);
+  // height: calc(100vh - 100px);
 }
 
 .general-card {
-  height: calc(100% - 50px);
+  // height: calc(100% - 50px);
 
   /deep/ .arco-card-header-title {
     // font-weight: 700;

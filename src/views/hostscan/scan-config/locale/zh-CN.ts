@@ -1,6 +1,7 @@
 export default {
   // 菜单
   'menu.list.scan.config': '扫描配置',
+  'menu.list.scan.configList': '配置列表',
   'menu.list.scan.config.add': '新增扫描配置',
   // 新增
   'button.scan': '扫描',
@@ -27,6 +28,8 @@ export default {
     '请输入扫描排除目标 例如:127.0.0.1 192.168.31.1',
   'host.scan.config.hostCredentials': '主机凭证',
   'host.scan.config.scanStatus': '扫描状态',
+  'host.scan.config.scanStatus.input':'未开始/进行中/暂停/停止',
+
   'host.scan.config.scanPress': '扫描进度',
   'button.detail': '详情',
   'menu.list.configDetail': '扫描详情',
@@ -119,4 +122,7 @@ export default {
   'scan.record.service.proof': '证据',
   'scan.record.network.discovery': '网络空间测绘',
   'scan.record.host.risk': '主机风险',
+
+  // 操作按钮
+  'scan.add.config.goback':'返回',
 };

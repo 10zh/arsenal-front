@@ -1,6 +1,6 @@
 <template>
   <!--数据搜索模块 start-->
-  <a-row :style="{ marginBottom: '20px' }">
+  <a-row>
     <a-col :flex="1">
       <a-form :model="form" label-align="left" auto-label-width>
         <a-row :gutter="24">
@@ -47,7 +47,7 @@
     <a-divider style="height:84px" direction="vertical"></a-divider>
     <a-col :flex="'86px'" style="text-align:right">
       <a-space direction="vertical" :size="18">
-        <a-button type="primary" default-checked style="margin: 0 10px" @click="initEngineList">
+        <a-button type="primary" style="margin: 0 10px" @click="initEngineList">
           <template #icon>
             <icon-search />
           </template>
@@ -65,8 +65,8 @@
     </a-col>
     <!-- 查询&重置按钮start -->
   </a-row>
-  <a-divider></a-divider>
-   <!--数据搜索模块 end-->
+  <a-divider style="margin-top: 0"></a-divider>
+  <!--数据搜索模块 end-->
   <!-- 新增按钮start -->
   <a-row style="margin-bottom: 16px">
     <a-col :span="24" style="
@@ -85,7 +85,7 @@
     </a-col>
   </a-row>
   <!-- 新增按钮end -->
- 
+
   <!--引擎数据表格 start-->
   <a-table row-key="id" :columns="columns" :data="tableData" :bordered="false" :pagination="false"
     @sorter-change="sortedChangeEvent">

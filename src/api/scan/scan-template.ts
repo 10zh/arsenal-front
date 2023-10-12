@@ -84,18 +84,18 @@ export function getScanTemplates(params: TemplateRequest) {
     url = `${url}&puPort-op=ct&puPort=${params.tcpPort}`;
   }
   if (params.udpPort) {
-    url = `${url}&puPort-op=ct&puPort=${params.udpPort}`;
+    url = `${url}&udpPort-op=ct&udpPort=${params.udpPort}`;
   }
   if(params.enableArp){
-    url = `${url}&puPort-op=ct&puPort=${params.enableArp}`;
+    url = `${url}&enableARP-op=eq&enableArp=${params.enableArp}`;
   }
 
   if(params.enableIcmp){
-    url = `${url}&puPort-op=ct&puPort=${params.enableIcmp}`;
+    url = `${url}&enableICMP-op=eq&enableArp=${params.enableIcmp}`;
   }
 
   if(params.portScanSpeed){
-    url = `${url}&puPort-op=ct&puPort=${params.portScanSpeed}`;
+    url = `${url}&portScanSpeed-op=eq&portScanSpeed=${params.portScanSpeed}`;
   }
   return axios.get<HostScanTemplateRes[]>(url);
 }

@@ -102,6 +102,19 @@ const HOSTSCAN: AppRouteRecordRaw = {
         hideInMenu: true,
       },
     },
+    // 查看模板
+    {
+      path: 'showTemplate',
+      name: 'showTemplate',
+      component: () =>
+        import('@/views/hostscan/scan-template/components/show-template.vue'),
+      meta: {
+        locale: 'menu.list.addtemplate',
+        requiresAuth: true,
+        roles: ['*'],
+        hideInMenu: true,
+      },
+    },
 
   ],
 };
