@@ -22,6 +22,7 @@ export interface HostScanTemplateRes {
   serviceDiscovery: {
     tcpPort: string;
     udpPort: string;
+    tcpDetectType:string;
   };
   message?: string;
 }
@@ -34,8 +35,9 @@ interface TemplateRequest {
   order: string;
   sort: string;
   templateName: string;
-  synPort: string;
-  puPort: string;
+  enableArp: string,
+  enableIcmp: string,
+  portScanSpeed: string;
   tcpPort: string;
   udpPort: string;
 }
@@ -78,28 +80,45 @@ export function getScanTemplates(params: TemplateRequest) {
   if (params.templateName) {
     url = `${url}&templateName-op=ct&templateName=${params.templateName}`;
   }
-  if (params.synPort) {
-    url = `${url}&synPort-op=ct&synPort=${params.synPort}`;
-  }
-  if (params.puPort) {
-    url = `${url}&puPort-op=ct&puPort=${params.puPort}`;
-  }
   if (params.tcpPort) {
     url = `${url}&puPort-op=ct&puPort=${params.tcpPort}`;
   }
   if (params.udpPort) {
     url = `${url}&puPort-op=ct&puPort=${params.udpPort}`;
   }
+  if(params.enableArp){
+    url = `${url}&puPort-op=ct&puPort=${params.enableArp}`;
+  }
+
+  if(params.enableIcmp){
+    url = `${url}&puPort-op=ct&puPort=${params.enableIcmp}`;
+  }
+
+  if(params.portScanSpeed){
+    url = `${url}&puPort-op=ct&puPort=${params.portScanSpeed}`;
+  }
   return axios.get<HostScanTemplateRes[]>(url);
 }
-
+// 添加模板
 export function addScanTemplates(data: HostScanTemplateRes) {
   return axios.post<HttpResponse>('/host/scan/templates/new', data);
 }
-
+// 编辑模板
 export function editScanTemplates(data: HostScanTemplateRes) {
   return axios.put<HttpResponse>(
     `/host/scan/templates/${data.id}/template`,
     data
+  );
+}
+// 查看单个模板数据
+export function getSingleScanTemplates(templateId:string) {
+  return axios.get<HttpResponse>(
+    `/host/scan/templates/${templateId}/template`,
+  );
+}
+// 删除模板
+export function deleteScanTemplates(templateId:string) {
+  return axios.delete<HttpResponse>(
+    `/host/scan/templates/${templateId}/template`,
   );
 }

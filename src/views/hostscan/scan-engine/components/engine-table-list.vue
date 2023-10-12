@@ -40,25 +40,10 @@
             </a-form-item>
           </a-col>
         </a-row>
-        <a-row style="margin-bottom: 16px">
-          <a-col :span="24" style="
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-          ">
-            <a-space>
-              <a-button type="primary" @click="addScanEngine">
-                <template #icon>
-                  <icon-plus />
-                </template>
-                {{ $t('scan.engine.add') }}
-              </a-button>
-            </a-space>
-          </a-col>
-        </a-row>
       </a-form>
 
     </a-col>
+    <!-- 查询&重置按钮start -->
     <a-divider style="height:84px" direction="vertical"></a-divider>
     <a-col :flex="'86px'" style="text-align:right">
       <a-space direction="vertical" :size="18">
@@ -78,11 +63,29 @@
       </a-space>
 
     </a-col>
-
-
-
+    <!-- 查询&重置按钮start -->
   </a-row>
-  <!--数据搜索模块 end-->
+  <a-divider></a-divider>
+   <!--数据搜索模块 end-->
+  <!-- 新增按钮start -->
+  <a-row style="margin-bottom: 16px">
+    <a-col :span="24" style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          ">
+      <a-space>
+        <a-button type="primary" @click="addScanEngine">
+          <template #icon>
+            <icon-plus />
+          </template>
+          {{ $t('scan.engine.add') }}
+        </a-button>
+      </a-space>
+    </a-col>
+  </a-row>
+  <!-- 新增按钮end -->
+ 
   <!--引擎数据表格 start-->
   <a-table row-key="id" :columns="columns" :data="tableData" :bordered="false" :pagination="false"
     @sorter-change="sortedChangeEvent">

@@ -51,7 +51,7 @@ const handleBeforeOk = (done) => {
       // 编辑引擎
       const res = await editScanEngine(form);
       if (res.success) {
-        Message.success(t('global.edit.success'));
+        Message.success(t('scan.edit.engine.success'));
       }
       done();
     }

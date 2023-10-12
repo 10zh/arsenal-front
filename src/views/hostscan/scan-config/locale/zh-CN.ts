@@ -1,7 +1,7 @@
 export default {
   // 菜单
-  'menu.list.scan.config': '主机扫描配置',
-  'menu.list.scan.config.add': '新增主机扫描配置',
+  'menu.list.scan.config': '扫描配置',
+  'menu.list.scan.config.add': '新增扫描配置',
   // 新增
   'button.scan': '扫描',
   'searchTable.scanConfig.create': '新建配置',

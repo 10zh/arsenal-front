@@ -29,4 +29,8 @@ export default {
   'scan.engine.status.input': '请选择引擎状态',
   'scan.engine.add': '新建扫描引擎',
   'scan.engine.edit': '编辑扫描引擎',
+  // 请求api状态
+  'scan.add.engine.success':'新增扫描引擎成功',
+  'scan.edit.engine.success':'修改扫描引擎成功',
+
 };
