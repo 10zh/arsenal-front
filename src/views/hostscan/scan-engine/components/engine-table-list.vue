@@ -1,94 +1,96 @@
 <template>
-  <!--数据搜索模块 start-->
-  <a-row>
-    <a-col :flex="1">
-      <a-form :model="form" label-align="left" auto-label-width>
-        <a-row :gutter="24">
-          <a-col :span="8">
-            <a-form-item field="engineName" :label="t('scan.engine.name')">
-              <a-input v-model="pagination.engineName" :placeholder="t('scan.engine.name.input')"></a-input>
-            </a-form-item>
-          </a-col>
-          <a-col :span="8">
-            <a-form-item field="address" :label="t('scan.engine.address')">
-              <a-input v-model="pagination.address" :placeholder="t('scan.engine.address.input')"></a-input>
-            </a-form-item>
-          </a-col>
-          <a-col :span="8">
-            <a-form-item field="port" :label="t('scan.engine.port')">
-              <a-input v-model="pagination.port" :placeholder="t('scan.engine.port.input')"></a-input>
-            </a-form-item>
-          </a-col>
-        </a-row>
-        <a-row :gutter="24">
-          <a-col :span="8">
-            <a-form-item field="status" :label="t('scan.engine.status')">
-              <a-select v-model="pagination.status" :placeholder="t('scan.engine.status.input')" allow-clear
-                :options="statusOptions">
-              </a-select>
-            </a-form-item>
-          </a-col>
-          <a-col :span="8">
-            <a-form-item field="createTime" :label="t('scan.engine.createTime')">
-              <a-range-picker v-model="pagination.createTime" :style="{ width: '100%' }" />
-            </a-form-item>
-          </a-col>
-          <a-col :span="8">
+  <div ref="header">
+    <!--数据搜索模块 start-->
+    <a-row>
+      <a-col :flex="1">
+        <a-form :model="form" label-align="left" auto-label-width>
+          <a-row :gutter="24">
+            <a-col :span="8">
+              <a-form-item field="engineName" :label="t('scan.engine.name')">
+                <a-input v-model="pagination.engineName" :placeholder="t('scan.engine.name.input')"></a-input>
+              </a-form-item>
+            </a-col>
+            <a-col :span="8">
+              <a-form-item field="address" :label="t('scan.engine.address')">
+                <a-input v-model="pagination.address" :placeholder="t('scan.engine.address.input')"></a-input>
+              </a-form-item>
+            </a-col>
+            <a-col :span="8">
+              <a-form-item field="port" :label="t('scan.engine.port')">
+                <a-input v-model="pagination.port" :placeholder="t('scan.engine.port.input')"></a-input>
+              </a-form-item>
+            </a-col>
+          </a-row>
+          <a-row :gutter="24">
+            <a-col :span="8">
+              <a-form-item field="status" :label="t('scan.engine.status')">
+                <a-select v-model="pagination.status" :placeholder="t('scan.engine.status.input')" allow-clear
+                  :options="statusOptions">
+                </a-select>
+              </a-form-item>
+            </a-col>
+            <a-col :span="8">
+              <a-form-item field="createTime" :label="t('scan.engine.createTime')">
+                <a-range-picker v-model="pagination.createTime" :style="{ width: '100%' }" />
+              </a-form-item>
+            </a-col>
+            <a-col :span="8">
 
-            <a-form-item field="version" :label="t('scan.engine.version')">
-              <a-input v-model="pagination.engineVersion" :placeholder="t('scan.engine.version.input')"></a-input>
-            </a-form-item>
-          </a-col>
-        </a-row>
-      </a-form>
+              <a-form-item field="version" :label="t('scan.engine.version')">
+                <a-input v-model="pagination.engineVersion" :placeholder="t('scan.engine.version.input')"></a-input>
+              </a-form-item>
+            </a-col>
+          </a-row>
+        </a-form>
 
-    </a-col>
-    <!-- 查询&重置按钮start -->
-    <a-divider style="height:84px" direction="vertical"></a-divider>
-    <a-col :flex="'86px'" style="text-align:right">
-      <a-space direction="vertical" :size="18">
-        <a-button type="primary" style="margin: 0 10px" @click="initEngineList">
-          <template #icon>
-            <icon-search />
-          </template>
-          {{ $t('global.search') }}
-        </a-button>
-        <a-button style="margin: 0 10px" @click="reset">
-          <template #icon>
-            <icon-refresh />
-          </template>
-          {{ $t('global.reset') }}
-        </a-button>
+      </a-col>
+      <!-- 查询&重置按钮start -->
+      <a-divider style="height:84px" direction="vertical"></a-divider>
+      <a-col :flex="'86px'" style="text-align:right">
+        <a-space direction="vertical" :size="18">
+          <a-button type="primary" style="margin: 0 10px" @click="initEngineList">
+            <template #icon>
+              <icon-search />
+            </template>
+            {{ $t('global.search') }}
+          </a-button>
+          <a-button style="margin: 0 10px" @click="reset">
+            <template #icon>
+              <icon-refresh />
+            </template>
+            {{ $t('global.reset') }}
+          </a-button>
 
-      </a-space>
+        </a-space>
 
-    </a-col>
-    <!-- 查询&重置按钮start -->
-  </a-row>
-  <a-divider style="margin-top: 0"></a-divider>
-  <!--数据搜索模块 end-->
-  <!-- 新增按钮start -->
-  <a-row style="margin-bottom: 16px">
-    <a-col :span="24" style="
+      </a-col>
+      <!-- 查询&重置按钮start -->
+    </a-row>
+    <a-divider style="margin-top: 0"></a-divider>
+    <!--数据搜索模块 end-->
+    <!-- 新增按钮start -->
+    <a-row style="margin-bottom: 16px">
+      <a-col :span="24" style="
             display: flex;
             justify-content: space-between;
             align-items: center;
           ">
-      <a-space>
-        <a-button type="primary" @click="addScanEngine">
-          <template #icon>
-            <icon-plus />
-          </template>
-          {{ $t('scan.engine.add') }}
-        </a-button>
-      </a-space>
-    </a-col>
-  </a-row>
-  <!-- 新增按钮end -->
+        <a-space>
+          <a-button type="primary" @click="addScanEngine">
+            <template #icon>
+              <icon-plus />
+            </template>
+            {{ $t('scan.engine.add') }}
+          </a-button>
+        </a-space>
+      </a-col>
+    </a-row>
+    <!-- 新增按钮end -->
+  </div>
 
   <!--引擎数据表格 start-->
-  <a-table row-key="id" :columns="columns" :data="tableData" :bordered="false" :pagination="false"
-    @sorter-change="sortedChangeEvent">
+  <a-table row-key="id" :columns="columns" :data="tableData" :style="{ height: tableHeight + 'px' }" :bordered="false"
+    :pagination="false" @sorter-change="sortedChangeEvent">
     <template #status="{ record }">
       <span v-if="record.status == '0'" style="color: green">
         <a-badge status="success" style="margin-right: 5px" />{{
@@ -127,7 +129,7 @@
     </template>
   </a-table>
   <a-pagination class="paginationStyle" :total="pagination.total" :current="pagination.current"
-    :page-size="pagination.pageSize" show-total show-jumper show-page-size />
+    :page-size="pagination.pageSize" show-total @change="changePageIndex" />
   <!--引擎数据表格 end-->
   <!--添加引擎对话层 start-->
   <AddEngienModel ref="addEngineRef" />
@@ -266,6 +268,10 @@ const form = reactive({});
 const addEngineRef = ref<any>({});
 // 编辑引擎子组件
 const editEngineRef = ref<any>({});
+// 头部实例用来动态计算高度
+const header = ref()
+// 表格高度
+const tableHeight = ref(0)
 
 // ==========================数据操纵模块==========================
 // 初始化引擎列表
@@ -279,6 +285,10 @@ const initEngineList = async () => {
 };
 // 当页面加载时，显示数据
 onMounted(() => {
+  // 动态计算表格的高度并进行分页
+  const height = document.documentElement.clientHeight - header.value.offsetHeight - 350;
+  tableHeight.value = height;
+  pagination.value.pageSize = Math.floor(height / 50);
   // 初始化页面表格数据
   initEngineList();
 
@@ -326,11 +336,16 @@ const editEngine = (row) => {
   editEngineRef.value.handleEditEngineVisible(true);
   editEngineRef.value.editRowValue(row);
 };
+// 改变页码
+const changePageIndex = (val) => {
+  pagination.value.pageIndex = val;
+  initEngineList()
+}
 </script>
 
 <style scoped lang="less">
 .paginationStyle {
   justify-content: end;
-  margin-top: 50px;
+  margin-top: 20px;
 }
 </style>

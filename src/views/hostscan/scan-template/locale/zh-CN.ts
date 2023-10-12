@@ -90,7 +90,7 @@ export default {
   'form.maxRetries.placeHolder':'次数为1-3次',
   'form.tcpPort.placeHolder':'1-1024',
   'form.udpPort.placeHolder':'53,5353',
-  'form.survivalMode.placeHolder':'SYN/TCP_CONNECT',
+  'form.survivalMode.placeHolder':'半连接/全连接',
 
   // 请求api状态
   'scan.add.template.success':'新增扫描模板成功',
@@ -100,6 +100,7 @@ export default {
   'scan.add.template.submit':'提交',
   'scan.add.template.reset':'重置',
   'scan.add.template.back':'返回',
+  'scan.template.operator.delete.question':'删除该模板'
   
 
 

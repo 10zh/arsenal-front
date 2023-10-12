@@ -15,11 +15,9 @@ import EngineTable from '@/views/hostscan/scan-engine/components/engine-table-li
 <style scoped lang="less">
 .container {
   padding: 0 20px 20px 20px;
-  height: calc(100vh - 100px);
 }
 
 .general-card {
-  height: calc(100% - 50px);
 
   /deep/ .arco-card-header-title {
     // font-weight: 700;

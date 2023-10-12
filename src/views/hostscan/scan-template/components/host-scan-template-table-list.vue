@@ -117,7 +117,7 @@
       <a-button type="text" size="small" style="padding: 0px" @click="editTemplate(record)">
         {{ $t('scan.template.operator.edit') }}
       </a-button>
-      <a-popconfirm :content="t('scan.engine.operator.refresh.question')" @ok="deleteTemplate(record)">
+      <a-popconfirm :content="t('scan.template.operator.delete.question')" @ok="deleteTemplate(record)">
         <a-button type="text" size="small" style="color:red">
           {{ $t('scan.template.operator.delete') }}
         </a-button>
@@ -269,9 +269,8 @@ const initHostScanTemplateList = async () => {
 
 // 当页面加载时，显示数据
 onMounted(() => {
-
   // 动态计算表格的高度并进行分页
-  const height = document.documentElement.clientHeight - header.value.offsetHeight - 300;
+  const height = document.documentElement.clientHeight - header.value.offsetHeight - 350;
   tableHeight.value = height;
   pagination.value.pageSize = Math.floor(height / 50);
   // 初始化页面表格数据

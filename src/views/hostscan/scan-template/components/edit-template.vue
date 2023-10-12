@@ -158,7 +158,7 @@ const formData = {
     serviceDiscovery: {
         tcpPort: '1-1024',
         udpPort: '53,5353',
-        tcpDetectType: '',
+        tcpDetectType: '半连接',
     },
     templateName: '',
     message: '',
