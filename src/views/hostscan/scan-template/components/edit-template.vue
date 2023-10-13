@@ -1,13 +1,16 @@
 <template>
   <div class="container">
-    <Breadcrumb :items="['menu.hostscan', 'menu.hostscan.addScanTemplate']" />
+    <Breadcrumb :items="['menu.hostscan', 'menu.hostscan.editScanTemplate']" />
     <a-form
       ref="formRef"
       :model="formModel"
       style="height: 100%"
       auto-label-width
     >
-      <a-card class="general-card" :title="$t('menu.hostscan.addScanTemplate')">
+      <a-card
+        class="general-card"
+        :title="$t('menu.hostscan.editScanTemplate')"
+      >
         <div class="content-container">
           <!-- 左侧主机发现start -->
           <div class="right-container">
@@ -194,23 +197,23 @@
 
 <script lang="ts" setup>
   // ==========================声明模块==========================
-  import { ref, reactive, computed } from 'vue';
+  import { ref, reactive, computed, onMounted } from 'vue';
   import type { SelectOptionData } from '@arco-design/web-vue/es/select/interface';
   import { useI18n } from 'vue-i18n';
   import {
     HostScanTemplateRes,
-    addScanTemplates,
+    editScanTemplates,
+    getSingleScanTemplates,
   } from '@/api/scan/scan-template';
   import { HttpResponse } from '@/api/interceptor/axios';
   import { Message } from '@arco-design/web-vue';
-  import { useRouter } from 'vue-router';
+  import { useRouter, useRoute } from 'vue-router';
 
   const { t } = useI18n();
   const router = useRouter();
-  // const route = useRoute();
-  // const pageType = ref<string>('');
-  // const useTemplate = useTemplateStore();
-  // 表单填写数据
+  const route = useRoute();
+
+  // 表单数据初始化
   const formData = {
     id: '',
     hostDiscovery: {
@@ -284,16 +287,29 @@
       value: 'SYN',
     },
   ]);
+  // ===================初始化数据(回显)===========
+  const initTemplateData = async () => {
+    const data: HttpResponse | any = await getSingleScanTemplates(
+      route.query.templateId
+    );
+    if (data.success) {
+      Object.assign(formModel, data.data);
+    } else {
+      Message.error(data.errMessage);
+    }
+  };
   // ===================事件=======================
   // 提交
   const handleSubmit = () => {
     formRef.value.validate().then(async (res: any) => {
       if (!res) {
         try {
-          const data: HttpResponse | any = await addScanTemplates(formModel);
+          const data: HttpResponse | any = await editScanTemplates(formModel);
           if (data.success) {
-            Message.success(t('scan.add.template.success'));
+            Message.success(t('scan.edit.template.success'));
             router.go(-1);
+          } else {
+            Message.error(data.errMessage);
           }
         } catch (error) {
           console.log(error);
@@ -309,6 +325,10 @@
   const handleReset = () => {
     Object.assign(formModel, formData);
   };
+  // 当页面加载时回显数据
+  onMounted(() => {
+    initTemplateData();
+  });
 </script>
 
 <style scoped lang="less">

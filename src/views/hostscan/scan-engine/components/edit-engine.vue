@@ -2,7 +2,7 @@
   <!--编辑引擎表单对话层 start-->
   <a-modal
     v-model:visible="visible"
-    width="auto"
+    width="700"
     :title="t('scan.engine.edit')"
     @cancel="handleEditEngineVisible(false)"
     @before-ok="handleBeforeOk"
@@ -65,7 +65,7 @@
         // 编辑引擎
         const res = await editScanEngine(form);
         if (res.success) {
-          Message.success(t('global.edit.success'));
+          Message.success(t('scan.edit.engine.success'));
         }
         done();
       }

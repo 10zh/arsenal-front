@@ -1,130 +1,117 @@
 <template>
   <!--数据搜索模块 start-->
-  <a-row :style="{ marginBottom: '20px', marginLeft: '15px' }">
-    <a-form :model="form" label-align="left" auto-label-width>
-      <a-row :gutter="24">
-        <a-col :span="6">
-          <a-form-item
-            field="templateName"
-            :label="t('scan.template.templateName')"
-          >
-            <a-auto-complete
-              v-model="pagination.templateName"
-              :data="autoCompleteData"
-              :placeholder="t('scan.template.name.input')"
-              @focus="
-                searchSingleField(
-                  'host_hst',
-                  'host_hst_tn',
-                  pagination.templateName
-                )
-              "
-              @change="
-                searchSingleField(
-                  'host_hst',
-                  'host_hst_tn',
-                  pagination.templateName
-                )
-              "
-            />
-          </a-form-item>
-        </a-col>
-        <a-col :span="6">
-          <a-form-item
-            field="synPort"
-            :label="t('scan.template.hostDiscovery.synPort')"
-          >
-            <a-auto-complete
-              v-model="pagination.synPort"
-              :data="autoCompleteData"
-              :placeholder="t('scan.template.synPort.input')"
-              @focus="
-                searchSingleField('host_hst', 'host_hst_sp', pagination.synPort)
-              "
-              @change="
-                searchSingleField('host_hst', 'host_hst_sp', pagination.synPort)
-              "
-            />
-          </a-form-item>
-        </a-col>
-        <a-col :span="6">
-          <a-form-item
-            field="puPort"
-            :label="t('scan.template.hostDiscovery.puPort')"
-          >
-            <a-auto-complete
-              v-model="pagination.puPort"
-              :data="autoCompleteData"
-              :placeholder="t('scan.template.puPort.input')"
-              @focus="
-                searchSingleField('host_hst', 'host_hst_pp', pagination.puPort)
-              "
-              @change="
-                searchSingleField('host_hst', 'host_hst_pp', pagination.puPort)
-              "
-            />
-          </a-form-item>
-        </a-col>
-        <a-col :span="6">
-          <a-form-item
-            field="tcpPort"
-            :label="t('scan.template.serviceDiscovery.tcpPort')"
-          >
-            <a-auto-complete
-              v-model="pagination.tcpPort"
-              :data="autoCompleteData"
-              :placeholder="t('scan.template.serviceDiscovery.input.tcpPort')"
-              @focus="
-                searchSingleField('host_hst', 'host_hst_tp', pagination.tcpPort)
-              "
-              @change="
-                searchSingleField('host_hst', 'host_hst_tp', pagination.tcpPort)
-              "
-            />
-          </a-form-item>
-        </a-col>
-      </a-row>
-      <a-row>
-        <a-col :span="6">
-          <a-form-item
-            field="udpPort"
-            :label="t('scan.template.serviceDiscovery.udpPort')"
-          >
-            <a-auto-complete
-              v-model="pagination.udpPort"
-              :data="autoCompleteData"
-              :placeholder="t('scan.template.serviceDiscovery.input.udpPort')"
-              @focus="
-                searchSingleField('host_hst', 'host_hst_pp', pagination.udpPort)
-              "
-              @change="
-                searchSingleField('host_hst', 'host_hst_pp', pagination.udpPort)
-              "
-            />
-          </a-form-item>
-        </a-col>
-        <a-col :span="6">
-          <a-button
-            type="primary"
-            default-checked
-            style="margin: 0 10px"
-            @click="initHostScanTemplateList"
-          >
-            <template #icon>
-              <icon-search />
-            </template>
-            {{ $t('global.search') }}
-          </a-button>
-          <a-button style="margin: 0 10px" @click="reset">
-            <template #icon>
-              <icon-refresh />
-            </template>
-            {{ $t('global.reset') }}
-          </a-button>
-        </a-col>
-      </a-row>
-    </a-form>
+  <a-row>
+    <a-col :flex="1">
+      <a-form :model="pagination" label-align="left" auto-label-width>
+        <a-row :gutter="24">
+          <a-col :span="8">
+            <a-form-item
+              field="templateName"
+              :label="t('scan.template.templateName')"
+            >
+              <a-input
+                v-model="pagination.templateName"
+                :placeholder="t('scan.template.name.input')"
+              ></a-input>
+            </a-form-item>
+          </a-col>
+          <a-col :span="8">
+            <a-form-item
+              field="tcpPort"
+              :label="t('scan.template.serviceDiscovery.tcpPort')"
+            >
+              <a-input
+                v-model="pagination.tcpPort"
+                :placeholder="t('scan.template.serviceDiscovery.input.tcpPort')"
+              ></a-input>
+            </a-form-item>
+          </a-col>
+          <a-col :span="8">
+            <a-form-item
+              field="udpPort"
+              :label="t('scan.template.serviceDiscovery.udpPort')"
+            >
+              <a-input
+                v-model="pagination.udpPort"
+                :placeholder="t('scan.template.serviceDiscovery.input.udpPort')"
+              ></a-input>
+            </a-form-item>
+          </a-col>
+        </a-row>
+        <a-row :gutter="24">
+          <a-col :span="8">
+            <a-form-item
+              field="enableIcmp"
+              :label="t('scan.template.hostDiscovery.enableIcmp')"
+            >
+              <a-select
+                v-model="pagination.enableIcmp"
+                :placeholder="t('scan.template.hostDiscovery.enableIcmp.input')"
+                allow-clear
+                :options="commonOptions"
+              >
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col :span="8">
+            <a-form-item
+              field="enableArp"
+              :label="t('scan.template.hostDiscovery.enableArp')"
+            >
+              <a-select
+                v-model="pagination.enableArp"
+                :placeholder="t('scan.template.hostDiscovery.enableArp.input')"
+                allow-clear
+                :options="commonOptions"
+              >
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col :span="8">
+            <a-form-item
+              field="portScanSpeed"
+              :label="t('scan.template.performance.portScanSpeed')"
+            >
+              <a-select
+                v-model="pagination.portScanSpeed"
+                :placeholder="
+                  t('scan.template.performance.portScanSpeed.input')
+                "
+                allow-clear
+                :options="speedOptions"
+              >
+              </a-select>
+            </a-form-item>
+          </a-col>
+        </a-row>
+      </a-form>
+    </a-col>
+    <!-- 查询&重置按钮start -->
+    <a-divider style="height: 84px" direction="vertical"></a-divider>
+    <a-col :flex="'86px'" style="text-align: right">
+      <a-space direction="vertical" :size="18">
+        <a-button
+          type="primary"
+          default-checked
+          style="margin: 0 10px"
+          @click="initHostScanTemplateList"
+        >
+          <template #icon>
+            <icon-search />
+          </template>
+          {{ $t('global.search') }}
+        </a-button>
+        <a-button style="margin: 0 10px" @click="reset">
+          <template #icon>
+            <icon-refresh />
+          </template>
+          {{ $t('global.reset') }}
+        </a-button>
+      </a-space>
+    </a-col>
+    <!-- 查询&重置按钮end -->
   </a-row>
+
   <!--数据搜索模块 end-->
   <!--主机扫描模板数据表格 start-->
   <a-table
@@ -139,19 +126,19 @@
     @sorter-change="sortedChangeEvent"
   >
     <template #portScanSpeed="{ record }">
-      {{ t(PortScanSpeedEnum[record.performance.portScanSpeed]) }}
+      {{ t(PortScanSpeedEnum[record.portScanSpeed]) }}
     </template>
     <template #enableIcmp="{ record }">
-      {{ t(BoolEnum[record.hostDiscovery.enableIcmp]) }}
+      {{ t(BoolEnum[record.enableIcmp]) }}
     </template>
     <template #enableArp="{ record }">
-      {{ t(BoolEnum[record.hostDiscovery.enableArp]) }}
+      {{ t(BoolEnum[record.enableArp]) }}
     </template>
     <template #enableSyn="{ record }">
-      {{ t(BoolEnum[record.hostDiscovery.enableSyn]) }}
+      {{ t(BoolEnum[record.enableSyn]) }}
     </template>
     <template #enablePu="{ record }">
-      {{ t(BoolEnum[record.hostDiscovery.enablePu]) }}
+      {{ t(BoolEnum[record.enablePu]) }}
     </template>
   </a-table>
   <a-pagination
@@ -189,37 +176,12 @@
       dataIndex: 'templateName',
       sortable: {
         sorter: true,
-        sortDirections: ['ascend', 'descend'],
       },
-    },
-    {
-      title: t('scan.template.performance.assetConcurrency'),
-      dataIndex: 'performance.assetConcurrency',
-      sortable: {
-        sorter: true,
-        sortDirections: ['ascend', 'descend'],
-      },
-    },
-    {
-      title: t('scan.template.performance.singleAssetThread'),
-      dataIndex: 'performance.singleAssetThread',
-      sortable: {
-        sorter: true,
-        sortDirections: ['ascend', 'descend'],
-      },
-    },
-    {
-      title: t('scan.template.performance.portScanSpeed'),
-      dataIndex: 'performance.portScanSpeed',
-      sortable: {
-        sorter: true,
-        sortDirections: ['ascend', 'descend'],
-      },
-      slotName: 'portScanSpeed',
+      slotName: 'templateName',
     },
     {
       title: t('scan.template.hostDiscovery.enableIcmp'),
-      dataIndex: 'hostDiscovery.enableIcmp',
+      dataIndex: 'enableIcmp',
       sortable: {
         sorter: true,
         sortDirections: ['ascend', 'descend'],
@@ -228,7 +190,7 @@
     },
     {
       title: t('scan.template.hostDiscovery.enableArp'),
-      dataIndex: 'hostDiscovery.enableArp',
+      dataIndex: 'enableArp',
       sortable: {
         sorter: true,
         sortDirections: ['ascend', 'descend'],
@@ -236,66 +198,29 @@
       slotName: 'enableArp',
     },
     {
-      title: t('scan.template.hostDiscovery.enableSyn'),
-      dataIndex: 'hostDiscovery.enableSyn',
-      sortable: {
-        sorter: true,
-        sortDirections: ['ascend', 'descend'],
-      },
-      slotName: 'enableSyn',
-    },
-    {
       title: t('scan.template.hostDiscovery.synPort'),
-      dataIndex: 'hostDiscovery.synPort',
-      sortable: {
-        sorter: true,
-        sortDirections: ['ascend', 'descend'],
-      },
+      dataIndex: 'synPort',
       slotName: 'synPort',
     },
     {
-      title: t('scan.template.hostDiscovery.enablePu'),
-      dataIndex: 'hostDiscovery.enablePu',
-      sortable: {
-        sorter: true,
-        sortDirections: ['ascend', 'descend'],
-      },
-      slotName: 'enablePu',
-    },
-    {
       title: t('scan.template.hostDiscovery.puPort'),
-      dataIndex: 'hostDiscovery.puPort',
-      sortable: {
-        sorter: true,
-        sortDirections: ['ascend', 'descend'],
-      },
+      dataIndex: 'puPort',
       slotName: 'puPort',
     },
     {
-      title: t('scan.template.hostDiscovery.maxRetries'),
-      dataIndex: 'hostDiscovery.maxRetries',
-      sortable: {
-        sorter: true,
-        sortDirections: ['ascend', 'descend'],
-      },
-    },
-    {
       title: t('scan.template.serviceDiscovery.tcpPort'),
-      dataIndex: 'serviceDiscovery.tcpPort',
-      sortable: {
-        sorter: true,
-        sortDirections: ['ascend', 'descend'],
-      },
+      dataIndex: 'tcpPort',
       slotName: 'tcpPort',
     },
     {
       title: t('scan.template.serviceDiscovery.udpPort'),
-      dataIndex: 'serviceDiscovery.udpPort',
-      sortable: {
-        sorter: true,
-        sortDirections: ['ascend', 'descend'],
-      },
+      dataIndex: 'udpPort',
       slotName: 'udpPort',
+    },
+    {
+      title: t('scan.template.performance.portScanSpeed'),
+      dataIndex: 'performance.portScanSpeed',
+      slotName: 'portScanSpeed',
     },
   ];
   // 主机扫描模板表格数据
@@ -322,8 +247,6 @@
     field: '',
     value: '',
   });
-  // 输入框自动补全
-  const autoCompleteData = ref([]);
   // 当前选择的引擎key
   const currentSelectRowKey = ref();
   // 行选择器
@@ -379,17 +302,7 @@
     // 重新刷新列表
     initHostScanTemplateList();
   };
-  // 单个字段搜索事件
-  const searchSingleField = async (table, field, value) => {
-    autoCompleteData.value = [];
-    singleFieldPagination.value.table = table;
-    singleFieldPagination.value.field = field;
-    singleFieldPagination.value.value = value;
-    const response = await aotuCompleteByTableField(
-      singleFieldPagination.value
-    );
-    autoCompleteData.value = response.data;
-  };
+
   // 重置事件
   const reset = () => {
     pagination.value.order = 'desc';
@@ -415,6 +328,6 @@
 <style scoped lang="less">
   .paginationStyle {
     justify-content: end;
-    margin-top: 50px;
+    margin-top: 20px;
   }
 </style>

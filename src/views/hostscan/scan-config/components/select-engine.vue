@@ -1,98 +1,94 @@
 <template>
   <!--数据搜索模块 start-->
-  <a-row :style="{ marginBottom: '20px', marginLeft: '15px' }">
-    <a-form :model="form" label-align="left" auto-label-width>
-      <a-row :gutter="24">
-        <a-col :span="4">
-          <a-form-item field="engineName" :label="t('scan.engine.name')">
-            <a-auto-complete
-              v-model="pagination.engineName"
-              :data="autoCompleteData"
-              :placeholder="t('scan.engine.name.input')"
-              @focus="
-                searchSingleField('scan_se', 'scan_en', pagination.engineName)
-              "
-              @change="
-                searchSingleField('scan_se', 'scan_en', pagination.engineName)
-              "
-            />
-          </a-form-item>
-        </a-col>
-        <a-col :span="4">
-          <a-form-item field="address" :label="t('scan.engine.address')">
-            <a-auto-complete
-              v-model="pagination.address"
-              :data="autoCompleteData"
-              :placeholder="t('scan.engine.address.input')"
-              @focus="
-                searchSingleField('scan_se', 'scan_se_as', pagination.address)
-              "
-              @change="
-                searchSingleField('scan_se', 'scan_se_as', pagination.address)
-              "
-            />
-          </a-form-item>
-        </a-col>
-        <a-col :span="4">
-          <a-form-item field="port" :label="t('scan.engine.port')">
-            <a-auto-complete
-              v-model="pagination.port"
-              :data="autoCompleteData"
-              :placeholder="t('scan.engine.port.input')"
-              @focus="
-                searchSingleField('scan_se', 'scan_se_pt', pagination.port)
-              "
-              @change="
-                searchSingleField('scan_se', 'scan_se_pt', pagination.port)
-              "
-            />
-          </a-form-item>
-        </a-col>
-        <a-col :span="4">
-          <a-form-item field="version" :label="t('scan.engine.version')">
-            <a-auto-complete
-              v-model="pagination.engineVersion"
-              :data="autoCompleteData"
-              :placeholder="t('scan.engine.version.input')"
-              @focus="
-                searchSingleField(
-                  'scan_se',
-                  'scan_se_ev',
-                  pagination.engineVersion
-                )
-              "
-              @change="
-                searchSingleField(
-                  'scan_se',
-                  'scan_se_ev',
-                  pagination.engineVersion
-                )
-              "
-            />
-          </a-form-item>
-        </a-col>
-        <a-col :span="6">
-          <a-button
-            type="primary"
-            default-checked
-            style="margin: 0 10px"
-            @click="initEngineList"
-          >
-            <template #icon>
-              <icon-search />
-            </template>
-            {{ $t('global.search') }}
-          </a-button>
-          <a-button style="margin: 0 10px" @click="reset">
-            <template #icon>
-              <icon-refresh />
-            </template>
-            {{ $t('global.reset') }}
-          </a-button>
-        </a-col>
-      </a-row>
-    </a-form>
+  <!--数据搜索模块 start-->
+  <a-row>
+    <a-col :flex="1">
+      <a-form :model="form" label-align="left" auto-label-width>
+        <a-row :gutter="24">
+          <a-col :span="8">
+            <a-form-item field="engineName" :label="t('scan.engine.name')">
+              <a-input
+                v-model="pagination.engineName"
+                :placeholder="t('scan.engine.name.input')"
+              ></a-input>
+            </a-form-item>
+          </a-col>
+          <a-col :span="8">
+            <a-form-item field="address" :label="t('scan.engine.address')">
+              <a-input
+                v-model="pagination.address"
+                :placeholder="t('scan.engine.address.input')"
+              ></a-input>
+            </a-form-item>
+          </a-col>
+          <a-col :span="8">
+            <a-form-item field="port" :label="t('scan.engine.port')">
+              <a-input
+                v-model="pagination.port"
+                :placeholder="t('scan.engine.port.input')"
+              ></a-input>
+            </a-form-item>
+          </a-col>
+        </a-row>
+        <a-row :gutter="24">
+          <a-col :span="8">
+            <a-form-item field="status" :label="t('scan.engine.status')">
+              <a-select
+                v-model="pagination.status"
+                :placeholder="t('scan.engine.status.input')"
+                allow-clear
+                :options="statusOptions"
+              >
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col :span="8">
+            <a-form-item
+              field="createTime"
+              :label="t('scan.engine.createTime')"
+            >
+              <a-range-picker
+                v-model="pagination.createTime"
+                :style="{ width: '100%' }"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col :span="8">
+            <a-form-item field="version" :label="t('scan.engine.version')">
+              <a-input
+                v-model="pagination.engineVersion"
+                :placeholder="t('scan.engine.version.input')"
+              ></a-input>
+            </a-form-item>
+          </a-col>
+        </a-row>
+      </a-form>
+    </a-col>
+    <!-- 查询&重置按钮start -->
+    <a-divider style="height: 84px" direction="vertical"></a-divider>
+    <a-col :flex="'86px'" style="text-align: right">
+      <a-space direction="vertical" :size="18">
+        <a-button
+          type="primary"
+          default-checked
+          style="margin: 0 10px"
+          @click="initEngineList"
+        >
+          <template #icon>
+            <icon-search />
+          </template>
+          {{ $t('global.search') }}
+        </a-button>
+        <a-button style="margin: 0 10px" @click="reset">
+          <template #icon>
+            <icon-refresh />
+          </template>
+          {{ $t('global.reset') }}
+        </a-button>
+      </a-space>
+    </a-col>
   </a-row>
+  <!--数据搜索模块 end-->
   <!--数据搜索模块 end-->
   <!--引擎数据表格 start-->
   <a-table
@@ -127,30 +123,6 @@
     </template>
     <template #updateTime="{ record }">
       {{ formatDate(record.updateTime, 'YYYY-MM-DD hh:mm:ss') }}
-    </template>
-    <template #operations="{ record }">
-      <a-button
-        type="text"
-        size="small"
-        style="padding: 0px"
-        @click="editEngine(record)"
-      >
-        <template #icon>
-          <icon-edit />
-        </template>
-        {{ $t('scan.engine.operator.edit') }}
-      </a-button>
-      <a-popconfirm
-        :content="t('scan.engine.operator.refresh.question')"
-        @ok="refreshEngine(record)"
-      >
-        <a-button type="text" size="small">
-          <template #icon>
-            <icon-refresh />
-          </template>
-          {{ $t('scan.engine.operator.refresh') }}
-        </a-button>
-      </a-popconfirm>
     </template>
   </a-table>
   <a-pagination
@@ -256,11 +228,6 @@
       dataIndex: 'status',
       slotName: 'status',
     },
-    {
-      title: t('scan.engine.operations'),
-      dataIndex: 'operations',
-      slotName: 'operations',
-    },
   ];
   // 扫描引擎表格数据
   const tableData = ref<HostScanEngineRes>([]);
@@ -275,6 +242,8 @@
     address: '',
     port: '',
     engineVersion: '',
+    status: '',
+    createTime: [],
   });
   // 搜索表单
   const form = reactive({});
@@ -344,17 +313,6 @@
     // 重新刷新列表
     initEngineList();
   };
-  // 单个字段搜索事件
-  const searchSingleField = async (table, field, value) => {
-    autoCompleteData.value = [];
-    singleFieldPagination.value.table = table;
-    singleFieldPagination.value.field = field;
-    singleFieldPagination.value.value = value;
-    const response = await aotuCompleteByTableField(
-      singleFieldPagination.value
-    );
-    autoCompleteData.value = response.data;
-  };
   // 重置事件
   const reset = () => {
     pagination.value.order = 'desc';
@@ -379,6 +337,6 @@
 <style scoped lang="less">
   .paginationStyle {
     justify-content: end;
-    margin-top: 50px;
+    margin-top: 20px;
   }
 </style>

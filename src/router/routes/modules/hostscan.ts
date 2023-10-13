@@ -76,6 +76,7 @@ const HOSTSCAN: AppRouteRecordRaw = {
         roles: ['*'],
       },
     },
+    // 新增模板
     {
       path: 'addTemplate',
       name: 'addTemplate',
@@ -88,6 +89,33 @@ const HOSTSCAN: AppRouteRecordRaw = {
         hideInMenu: true,
       },
     },
+    // 编辑模板
+    {
+      path: 'editTemplate',
+      name: 'editTemplate',
+      component: () =>
+        import('@/views/hostscan/scan-template/components/edit-template.vue'),
+      meta: {
+        locale: 'menu.list.addtemplate',
+        requiresAuth: true,
+        roles: ['*'],
+        hideInMenu: true,
+      },
+    },
+    // 查看模板
+    {
+      path: 'showTemplate',
+      name: 'showTemplate',
+      component: () =>
+        import('@/views/hostscan/scan-template/components/show-template.vue'),
+      meta: {
+        locale: 'menu.list.addtemplate',
+        requiresAuth: true,
+        roles: ['*'],
+        hideInMenu: true,
+      },
+    },
+
   ],
 };
 

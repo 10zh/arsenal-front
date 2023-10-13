@@ -2,7 +2,7 @@
   <!--添加引擎表单对话层 start-->
   <a-modal
     v-model:visible="visible"
-    width="auto"
+    width="700"
     :title="t('scan.engine.add')"
     @cancel="handleAddEngineVisible(false)"
     @before-ok="handleBeforeOk"
@@ -13,21 +13,30 @@
         :label="t('scan.engine.name')"
         :rules="[{ required: true, message: t('scan.engine.name.input') }]"
       >
-        <a-input v-model="form.engineName" />
+        <a-input
+          v-model="form.engineName"
+          :placeholder="t('scan.engine.name.input')"
+        />
       </a-form-item>
       <a-form-item
         field="address"
         :label="t('scan.engine.address')"
         :rules="[{ required: true, message: t('scan.engine.address.input') }]"
       >
-        <a-input v-model="form.address" />
+        <a-input
+          v-model="form.address"
+          :placeholder="t('scan.engine.address.input')"
+        />
       </a-form-item>
       <a-form-item
         field="port"
         :label="t('scan.engine.port')"
         :rules="[{ required: true, message: t('scan.engine.port.input') }]"
       >
-        <a-input-number v-model="form.port" />
+        <a-input-number
+          v-model="form.port"
+          :placeholder="t('scan.engine.port.input')"
+        />
       </a-form-item>
     </a-form>
   </a-modal>

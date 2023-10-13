@@ -11,6 +11,8 @@ export interface HostScanConfigPageRequest {
   configName: string;
   engineName: string;
   templateName: string;
+  target:string;
+  scanStatus:string;
 }
 
 // 新增扫描配置
@@ -33,6 +35,12 @@ export function getHostScanConfigPageList(params: HostScanConfigPageRequest) {
   }
   if (params.templateName) {
     url = `${url}&templateName-op=ct&templateName=${params.templateName}`;
+  }
+  if(params.target){
+    url = `${url}&templateName-op=ct&templateName=${params.target}`;
+  }
+  if(params.scanStatus){
+    url = `${url}&templateName-op=ct&templateName=${params.scanStatus}`;
   }
   return axios.get<HttpResponse>(url);
 }

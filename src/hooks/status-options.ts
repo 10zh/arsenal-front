@@ -1,7 +1,7 @@
 export function getStatusColor(status: number) {
-  let color = '';
+  let color = '#ff7d00';
   if (status === 0) {
-    color = '#86909c'
+    color = '#ff7d00'
   } else if (status === 1) {
     color = '#b71de8'
   } else if (status === 2) {

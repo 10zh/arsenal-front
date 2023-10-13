@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <Breadcrumb :items="['menu.hostscan', 'menu.list.scan.engine']" />
-    <a-card class="general-card" :title="$t('menu.list.scan.engine')">
+    <a-card class="general-card" :title="$t('menu.list.scan.engineList')">
       <EngineTable />
     </a-card>
   </div>
@@ -15,5 +15,12 @@
 <style scoped lang="less">
   .container {
     padding: 0 20px 20px 20px;
+  }
+
+  .general-card {
+    /deep/ .arco-card-header-title {
+      // font-weight: 700;
+      font-size: 20px;
+    }
   }
 </style>

@@ -1,9 +1,12 @@
 export default {
   'menu.list.scan.engine': '扫描引擎',
+  'menu.list.scan.engineList': '引擎列表',
   // 数据列
   'scan.engine.name': '引擎名称',
   'scan.engine.address': '引擎地址',
   'scan.engine.port': '引擎端口',
+  'scan.engine.status': '引擎状态',
+  'scan.engine.createTime': '创建时间',
   'scan.engine.version': '引擎版本',
   'scan.engine.version.assignedTaskNumber': '关联任务数',
   'scan.engine.version.isLocal': '是否为本地引擎',
@@ -23,6 +26,11 @@ export default {
   'scan.engine.address.input': '请输入引擎地址',
   'scan.engine.port.input': '请输入引擎端口',
   'scan.engine.version.input': '请输入引擎版本',
+  'scan.engine.status.input': '请选择引擎状态',
   'scan.engine.add': '新建扫描引擎',
   'scan.engine.edit': '编辑扫描引擎',
+  // 请求api状态
+  'scan.add.engine.success':'新增扫描引擎成功',
+  'scan.edit.engine.success':'修改扫描引擎成功',
+
 };
