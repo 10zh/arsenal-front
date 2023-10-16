@@ -29,6 +29,13 @@ export default {
   'host.scan.config.hostCredentials': '主机凭证',
   'host.scan.config.scanStatus': '扫描状态',
   'host.scan.config.scanStatus.input':'未开始/进行中/暂停/停止',
+  'searchTable.scanConfig.select.engine':'选择扫描引擎',
+  'searchTable.scanConfig.select.template':'选择扫描模板',
+  'host.scan.config.createTime':'配置创建时间',
+  'host.scan.config.updateTime':'更新时间',
+  'host.scan.config.lastScanStatus':'最近一次扫描状态',
+
+
 
   'host.scan.config.scanPress': '扫描进度',
   'button.detail': '详情',

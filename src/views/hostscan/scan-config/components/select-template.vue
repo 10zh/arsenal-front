@@ -1,130 +1,80 @@
 <template>
-  <!--数据搜索模块 start-->
-  <a-row>
-    <a-col :flex="1">
-      <a-form :model="pagination" label-align="left" auto-label-width>
-        <a-row :gutter="24">
-          <a-col :span="8">
-            <a-form-item
-              field="templateName"
-              :label="t('scan.template.templateName')"
-            >
-              <a-input
-                v-model="pagination.templateName"
-                :placeholder="t('scan.template.name.input')"
-              ></a-input>
-            </a-form-item>
-          </a-col>
-          <a-col :span="8">
-            <a-form-item
-              field="tcpPort"
-              :label="t('scan.template.serviceDiscovery.tcpPort')"
-            >
-              <a-input
-                v-model="pagination.tcpPort"
-                :placeholder="t('scan.template.serviceDiscovery.input.tcpPort')"
-              ></a-input>
-            </a-form-item>
-          </a-col>
-          <a-col :span="8">
-            <a-form-item
-              field="udpPort"
-              :label="t('scan.template.serviceDiscovery.udpPort')"
-            >
-              <a-input
-                v-model="pagination.udpPort"
-                :placeholder="t('scan.template.serviceDiscovery.input.udpPort')"
-              ></a-input>
-            </a-form-item>
-          </a-col>
-        </a-row>
-        <a-row :gutter="24">
-          <a-col :span="8">
-            <a-form-item
-              field="enableIcmp"
-              :label="t('scan.template.hostDiscovery.enableIcmp')"
-            >
-              <a-select
-                v-model="pagination.enableIcmp"
-                :placeholder="t('scan.template.hostDiscovery.enableIcmp.input')"
-                allow-clear
-                :options="commonOptions"
-              >
-              </a-select>
-            </a-form-item>
-          </a-col>
-          <a-col :span="8">
-            <a-form-item
-              field="enableArp"
-              :label="t('scan.template.hostDiscovery.enableArp')"
-            >
-              <a-select
-                v-model="pagination.enableArp"
-                :placeholder="t('scan.template.hostDiscovery.enableArp.input')"
-                allow-clear
-                :options="commonOptions"
-              >
-              </a-select>
-            </a-form-item>
-          </a-col>
-          <a-col :span="8">
-            <a-form-item
-              field="portScanSpeed"
-              :label="t('scan.template.performance.portScanSpeed')"
-            >
-              <a-select
-                v-model="pagination.portScanSpeed"
-                :placeholder="
-                  t('scan.template.performance.portScanSpeed.input')
-                "
-                allow-clear
-                :options="speedOptions"
-              >
-              </a-select>
-            </a-form-item>
-          </a-col>
-        </a-row>
-      </a-form>
-    </a-col>
-    <!-- 查询&重置按钮start -->
-    <a-divider style="height: 84px" direction="vertical"></a-divider>
-    <a-col :flex="'86px'" style="text-align: right">
-      <a-space direction="vertical" :size="18">
-        <a-button
-          type="primary"
-          default-checked
-          style="margin: 0 10px"
-          @click="initHostScanTemplateList"
-        >
-          <template #icon>
-            <icon-search />
-          </template>
-          {{ $t('global.search') }}
-        </a-button>
-        <a-button style="margin: 0 10px" @click="reset">
-          <template #icon>
-            <icon-refresh />
-          </template>
-          {{ $t('global.reset') }}
-        </a-button>
-      </a-space>
-    </a-col>
-    <!-- 查询&重置按钮end -->
-  </a-row>
+  <div ref="header">
+    <!--数据搜索模块 start-->
+    <a-row>
+      <a-col :flex="1">
+        <a-form :model="pagination" label-align="left" auto-label-width>
+          <a-row :gutter="24">
+            <a-col :span="8">
+              <a-form-item field="templateName" :label="t('scan.template.templateName')">
+                <a-input v-model="pagination.templateName" :placeholder="t('scan.template.name.input')"></a-input>
+              </a-form-item>
+            </a-col>
+            <a-col :span="8">
+              <a-form-item field="tcpPort" :label="t('scan.template.serviceDiscovery.tcpPort')">
+                <a-input v-model="pagination.tcpPort"
+                  :placeholder="t('scan.template.serviceDiscovery.input.tcpPort')"></a-input>
+              </a-form-item>
+            </a-col>
+            <a-col :span="8">
+              <a-form-item field="udpPort" :label="t('scan.template.serviceDiscovery.udpPort')">
+                <a-input v-model="pagination.udpPort"
+                  :placeholder="t('scan.template.serviceDiscovery.input.udpPort')"></a-input>
+              </a-form-item>
+            </a-col>
+          </a-row>
+          <a-row :gutter="24">
+            <a-col :span="8">
+              <a-form-item field="enableIcmp" :label="t('scan.template.hostDiscovery.enableIcmp')">
+                <a-select v-model="pagination.enableIcmp" :placeholder="t('scan.template.hostDiscovery.enableIcmp.input')"
+                  allow-clear :options="commonOptions">
+                </a-select>
+              </a-form-item>
+            </a-col>
+            <a-col :span="8">
+              <a-form-item field="enableArp" :label="t('scan.template.hostDiscovery.enableArp')">
+                <a-select v-model="pagination.enableArp" :placeholder="t('scan.template.hostDiscovery.enableArp.input')"
+                  allow-clear :options="commonOptions">
+                </a-select>
+              </a-form-item>
+            </a-col>
+            <a-col :span="8">
+              <a-form-item field="portScanSpeed" :label="t('scan.template.performance.portScanSpeed')">
+                <a-select v-model="pagination.portScanSpeed" :placeholder="t('scan.template.performance.portScanSpeed.input')
+                  " allow-clear :options="speedOptions">
+                </a-select>
+              </a-form-item>
+            </a-col>
+          </a-row>
+        </a-form>
+      </a-col>
+      <!-- 查询&重置按钮start -->
+      <a-divider style="height: 84px" direction="vertical"></a-divider>
+      <a-col :flex="'86px'" style="text-align: right">
+        <a-space direction="vertical" :size="18">
+          <a-button type="primary" default-checked style="margin: 0 10px" @click="initHostScanTemplateList">
+            <template #icon>
+              <icon-search />
+            </template>
+            {{ $t('global.search') }}
+          </a-button>
+          <a-button style="margin: 0 10px" @click="reset">
+            <template #icon>
+              <icon-refresh />
+            </template>
+            {{ $t('global.reset') }}
+          </a-button>
+        </a-space>
+      </a-col>
+      <!-- 查询&重置按钮end -->
+    </a-row>
 
+  </div>
   <!--数据搜索模块 end-->
   <!--主机扫描模板数据表格 start-->
-  <a-table
-    row-key="id"
-    :columns="columns"
-    :data="tableData"
-    :bordered="false"
-    :pagination="false"
-    :row-selection="rowSelection"
-    :style="{ marginBottom: '20px', marginLeft: '15px' }"
-    @select="selectRowKey"
-    @sorter-change="sortedChangeEvent"
-  >
+  <a-table row-key="id" :columns="columns" :data="tableData" :bordered="false" :pagination="false"
+    :row-selection="rowSelection" :style="{ marginBottom: '20px', marginLeft: '15px', height: tableHeight + 'px' }"
+    @select="selectRowKey" @sorter-change="sortedChangeEvent">
     <template #portScanSpeed="{ record }">
       {{ t(PortScanSpeedEnum[record.portScanSpeed]) }}
     </template>
@@ -141,193 +91,186 @@
       {{ t(BoolEnum[record.enablePu]) }}
     </template>
   </a-table>
-  <a-pagination
-    class="paginationStyle"
-    :total="pagination.total"
-    :current="pagination.current"
-    :page-size="pagination.pageSize"
-    show-total
-    show-jumper
-    show-page-size
-  />
+  <a-pagination class="paginationStyle" :total="pagination.total" :current="pagination.current"
+    :page-size="pagination.pageSize" show-total />
   <!--主机扫描模板数据表格 end-->
 </template>
 
 <script lang="ts" setup>
-  // ==========================声明模块==========================
-  import { ref, onMounted } from 'vue';
-  import { useI18n } from 'vue-i18n';
-  import {
-    getScanTemplates,
-    HostScanTemplateRes,
-    PortScanSpeedEnum,
-    FieldSortedEnum,
-  } from '@/api/scan/scan-template';
-  import BoolEnum from '@/api/common/enums';
-  import { aotuCompleteByTableField } from '@/api/common/common';
+// ==========================声明模块==========================
+import { ref, onMounted } from 'vue';
+import { useI18n } from 'vue-i18n';
+import {
+  getScanTemplates,
+  HostScanTemplateRes,
+  PortScanSpeedEnum,
+  FieldSortedEnum,
+} from '@/api/scan/scan-template';
+import BoolEnum from '@/api/common/enums';
+import { aotuCompleteByTableField } from '@/api/common/common';
 
-  const { t } = useI18n();
+const { t } = useI18n();
 
-  // ==========================数据定义模块==========================
-  // 扫描引擎表头
-  const columns = [
-    {
-      title: t('scan.template.templateName'),
-      dataIndex: 'templateName',
-      sortable: {
-        sorter: true,
-      },
-      slotName: 'templateName',
+// ==========================数据定义模块==========================
+// 扫描引擎表头
+const columns = [
+  {
+    title: t('scan.template.templateName'),
+    dataIndex: 'templateName',
+    sortable: {
+      sorter: true,
     },
-    {
-      title: t('scan.template.hostDiscovery.enableIcmp'),
-      dataIndex: 'enableIcmp',
-      sortable: {
-        sorter: true,
-        sortDirections: ['ascend', 'descend'],
-      },
-      slotName: 'enableIcmp',
+    slotName: 'templateName',
+  },
+  {
+    title: t('scan.template.hostDiscovery.enableIcmp'),
+    dataIndex: 'enableIcmp',
+    sortable: {
+      sorter: true,
+      sortDirections: ['ascend', 'descend'],
     },
-    {
-      title: t('scan.template.hostDiscovery.enableArp'),
-      dataIndex: 'enableArp',
-      sortable: {
-        sorter: true,
-        sortDirections: ['ascend', 'descend'],
-      },
-      slotName: 'enableArp',
+    slotName: 'enableIcmp',
+  },
+  {
+    title: t('scan.template.hostDiscovery.enableArp'),
+    dataIndex: 'enableArp',
+    sortable: {
+      sorter: true,
+      sortDirections: ['ascend', 'descend'],
     },
-    {
-      title: t('scan.template.hostDiscovery.synPort'),
-      dataIndex: 'synPort',
-      slotName: 'synPort',
-    },
-    {
-      title: t('scan.template.hostDiscovery.puPort'),
-      dataIndex: 'puPort',
-      slotName: 'puPort',
-    },
-    {
-      title: t('scan.template.serviceDiscovery.tcpPort'),
-      dataIndex: 'tcpPort',
-      slotName: 'tcpPort',
-    },
-    {
-      title: t('scan.template.serviceDiscovery.udpPort'),
-      dataIndex: 'udpPort',
-      slotName: 'udpPort',
-    },
-    {
-      title: t('scan.template.performance.portScanSpeed'),
-      dataIndex: 'performance.portScanSpeed',
-      slotName: 'portScanSpeed',
-    },
-  ];
-  // 主机扫描模板表格数据
-  const tableData = ref<HostScanTemplateRes>([]);
-  // 分页对象参数
-  const pagination = ref({
-    total: 0,
-    pageIndex: 1,
-    pageSize: 10,
-    order: 'desc',
-    sort: 'createTime',
-    templateName: '',
-    synPort: '',
-    puPort: '',
-    tcpPort: '',
-    udpPort: '',
-  });
-  // 单个参数检索 同输入框自动补全联动
-  const singleFieldPagination = ref({
-    total: 0,
-    pageIndex: 1,
-    pageSize: 15,
-    table: '',
-    field: '',
-    value: '',
-  });
-  // 当前选择的引擎key
-  const currentSelectRowKey = ref();
-  // 行选择器
-  const rowSelection = {
-    type: 'radio',
-    defaultSelectedRowKeys: [],
-  };
-  // 定义子组件传值
-  const emits = defineEmits(['receiveSelect']);
+    slotName: 'enableArp',
+  },
+  {
+    title: t('scan.template.hostDiscovery.synPort'),
+    dataIndex: 'synPort',
+    slotName: 'synPort',
+  },
+  {
+    title: t('scan.template.hostDiscovery.puPort'),
+    dataIndex: 'puPort',
+    slotName: 'puPort',
+  },
+  {
+    title: t('scan.template.serviceDiscovery.tcpPort'),
+    dataIndex: 'tcpPort',
+    slotName: 'tcpPort',
+  },
+  {
+    title: t('scan.template.serviceDiscovery.udpPort'),
+    dataIndex: 'udpPort',
+    slotName: 'udpPort',
+  },
+  {
+    title: t('scan.template.performance.portScanSpeed'),
+    dataIndex: 'performance.portScanSpeed',
+    slotName: 'portScanSpeed',
+  },
+];
+// 主机扫描模板表格数据
+const tableData = ref<HostScanTemplateRes>([]);
+// 分页对象参数
+const pagination = ref({
+  total: 0,
+  pageIndex: 1,
+  pageSize: 10,
+  order: 'desc',
+  sort: 'createTime',
+  templateName: '',
+  synPort: '',
+  puPort: '',
+  tcpPort: '',
+  udpPort: '',
+});
+// 头部实例用来动态计算高度
+const header = ref();
+// 表格高度
+const tableHeight = ref(0);
+// 当前选择的引擎key
+const currentSelectRowKey = ref();
+// 行选择器
+const rowSelection = {
+  type: 'radio',
+  defaultSelectedRowKeys: [],
+};
+// 定义子组件传值
+const emits = defineEmits(['receiveSelect']);
 
-  // ==========================数据操纵模块==========================
-  // 将选择内容传递给父组件
-  const sendParentComponentSelectRowKey = () => {
-    emits('receiveSelect', currentSelectRowKey);
-  };
+// ==========================数据操纵模块==========================
+// 将选择内容传递给父组件
+const sendParentComponentSelectRowKey = () => {
+  emits('receiveSelect', currentSelectRowKey);
+};
 
-  // 初始化引擎列表
-  const initHostScanTemplateList = async () => {
-    const response = await getScanTemplates(pagination.value);
-    tableData.value = response.data;
-    // 默认选中为第一个模板
-    currentSelectRowKey.value = tableData.value[0].id;
-    rowSelection.defaultSelectedRowKeys[0] = currentSelectRowKey.value;
-    sendParentComponentSelectRowKey();
-    // 分页参数赋值
-    pagination.value.total = response.totalCount;
-    pagination.value.pageIndex = response.pageIndex;
-    pagination.value.pageSize = response.pageSize;
-  };
+// 初始化引擎列表
+const initHostScanTemplateList = async () => {
+  const response = await getScanTemplates(pagination.value);
+  tableData.value = response.data;
+  // 默认选中为第一个模板
+  currentSelectRowKey.value = tableData.value[0].id;
+  rowSelection.defaultSelectedRowKeys[0] = currentSelectRowKey.value;
+  sendParentComponentSelectRowKey();
+  // 分页参数赋值
+  pagination.value.total = response.totalCount;
+  pagination.value.pageIndex = response.pageIndex;
+  pagination.value.pageSize = response.pageSize;
+};
 
-  // 当页面加载时，显示数据
-  onMounted(() => {
-    // 初始化页面表格数据
-    initHostScanTemplateList();
-  });
+// 当页面加载时，显示数据
+onMounted(() => {
+  // 动态计算表格的高度并进行分页
+  const height =
+    document.documentElement.clientHeight - header.value.offsetHeight - 340;
+  tableHeight.value = height;
+  pagination.value.pageSize = Math.floor(height / 50);
+  // 初始化页面表格数据
+  initHostScanTemplateList();
+});
 
-  // ==========================事件响应模块==========================
-  // 过滤后端排序字段
-  function filterSortedField(field) {
-    const filterField = FieldSortedEnum[field];
-    if (filterField) {
-      field = filterField;
-    }
-    return field;
+// ==========================事件响应模块==========================
+// 过滤后端排序字段
+function filterSortedField(field) {
+  const filterField = FieldSortedEnum[field];
+  if (filterField) {
+    field = filterField;
   }
-  // 排序事件触发 后端排序
-  const sortedChangeEvent = (field, direction) => {
-    direction = direction === 'descend' ? 'desc' : 'asc';
-    // 过滤得到后端支持的排序字段
-    field = filterSortedField(field);
-    pagination.value.sort = field;
-    pagination.value.order = direction;
-    // 重新刷新列表
-    initHostScanTemplateList();
-  };
+  return field;
+}
+// 排序事件触发 后端排序
+const sortedChangeEvent = (field, direction) => {
+  direction = direction === 'descend' ? 'desc' : 'asc';
+  // 过滤得到后端支持的排序字段
+  field = filterSortedField(field);
+  pagination.value.sort = field;
+  pagination.value.order = direction;
+  // 重新刷新列表
+  initHostScanTemplateList();
+};
 
-  // 重置事件
-  const reset = () => {
-    pagination.value.order = 'desc';
-    pagination.value.sort = 'createTime';
-    pagination.value.templateName = '';
-    pagination.value.synPort = '';
-    pagination.value.puPort = '';
-    pagination.value.tcpPort = '';
-    pagination.value.udpPort = '';
-    initHostScanTemplateList();
-  };
-  // 单选事件
-  const selectRowKey = (key) => {
-    if (key instanceof Array) {
-      const [item] = key;
-      key = item;
-    }
-    currentSelectRowKey.value = key;
-    sendParentComponentSelectRowKey();
-  };
+// 重置事件
+const reset = () => {
+  pagination.value.order = 'desc';
+  pagination.value.sort = 'createTime';
+  pagination.value.templateName = '';
+  pagination.value.synPort = '';
+  pagination.value.puPort = '';
+  pagination.value.tcpPort = '';
+  pagination.value.udpPort = '';
+  initHostScanTemplateList();
+};
+// 单选事件
+const selectRowKey = (key) => {
+  if (key instanceof Array) {
+    const [item] = key;
+    key = item;
+  }
+  currentSelectRowKey.value = key;
+  sendParentComponentSelectRowKey();
+};
 </script>
 
 <style scoped lang="less">
-  .paginationStyle {
-    justify-content: end;
-    margin-top: 20px;
-  }
+.paginationStyle {
+  justify-content: end;
+  margin-top: 20px;
+}
 </style>

@@ -26,13 +26,13 @@ export function getStatusText(status: number) {
   } else if (status === 2) {
     color = "扫描中"
   } else if (status === 3) {
-    color = '暂停'
+    color = '已暂停'
   } else if (status === 4) {
-    color = '停止'
+    color = '已停止'
   } else if (status === 5) {
-    color = '失败'
+    color = '已失败'
   } else if (status === 6) {
-    color = '完成'
+    color = '已完成'
   }
   return color;
 }
