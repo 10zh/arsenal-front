@@ -12,7 +12,8 @@ export default mergeConfig(
       },
       proxy: {
         '/api': {
-          target: 'http://127.0.0.1:52000',
+          // target: 'http://127.0.0.1:52000',
+          target:'http://124.71.149.182:52000',
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api/, ''),
         },

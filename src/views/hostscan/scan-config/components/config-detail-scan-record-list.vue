@@ -30,7 +30,7 @@
   </a-card>
   <!-- 单个扫描记录信息end -->
   <a-card :style="{ height: (props.tableHeight - 132) + 'px' }">
-    <a-tabs type="rounded">
+    <a-tabs type="rounded" @tab-click="changeClick">
       <a-tab-pane key="1">
         <template #title>
           <icon-calendar /> {{ t('scan.record.host.list') }}
@@ -202,6 +202,8 @@ const initProgressTextData = async () => {
 };
 // 初始化主机列表数据
 const initHostData = async () => {
+  // 主机列表分页数
+  hostPagination.value.pageSize = Math.floor((props.tableHeight - 255) / 50);
   const response = await getHostListRecordByScanId(
     scanIdStore.scanId,
     hostPagination.value
@@ -214,6 +216,9 @@ const initHostData = async () => {
 };
 // 初始化漏洞列表数据
 const initHostVulnerabilityData = async () => {
+
+  // 漏洞列表分页数
+  vulnerabilityPagination.value.pageSize = Math.floor((props.tableHeight - 255) / 50);
   const response = await getHostVulnerabilityListRecordByScanId(
     scanIdStore.scanId,
     vulnerabilityPagination.value
@@ -243,6 +248,17 @@ const gotoHostDetail = (record) => {
     },
   });
 }
+// 切换tabs栏
+const changeClick = (key) => {
+  if (key === 1) {
+    // 初始化主机列表
+    initHostData()
+  } else {
+    // 初始化漏洞列表
+    initHostVulnerabilityData()
+  }
+
+}
 // 监听兄弟组件扫描记录的scanId
 watch(() => scanIdStore.scanId, (newValue, oldValue) => {
   // 初始化进度条数据
@@ -255,18 +271,12 @@ watch(() => scanIdStore.scanId, (newValue, oldValue) => {
 })
 onMounted(() => {
   if (scanIdStore.scanId) {
-    setTimeout(() => {
-      // 主机列表分页数
-      hostPagination.value.pageSize = Math.floor((props.tableHeight - 255) / 50);
-      // 漏洞列表分页数
-      vulnerabilityPagination.value.pageSize = Math.floor((props.tableHeight - 255) / 50);
-      // 初始化进度条数据
-      initProgressTextData()
-      // 初始化主机列表
-      initHostData()
-      // 初始化漏洞列表
-      initHostVulnerabilityData()
-    }, 100)
+    // 初始化进度条数据
+    initProgressTextData()
+    // 初始化主机列表
+    initHostData()
+    // 初始化漏洞列表
+    initHostVulnerabilityData()
   }
 })
 </script>
