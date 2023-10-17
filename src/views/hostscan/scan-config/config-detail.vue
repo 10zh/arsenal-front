@@ -31,7 +31,8 @@
         <a-layout-sider class="side-layout">
           <!-- 右侧扫描记录列表 -->
           <a-card :style="{ height: tableHeight + 'px' }">
-            <configDetailRecordList :tableHeight="tableHeight"></configDetailRecordList>
+            <configDetailRecordList :tableHeight="tableHeight">
+            </configDetailRecordList>
           </a-card>
         </a-layout-sider>
         <!-- 左侧主机列表&单个扫描记录的详情 -->
