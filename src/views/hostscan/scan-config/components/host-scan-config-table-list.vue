@@ -237,6 +237,10 @@
     :current="pagination.pageIndex"
     :page-size="pagination.pageSize"
     show-total
+    show-jumper
+    show-page-size
+    @change="pageIndexChangeEvent"
+    @page-size-change="pageSizeChangeEvent"
   />
   <!--主机扫描配置数据表格 end-->
 </template>
@@ -406,7 +410,6 @@
     const height =
       document.documentElement.clientHeight - header.value.offsetHeight - 350;
     tableHeight.value = height;
-    pagination.value.pageSize = Math.floor(height / 50);
     // 初始化主机扫描配置页面表格数据
     initConfigList();
     // 每10s刷新数据
@@ -486,8 +489,6 @@
     }
     // 重新刷新列表
     initConfigList();
-    // 前往扫描记录页面
-    console.log('goto host scan reocrd page');
   };
   // 去扫描配置详情界面
   const gotoScanConfigDetail = (record: any) => {
@@ -506,6 +507,8 @@
       console.log('suspend response: ', response.data);
       return;
     }
+    // 重新刷新列表
+    initConfigList();
     Message.success(t('host.scan.suspend.success'));
   };
   // 停止扫描
@@ -516,6 +519,8 @@
       console.log('suspend response: ', response.data);
       return;
     }
+    // 重新刷新列表
+    initConfigList();
     Message.success(t('host.scan.stop.success'));
   };
   // 继续主机扫描
@@ -526,7 +531,22 @@
       console.log('suspend response: ', response.data);
       return;
     }
+    // 重新刷新列表
+    initConfigList();
     Message.success(t('host.scan.resume.success'));
+  };
+  // 每页条数发生变化
+  const pageSizeChangeEvent = async (pageSize: number) => {
+    pagination.value.pageSize = pageSize;
+    // 重新刷新列表
+    await initConfigList();
+  };
+  // 页码发生变化
+  const pageIndexChangeEvent = async (pageIndex: number) => {
+    console.log('pageIndex ', pageIndex);
+    pagination.value.pageIndex = pageIndex;
+    // 重新刷新列表
+    await initConfigList();
   };
 </script>
 
