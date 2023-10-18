@@ -6,6 +6,9 @@ export interface HttpResponse<T = any> {
   errCode: string;
   errMessage: string;
   success: boolean;
+  totalCount: number;
+  pageIndex: number;
+  pageSize: number;
   data: T;
 }
 
@@ -34,7 +37,7 @@ axios.interceptors.request.use(
 );
 axios.interceptors.response.use(
   (response: AxiosResponse<HttpResponse>) => {
-    const res = response.data;
+    const res: HttpResponse = response.data;
     console.log('res: ', response);
     if (!res.success) {
       Message.error(res.errMessage);

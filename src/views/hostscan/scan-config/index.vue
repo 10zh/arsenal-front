@@ -8,19 +8,19 @@
 </template>
 
 <script lang="ts" setup>
-// ==========================声明模块==========================
-import ConfigTable from '@/views/hostscan/scan-config/components/host-scan-config-table-list.vue';
+  // ==========================声明模块==========================
+  import ConfigTable from '@/views/hostscan/scan-config/components/host-scan-config-table-list.vue';
 </script>
 
 <style scoped lang="less">
-.container {
-  padding: 0 20px 20px 20px;
-}
-
-.general-card {
-  /deep/ .arco-card-header-title {
-    // font-weight: 700;
-    font-size: 20px;
+  .container {
+    padding: 0 20px 20px 20px;
   }
-}
+
+  .general-card {
+    /deep/ .arco-card-header-title {
+      // font-weight: 700;
+      font-size: 20px;
+    }
+  }
 </style>

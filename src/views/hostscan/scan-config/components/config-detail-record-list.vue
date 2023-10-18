@@ -1,22 +1,30 @@
 <template>
-  <div style="position:relative;height:100%">
+  <div style="position: relative; height: 100%">
     <!-- 扫描记录列表 -->
-    <a-card v-for="(item, index) in configRecordData" :key="item.scanId" :bordered="false"
+    <a-card
+      v-for="(item, index) in configRecordData"
+      :key="item.scanId"
+      :bordered="false"
       :title="t('host.scan.config.scanGoal') + ': ' + item.scanGoal"
-      :class="[{ 'select': selected === index }, 'inner-card']" @click="handleClickRecordCard(item, index)">
+      :class="[{ select: selected === index }, 'inner-card']"
+      @click="handleClickRecordCard(item, index)"
+    >
       <template #extra>
         <a-tag :color="getStatusColor(item.scanStatus)">{{
-          t(getStatusText(item.scanStatus)) }}</a-tag>
-
+          t(getStatusText(item.scanStatus))
+        }}</a-tag>
       </template>
-      <span style="font-size:12px;color:#ccc">{{ formatDate(item.scanStartTime, 'YYYY-MM-DD hh:mm:ss') }}</span>
+      <span style="font-size: 12px; color: #ccc">{{
+        formatDate(item.scanStartTime, 'YYYY-MM-DD hh:mm:ss')
+      }}</span>
 
       <a-space>
         <a-row>
           <a-col>
-            <span class="label"> {{ t('host.scan.config.scanCostTime') + ':' }}</span>
-            <span class="value"> {{
-              formatSeconds(item.scanCostTime) }}</span>
+            <span class="label">
+              {{ t('host.scan.config.scanCostTime') + ':' }}</span
+            >
+            <span class="value"> {{ formatSeconds(item.scanCostTime) }}</span>
           </a-col>
         </a-row>
       </a-space>
@@ -31,7 +39,9 @@
       <a-space>
         <a-row>
           <a-col>
-            <span class="label"> {{ t('host.scan.config.template') + ':' }}</span>
+            <span class="label">
+              {{ t('host.scan.config.template') + ':' }}</span
+            >
             <span class="value">{{ item.templateName }}</span>
           </a-col>
         </a-row>
@@ -39,118 +49,121 @@
     </a-card>
 
     <a-empty v-if="configRecordData.length == 0" />
-    <a-pagination :style="{ position: 'absolute', bottom: '-40px', right: '0px' }" :current="pagination.pageIndex"
-      :page-size="pagination.pageSize" :total="pagination.total" @change="changePageIndex" />
+    <a-pagination
+      :style="{ position: 'absolute', bottom: '-40px', right: '0px' }"
+      :current="pagination.pageIndex"
+      :page-size="pagination.pageSize"
+      :total="pagination.total"
+      @change="changePageIndex"
+    />
   </div>
 </template>
+
 <script lang="ts" setup>
-// ==========================声明模块==========================
-import { ref, reactive, onMounted, defineProps, watch } from 'vue';
-import { useI18n } from 'vue-i18n';
-import { useRoute, useRouter } from 'vue-router';
-import { formatSeconds } from '@/utils/times';
-import formatDate from '@/utils/times';
-import { getStatusColor, getStatusText } from '@/hooks/status-options';
-import {
-  getHostScanRecordList,
-} from '@/api/scan/scan-record';
-import { useScanIdStore } from '@/store/index'
-import { head } from 'lodash';
-// ==========================数据定义模块==========================
-const { t } = useI18n();
-const route = useRoute();
-const router = useRouter();
-const scanIdStore = useScanIdStore()
+  // ==========================声明模块==========================
+  import { ref, reactive, onMounted, defineProps, watch } from 'vue';
+  import { useI18n } from 'vue-i18n';
+  import { useRoute, useRouter } from 'vue-router';
+  import formatDate, { formatSeconds } from '@/utils/times';
+  import { getStatusColor, getStatusText } from '@/hooks/status-options';
+  import { getHostScanRecordList } from '@/api/scan/scan-record';
+  import { useScanIdStore } from '@/store/index';
+  import { head } from 'lodash';
+  // ==========================数据定义模块==========================
+  const { t } = useI18n();
+  const route = useRoute();
+  const router = useRouter();
+  const scanIdStore = useScanIdStore();
 
-// 接收来自父组件的值
-const props = defineProps({
-  tableHeight: {
-    type: Number,
-    default: () => { }
-  }
-})
+  // 接收来自父组件的值
+  const props = defineProps({
+    tableHeight: {
+      type: Number,
+      default: () => {},
+    },
+  });
 
-// 扫描配置ID
-const id = route.query.configId;
-// 扫描配置记录
-const configRecordData = ref([]);
-// 选中的记录
-const selected = ref(0);
-// 选中记录的scanId 
-const selectedScanId = ref('');
-// 分页对象参数
-const pagination = ref({
-  total: 0,
-  pageIndex: 1,
-  pageSize: 5,
-  order: 'desc',
-  sort: 'scanStartTime',
-});
-// 初始化当前扫描配置的所有列表
-const initScanConfigRecordData = async () => {
-  // 动态计算表格的高度并进行分页
-  pagination.value.pageSize = Math.floor(props.tableHeight / 150);
-  const recordData = await getHostScanRecordList(id, pagination.value);
-  configRecordData.value = recordData.data;
-  if (recordData.data.length > 0) {
-    selectedScanId.value = recordData.data[0].scanId;
+  // 扫描配置ID
+  const id = route.query.configId;
+  // 扫描配置记录
+  const configRecordData = ref([]);
+  // 选中的记录
+  const selected = ref(0);
+  // 选中记录的scanId
+  const selectedScanId = ref('');
+  // 分页对象参数
+  const pagination = ref({
+    total: 0,
+    pageIndex: 1,
+    pageSize: 5,
+    order: 'desc',
+    sort: 'scanStartTime',
+  });
+  // 初始化当前扫描配置的所有列表
+  const initScanConfigRecordData = async () => {
+    // 动态计算表格的高度并进行分页
+    pagination.value.pageSize = Math.floor(props.tableHeight / 150);
+    const recordData = await getHostScanRecordList(id, pagination.value);
+    configRecordData.value = recordData.data;
+    if (recordData.data.length > 0) {
+      selectedScanId.value = recordData.data[0].scanId;
+      // 将选择的scanId进行store缓存
+      scanIdStore.getScanId(selectedScanId.value);
+    }
+    // 分页参数赋值
+    pagination.value.total = recordData.totalCount;
+    pagination.value.pageIndex = recordData.pageIndex;
+    pagination.value.pageSize = recordData.pageSize;
+  };
+  // ==========================事件响应模块==========================
+  const handleClickRecordCard = (item, index) => {
+    selected.value = index;
+    selectedScanId.value = item.scanId;
     // 将选择的scanId进行store缓存
-    scanIdStore.getScanId(selectedScanId.value)
-  }
-  // 分页参数赋值
-  pagination.value.total = recordData.totalCount;
-  pagination.value.pageIndex = recordData.pageIndex;
-  pagination.value.pageSize = recordData.pageSize;
-};
-// ==========================事件响应模块==========================
-const handleClickRecordCard = (item, index) => {
-  selected.value = index;
-  selectedScanId.value = item.scanId;
-  // 将选择的scanId进行store缓存
-  scanIdStore.getScanId(selectedScanId.value)
-};
-// 页数发生改变
-const changePageIndex = (index) => {
-  pagination.value.pageIndex = index;
-  // 刷新扫描配置记录列表
-  initScanConfigRecordData();
-};
-// 监听兄弟组件扫描记录的scanId
-watch(() => props.tableHeight, (newValue, oldValue) => {
-  // 当前扫描配置详情的扫描记录列表
-  initScanConfigRecordData();
-
-})
+    scanIdStore.getScanId(selectedScanId.value);
+  };
+  // 页数发生改变
+  const changePageIndex = (index) => {
+    pagination.value.pageIndex = index;
+    // 刷新扫描配置记录列表
+    initScanConfigRecordData();
+  };
+  // 监听兄弟组件扫描记录的scanId
+  watch(
+    () => props.tableHeight,
+    (newValue, oldValue) => {
+      // 当前扫描配置详情的扫描记录列表
+      initScanConfigRecordData();
+    }
+  );
 </script>
+
 <style scoped lang="less">
-.inner-card {
-  padding: 5px;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-  margin-top: 10px;
-  position: relative;
-
-  /deep/ .arco-card-body {
+  .inner-card {
     padding: 5px;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    margin-top: 10px;
+    position: relative;
+
+    /deep/ .arco-card-body {
+      padding: 5px;
+    }
+
+    /deep/ .arco-card-header {
+      height: 38px;
+    }
   }
 
-  /deep/ .arco-card-header {
-    height: 38px;
+  .select {
+    // border: 1px solid red;
   }
 
+  .label {
+    display: inline-block;
+    padding: 5px 0;
+    padding-right: 5px;
 
-}
-
-
-.select {
-  // border: 1px solid red;
-}
-
-.label {
-  display: inline-block;
-  padding: 5px 0;
-  padding-right: 5px;
-
-  font-size: 14px;
-  color: #86909c;
-}
+    font-size: 14px;
+    color: #86909c;
+  }
 </style>

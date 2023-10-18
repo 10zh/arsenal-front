@@ -141,3 +141,21 @@ export function getHostServiceRecordDetailByScanHostId(
   const url = `/host/scan/${scanId}/${hostId}/service/records`;
   return axios.get<HttpResponse>(url);
 }
+
+// 暂停主机扫描
+export function suspendHostScan(scanId: string) {
+  const url = `/host/scan/${scanId}/suspend`;
+  return axios.get<HttpResponse>(url);
+}
+
+// 停止主机扫描
+export function stopHostScan(scanId: string) {
+  const url = `/host/scan/${scanId}/stop`;
+  return axios.get<HttpResponse>(url);
+}
+
+// 继续主机扫描
+export function resumeHostScan(scanId: string) {
+  const url = `/host/scan/${scanId}/resume`;
+  return axios.get<HttpResponse>(url);
+}

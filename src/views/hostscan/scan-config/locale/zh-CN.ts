@@ -5,6 +5,9 @@ export default {
   'menu.list.scan.config.add': '新增扫描配置',
   // 新增
   'button.scan': '扫描',
+  'button.continue': '继续',
+  'button.suspend': '暂停',
+  'button.stop': '停止',
   'searchTable.scanConfig.create': '新建配置',
   'host.scan.config.basic.info': '配置信息',
   'host.scan.config.engine': '扫描引擎',
@@ -28,14 +31,12 @@ export default {
     '请输入扫描排除目标 例如:127.0.0.1 192.168.31.1',
   'host.scan.config.hostCredentials': '主机凭证',
   'host.scan.config.scanStatus': '扫描状态',
-  'host.scan.config.scanStatus.input':'未开始/进行中/暂停/停止',
-  'searchTable.scanConfig.select.engine':'选择扫描引擎',
-  'searchTable.scanConfig.select.template':'选择扫描模板',
-  'host.scan.config.createTime':'配置创建时间',
-  'host.scan.config.updateTime':'更新时间',
-  'host.scan.config.lastScanStatus':'最近一次扫描状态',
-
-
+  'host.scan.config.scanStatus.input': '未开始/进行中/暂停/停止',
+  'searchTable.scanConfig.select.engine': '选择扫描引擎',
+  'searchTable.scanConfig.select.template': '选择扫描模板',
+  'host.scan.config.createTime': '配置创建时间',
+  'host.scan.config.updateTime': '更新时间',
+  'host.scan.config.lastScanStatus': '最近一次扫描状态',
 
   'host.scan.config.scanPress': '扫描进度',
   'button.detail': '详情',
@@ -78,6 +79,9 @@ export default {
   'host.scan.config.delete.success': '删除主机扫描配置成功',
   'host.scan.config.operator.delete.ack': '删除主机扫描配置 ',
   'host.scan.config.operator.scan.ack': '是否发起扫描?',
+  'host.scan.config.operator.scan.suspend.ack': '暂停当前扫描?',
+  'host.scan.config.operator.scan.resume.ack': '继续当前扫描?',
+  'host.scan.config.operator.scan.stop.ack': '停止当前扫描?',
   'host.scan.config.detail': '扫描配置详情',
   // 扫描状态
   'scan.status.not.start': '未开始',
@@ -90,6 +94,12 @@ export default {
   'engine': '引擎',
   'template': '模板',
   'scan.progress': '扫描进度',
+  'host.scan.suspend.success': '暂停扫描成功',
+  'host.scan.suspend.fail': '暂停扫描失败 失败原因:',
+  'host.scan.stop.success': '停止扫描成功',
+  'host.scan.stop.fail': '停止扫描失败 失败原因:',
+  'host.scan.resume.success': '继续扫描成功',
+  'host.scan.resume.fail': '继续扫描失败 失败原因:',
   // 扫描记录主机列表
   'scan.record.host.list': '主机列表',
   'scan.record.hostname': '主机名称',
@@ -129,13 +139,10 @@ export default {
   'scan.record.service.proof': '证据',
   'scan.record.network.discovery': '网络空间测绘',
   'scan.record.host.risk': '主机风险',
-
   // 操作按钮
-  'scan.add.config.goback':'返回',
-
+  'scan.add.config.goback': '返回',
   // 扫描详情
-  'scan.detail.banner':'banner',
-  'scan.detail.SSH':'SSH证书',
-  'scan.detail.proof':'证据',
-
+  'scan.detail.banner': 'banner',
+  'scan.detail.SSH': 'SSH证书',
+  'scan.detail.proof': '证据',
 };

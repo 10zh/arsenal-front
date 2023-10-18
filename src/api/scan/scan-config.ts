@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { HttpResponse } from '../interceptor/axios';
 
 // 分页参数查询带条件
@@ -11,8 +11,8 @@ export interface HostScanConfigPageRequest {
   configName: string;
   engineName: string;
   templateName: string;
-  target:string;
-  scanStatus:string;
+  target: string;
+  scanStatus: string;
 }
 
 // 新增扫描配置
@@ -36,10 +36,10 @@ export function getHostScanConfigPageList(params: HostScanConfigPageRequest) {
   if (params.templateName) {
     url = `${url}&templateName-op=ct&templateName=${params.templateName}`;
   }
-  if(params.target){
+  if (params.target) {
     url = `${url}&templateName-op=ct&templateName=${params.target}`;
   }
-  if(params.scanStatus){
+  if (params.scanStatus) {
     url = `${url}&templateName-op=ct&templateName=${params.scanStatus}`;
   }
   return axios.get<HttpResponse>(url);
@@ -48,7 +48,7 @@ export function getHostScanConfigPageList(params: HostScanConfigPageRequest) {
 // 新增主机扫描配置
 export function insertHostScanConfig(params: HostScanConfigInsertRequest) {
   const url = '/host/scan/configs/new';
-  return axios.post<HttpResponse>(url, params);
+  return axios.post<AxiosResponse<HttpResponse<any>>>(url, params);
 }
 
 // 删除主机扫描配置
