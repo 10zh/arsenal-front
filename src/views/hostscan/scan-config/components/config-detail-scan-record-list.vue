@@ -60,8 +60,10 @@
           :columns="hostTableColumns"
           :data="hostData"
           :bordered="{ cell: true }"
-          :pagination="hostPagination"
-          @page-change="handleHostTablePageChange"
+          :pagination="false"
+          show-total
+          show-jumper
+          show-page-size
         >
           <template #ipv4="{ record }">
             <a-link @click="gotoHostDetail(record)">{{ record.ipv4 }}</a-link>
@@ -70,6 +72,17 @@
             <a-link @click="gotoHostDetail(record)">{{ record.ipv6 }}</a-link>
           </template>
         </a-table>
+        <a-pagination
+          :style="{ marginTop: '20px', float: 'right' }"
+          :total="hostPagination.total"
+          :current="hostPagination.pageIndex"
+          :page-size="hostPagination.pageSize"
+          show-total
+          show-jumper
+          show-page-size
+          @change="hostPageIndexChangeEvent"
+          @page-size-change="hostPageSizeChangeEvent"
+        />
         <!-- 主机列表end -->
       </a-tab-pane>
       <a-tab-pane key="2">
@@ -93,6 +106,17 @@
             {{ record.safe ? t('global.true') : t('global.false') }}
           </template>
         </a-table>
+        <a-pagination
+          :style="{ marginTop: '20px', float: 'right' }"
+          :total="vulnerabilityPagination.total"
+          :current="vulnerabilityPagination.pageIndex"
+          :page-size="vulnerabilityPagination.pageSize"
+          show-total
+          show-jumper
+          show-page-size
+          @change="vulnerabilityPageIndexChangeEvent"
+          @page-size-change="vulnerabilityPageSizeChangeEvent"
+        />
         <!-- 漏洞列表end-->
       </a-tab-pane>
     </a-tabs>
@@ -103,7 +127,7 @@
   // ==========================声明模块==========================
   import { ref, reactive, onMounted, defineProps, watch } from 'vue';
   import { useI18n } from 'vue-i18n';
-  import { useRoute, useRouter } from 'vue-router';
+  import { useRouter } from 'vue-router';
   import {
     getHostScanRecordDetail,
     getHostListRecordByScanId,
@@ -113,7 +137,6 @@
 
   // ==========================数据定义模块==========================
   const { t } = useI18n();
-  const route = useRoute();
   const router = useRouter();
 
   // 接收来自父组件的值
@@ -124,7 +147,7 @@
     },
   });
   // 主机列表表头
-  const hostTableColumns = reactive([
+  const hostTableColumns: any = reactive([
     {
       title: t('scan.record.hostname'),
       dataIndex: 'hostname',
@@ -150,7 +173,7 @@
   ]);
 
   // 漏洞列表表头
-  const vulnerabilityTableColumns = reactive([
+  const vulnerabilityTableColumns: any = reactive([
     {
       title: t('scan.record.vulnName'),
       dataIndex: 'vulnName',
@@ -198,12 +221,10 @@
   ]);
 
   const scanIdStore = useScanIdStore();
-  // 扫描配置ID
-  const id = route.query.configId;
   // 进度条文本展示
-  const progressTextData = ref({});
+  const progressTextData: any = ref({});
   // 主机列表分页参数
-  const hostPagination = ref({
+  const hostPagination: any = ref({
     total: 0,
     pageIndex: 1,
     pageSize: 10,
@@ -211,13 +232,13 @@
   // 主机列表数据
   const hostData = ref([]);
   // 漏洞列表分页参数
-  const vulnerabilityPagination = ref({
+  const vulnerabilityPagination: any = ref({
     total: 0,
     pageIndex: 1,
     pageSize: 10,
   });
   // 漏洞列表数据
-  const vulnerabilityData = ref([]);
+  const vulnerabilityData: any = ref([]);
   // 初始化进度条文本数据
   const initProgressTextData = async () => {
     const response = await getHostScanRecordDetail(scanIdStore.scanId);
@@ -226,9 +247,7 @@
   };
   // 初始化主机列表数据
   const initHostData = async () => {
-    // 主机列表分页数
-    hostPagination.value.pageSize = Math.floor((props.tableHeight - 255) / 50);
-    const response = await getHostListRecordByScanId(
+    const response: any = await getHostListRecordByScanId(
       scanIdStore.scanId,
       hostPagination.value
     );
@@ -240,11 +259,7 @@
   };
   // 初始化漏洞列表数据
   const initHostVulnerabilityData = async () => {
-    // 漏洞列表分页数
-    vulnerabilityPagination.value.pageSize = Math.floor(
-      (props.tableHeight - 255) / 50
-    );
-    const response = await getHostVulnerabilityListRecordByScanId(
+    const response: any = await getHostVulnerabilityListRecordByScanId(
       scanIdStore.scanId,
       vulnerabilityPagination.value
     );
@@ -254,17 +269,17 @@
     vulnerabilityPagination.value.pageSize = response.pageSize;
   };
   // 主机列表分页
-  const handleHostTablePageChange = (index) => {
+  const handleHostTablePageChange = (index: number) => {
     hostPagination.value.pageIndex = index;
     initHostData();
   };
   // 漏洞列表分页
-  const handleHostVulnerabilityTablePageChange = (index) => {
+  const handleHostVulnerabilityTablePageChange = (index: number) => {
     vulnerabilityPagination.value.pageIndex = index;
     initHostVulnerabilityData();
   };
   // 跳转主机详情界面
-  const gotoHostDetail = (record) => {
+  const gotoHostDetail = (record: any) => {
     router.push({
       path: '/hostscan/hostScanRecordDetail',
       query: {
@@ -274,7 +289,7 @@
     });
   };
   // 切换tabs栏
-  const changeClick = (key) => {
+  const changeClick = (key: number | string) => {
     if (key === 1) {
       // 初始化主机列表
       initHostData();
@@ -305,6 +320,30 @@
       initHostVulnerabilityData();
     }
   });
+  // 每页条数发生变化
+  const hostPageSizeChangeEvent = (pageSize: number) => {
+    hostPagination.value.pageSize = pageSize;
+    // 初始化主机列表
+    initHostData();
+  };
+  // 页码发生变化
+  const hostPageIndexChangeEvent = (pageIndex: number) => {
+    hostPagination.value.pageIndex = pageIndex;
+    // 初始化主机列表
+    initHostData();
+  };
+  // 漏洞每页条数发生变化
+  const vulnerabilityPageSizeChangeEvent = (pageSize: number) => {
+    vulnerabilityPagination.value.pageSize = pageSize;
+    // 初始化漏洞列表
+    initHostVulnerabilityData();
+  };
+  // 漏洞页码发生变化
+  const vulnerabilityPageIndexChangeEvent = (pageIndex: number) => {
+    vulnerabilityPagination.value.pageIndex = pageIndex;
+    // 初始化漏洞列表
+    initHostVulnerabilityData();
+  };
 </script>
 
 <style scoped lang="less"></style>

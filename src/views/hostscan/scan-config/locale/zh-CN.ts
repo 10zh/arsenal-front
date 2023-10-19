@@ -41,7 +41,7 @@ export default {
   'host.scan.config.scanPress': '扫描进度',
   'button.detail': '详情',
   'menu.list.configDetail': '扫描详情',
-  'host.scan.config.scanCostTime': '扫描花费时间',
+  'host.scan.config.scanCostTime': '扫描耗时',
   'host.scan.hostConfig.hostName': '主机名称',
   'host.scan.hostConfig.macAddress': 'MAC地址',
   'host.scan.hostConfig.osName': '操作系统',

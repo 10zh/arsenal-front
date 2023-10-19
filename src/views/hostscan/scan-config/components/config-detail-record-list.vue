@@ -17,43 +17,41 @@
       <span style="font-size: 12px; color: #ccc">{{
         formatDate(item.scanStartTime, 'YYYY-MM-DD hh:mm:ss')
       }}</span>
-
-      <a-space>
-        <a-row>
-          <a-col>
-            <span class="label">
-              {{ t('host.scan.config.scanCostTime') + ':' }}</span
-            >
-            <span class="value"> {{ formatSeconds(item.scanCostTime) }}</span>
-          </a-col>
-        </a-row>
-      </a-space>
-      <a-space>
-        <a-row>
-          <a-col>
-            <span class="label"> {{ t('host.scan.config.engine') + ':' }}</span>
-            <span class="value"> {{ item.engineName }}</span>
-          </a-col>
-        </a-row>
-      </a-space>
-      <a-space>
-        <a-row>
-          <a-col>
-            <span class="label">
-              {{ t('host.scan.config.template') + ':' }}</span
-            >
-            <span class="value">{{ item.templateName }}</span>
-          </a-col>
-        </a-row>
-      </a-space>
+      <a-row>
+        <a-col>
+          <span class="label">
+            {{ t('host.scan.config.scanCostTime') + ':' }}</span
+          >
+          <span class="value"> {{ formatSeconds(item.scanCostTime) }}</span>
+        </a-col>
+      </a-row>
+      <a-row>
+        <a-col>
+          <span class="label"> {{ t('host.scan.config.engine') + ':' }}</span>
+          <span class="value"> {{ item.engineName }}</span>
+        </a-col>
+      </a-row>
+      <a-row>
+        <a-col>
+          <span class="label"> {{ t('host.scan.config.template') + ':' }}</span>
+          <span class="value">{{ item.templateName }}</span>
+        </a-col>
+      </a-row>
     </a-card>
 
     <a-empty v-if="configRecordData.length == 0" />
     <a-pagination
-      :style="{ position: 'absolute', bottom: '-40px', right: '0px' }"
+      :style="{
+        position: 'absolute',
+        width: 'auto',
+        bottom: '-30px',
+        right: '-15px',
+      }"
       :current="pagination.pageIndex"
       :page-size="pagination.pageSize"
       :total="pagination.total"
+      size="mini"
+      :buffer-size="1"
       @change="changePageIndex"
     />
   </div>
@@ -61,18 +59,16 @@
 
 <script lang="ts" setup>
   // ==========================声明模块==========================
-  import { ref, reactive, onMounted, defineProps, watch } from 'vue';
+  import { ref, defineProps, watch } from 'vue';
   import { useI18n } from 'vue-i18n';
-  import { useRoute, useRouter } from 'vue-router';
+  import { useRoute } from 'vue-router';
   import formatDate, { formatSeconds } from '@/utils/times';
   import { getStatusColor, getStatusText } from '@/hooks/status-options';
   import { getHostScanRecordList } from '@/api/scan/scan-record';
   import { useScanIdStore } from '@/store/index';
-  import { head } from 'lodash';
   // ==========================数据定义模块==========================
   const { t } = useI18n();
   const route = useRoute();
-  const router = useRouter();
   const scanIdStore = useScanIdStore();
 
   // 接收来自父组件的值
@@ -86,7 +82,7 @@
   // 扫描配置ID
   const id = route.query.configId;
   // 扫描配置记录
-  const configRecordData = ref([]);
+  const configRecordData: any = ref([]);
   // 选中的记录
   const selected = ref(0);
   // 选中记录的scanId
@@ -116,14 +112,14 @@
     pagination.value.pageSize = recordData.pageSize;
   };
   // ==========================事件响应模块==========================
-  const handleClickRecordCard = (item, index) => {
+  const handleClickRecordCard = (item: any, index: number) => {
     selected.value = index;
     selectedScanId.value = item.scanId;
     // 将选择的scanId进行store缓存
     scanIdStore.getScanId(selectedScanId.value);
   };
   // 页数发生改变
-  const changePageIndex = (index) => {
+  const changePageIndex = (index: number) => {
     pagination.value.pageIndex = index;
     // 刷新扫描配置记录列表
     initScanConfigRecordData();

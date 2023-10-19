@@ -28,7 +28,7 @@
                 <a-descriptions-item
                   v-for="item in configDetailData"
                   :key="item.label"
-                  :label="item.label + ':'"
+                  :label="item.label + ' :'"
                 >
                   <a-tag
                     v-if="item.slotName"
@@ -67,17 +67,9 @@
   import { ref, onMounted } from 'vue';
   import { useI18n } from 'vue-i18n';
   import { useRoute, useRouter } from 'vue-router';
-  import formatDate, { formatSeconds } from '@/utils/times';
+  import formatDate from '@/utils/times';
   import { getHostScanConfigDetail } from '@/api/scan/scan-config';
   import { getStatusColor, getStatusText } from '@/hooks/status-options';
-  import {
-    getHostScanRecordList,
-    ScanStatus,
-    ScanStatusColor,
-    getHostScanRecordDetail,
-    getHostListRecordByScanId,
-    getHostVulnerabilityListRecordByScanId,
-  } from '@/api/scan/scan-record';
   // 引入组件
   import configDetailRecordList from './components/config-detail-record-list.vue';
   import configScanDetailRecordList from './components/config-detail-scan-record-list.vue';
@@ -87,30 +79,9 @@
   const route = useRoute();
   const router = useRouter();
   // 扫描配置ID
-  const id = route.query.configId;
+  const id: any = route.query.configId;
   // 扫描配置详情
-  const configDetailData = ref([]);
-  // 当前选中的扫描记录
-  const selected = ref(0);
-  // 进度条文本展示
-  const progressTextData = ref({});
-  // 分页对象参数
-  const pagination = ref({
-    total: 0,
-    pageIndex: 1,
-    pageSize: 5,
-    order: 'desc',
-    sort: 'scanStartTime',
-  });
-
-  // 主机列表分页参数
-  const hostPagination = ref({
-    total: 0,
-    pageIndex: 1,
-    pageSize: 10,
-  });
-  // 主机列表数据
-  const hostData = ref([]);
+  const configDetailData: any = ref([]);
   // 头部实例用来动态计算高度
   const header = ref();
   // 表格高度
@@ -119,9 +90,8 @@
   // ==========================数据操纵模块==========================
   // 初始化扫描配置详情
   const initScanConfigDetail = async () => {
-    const configDetail = await getHostScanConfigDetail(id);
+    const configDetail: any = await getHostScanConfigDetail(id);
     const configDetailDataList = [];
-
     configDetailDataList.push({
       label: t('host.scan.config.configName'),
       value: configDetail.data.configName,
@@ -153,7 +123,7 @@
     configDetailDataList.push({
       label: t('host.scan.config.lastScanStatus'),
       value: configDetail.data.lastScanStatus,
-      slotName: 'slotName',
+      slotName: 'lastScanStatus',
     });
     configDetailData.value = configDetailDataList;
   };
