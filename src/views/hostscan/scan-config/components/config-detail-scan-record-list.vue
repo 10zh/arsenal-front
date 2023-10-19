@@ -96,7 +96,7 @@
           :data="vulnerabilityData"
           column-resize
           :bordered="{ cell: true }"
-          :pagination="vulnerabilityPagination"
+          :pagination="false"
           @page-change="handleHostVulnerabilityTablePageChange"
         >
           <template #potential="{ record }">
@@ -177,6 +177,7 @@
     {
       title: t('scan.record.vulnName'),
       dataIndex: 'vulnName',
+      width: 300,
     },
     {
       title: t('scan.record.ipv4'),

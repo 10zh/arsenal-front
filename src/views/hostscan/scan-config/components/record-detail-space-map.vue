@@ -103,6 +103,31 @@
           <a-breadcrumb-item :style="{ fontWeight: 'bold' }">
             {{ props.tabDetail.applicationProtocol }}
           </a-breadcrumb-item>
+          <a-breadcrumb-item
+            v-if="props.tabDetail.supportSSLVersion"
+            :style="{ fontWeight: 'bold' }"
+          >
+            {{ props.tabDetail.supportSSLVersion }}
+          </a-breadcrumb-item>
+          <a-breadcrumb-item
+            v-if="
+              ['HTTP', 'HTTPS'].includes(props.tabDetail.applicationProtocol)
+            "
+            :style="{ fontWeight: 'bold' }"
+          >
+            {{ props.tabDetail.httpTitle }}
+          </a-breadcrumb-item>
+          <a-breadcrumb-item
+            v-if="
+              ['HTTP', 'HTTPS'].includes(props.tabDetail.applicationProtocol)
+            "
+            :style="{ fontWeight: 'bold' }"
+          >
+            {{ props.tabDetail.httpUrl }}
+          </a-breadcrumb-item>
+          <a-breadcrumb-item :style="{ fontWeight: 'bold' }">
+            {{ formatDate(props.tabDetail.updateTime, 'YYYY-MM-DD hh:mm:ss') }}
+          </a-breadcrumb-item>
         </a-breadcrumb>
         <a-card>
           <a-tabs type="rounded">
@@ -111,7 +136,17 @@
               <template #title>
                 {{ t('scan.detail.banner') }}
               </template>
-              <a-scrollbar style="height: 280px; overflow: auto">
+              <a-scrollbar style="height: 450px; overflow: auto">
+                <a-typography>
+                  <a-typography-paragraph
+                    v-for="cp in props.tabDetail.components"
+                    :key="cp.name"
+                    bold
+                    class="wrap-text"
+                  >
+                    {{ cp.name + ' ' + cp.version }}
+                  </a-typography-paragraph>
+                </a-typography>
                 <a-typography :style="{ marginTop: '-30px' }">
                   <a-typography-title :heading="3"> </a-typography-title>
                   <a-typography-paragraph bold class="wrap-text" copyable>
@@ -120,32 +155,25 @@
                 </a-typography>
               </a-scrollbar>
             </a-tab-pane>
-            <!-- SSH start -->
+            <!-- SSL start -->
             <a-tab-pane key="2" :style="{ height: tabsHeight + 'px' }">
               <template #title>
-                {{ t('scan.detail.SSH') }}
+                {{ t('scan.detail.ssl') }}
               </template>
-              <a-scrollbar style="height: 280px; overflow: auto">
-                <a-col
-                  v-for="component in props.tabDetail.components"
-                  :key="component.name"
-                  :style="{ marginTop: '-30px' }"
-                  :span="12"
-                >
+              <a-scrollbar style="height: 450px; overflow: auto">
+                <a-typography :style="{ marginTop: '-30px' }">
                   <a-typography-title :heading="3"> </a-typography-title>
-                  <a-typography :style="{ marginTop: '-30px' }">
-                    <a-typography-paragraph :heading="3">{{
-                      component.name + ' ' + component.version
-                    }}</a-typography-paragraph>
-                  </a-typography>
-                </a-col>
+                  <a-typography-paragraph bold class="wrap-text" copyable>
+                    {{ props.tabDetail.certificate }}
+                  </a-typography-paragraph>
+                </a-typography>
               </a-scrollbar>
             </a-tab-pane>
             <a-tab-pane key="3" :style="{ height: tabsHeight + 'px' }">
               <template #title>
                 {{ t('scan.detail.proof') }}
               </template>
-              <a-scrollbar style="height: 250px; overflow: auto">
+              <a-scrollbar style="height: 450px; overflow: auto">
                 <a-typography :style="{ marginTop: '-30px' }">
                   <a-typography-title :heading="3"> </a-typography-title>
                   <a-typography-paragraph bold class="wrap-text" copyable>
@@ -161,10 +189,11 @@
   </a-layout>
 </template>
 
-<script setup>
+<script lang="ts" setup>
   // ==========================声明模块==========================
-  import { ref, reactive, onMounted, defineProps, defineEmits } from 'vue';
+  import { ref, onMounted, defineProps, defineEmits } from 'vue';
   import { useI18n } from 'vue-i18n';
+  import formatDate from '@/utils/times';
   // ==========================数据定义==========================
   const { t } = useI18n();
 
@@ -173,7 +202,7 @@
   // 动态高度
   const tabsHeight = ref();
   // 接收来自父组件的值
-  const props = defineProps({
+  const props: any = defineProps({
     serviceDetail: {
       type: Array,
     },
@@ -188,7 +217,7 @@
   const emit = defineEmits(['changeTabDetail']);
 
   // 处理左侧端口开放情况点击事件
-  const handleClick = (row) => {
+  const handleClick = (row: any) => {
     emit('changeTabDetail', row);
   };
   onMounted(() => {

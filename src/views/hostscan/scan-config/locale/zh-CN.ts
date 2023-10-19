@@ -143,6 +143,6 @@ export default {
   'scan.add.config.goback': '返回',
   // 扫描详情
   'scan.detail.banner': 'banner',
-  'scan.detail.SSH': 'SSH证书',
+  'scan.detail.ssl': 'ssl证书',
   'scan.detail.proof': '证据',
 };

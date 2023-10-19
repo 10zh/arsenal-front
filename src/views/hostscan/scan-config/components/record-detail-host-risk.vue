@@ -122,6 +122,8 @@
     :current="vulnerabilityPagination.pageIndex"
     :page-size="vulnerabilityPagination.pageSize"
     show-total
+    show-jumper
+    show-page-size
     @change="handleVulnerabilityPageIndexChange"
     @page-size-change="handleVulnerabilityPageSizeChange"
   />
@@ -132,12 +134,7 @@
   import { ref, reactive, onMounted } from 'vue';
   import { useI18n } from 'vue-i18n';
   import { useRoute } from 'vue-router';
-  import {
-    getHostRecordDetailByScanHostId,
-    getHostServiceRecordDetailByScanHostId,
-    getHostVulnerabilityListRecordByScanHostId,
-  } from '@/api/scan/scan-record';
-  import formatDate from '@/utils/times';
+  import { getHostVulnerabilityListRecordByScanHostId } from '@/api/scan/scan-record';
 
   // ==========================数据定义模块==========================
   const { t } = useI18n();
@@ -151,6 +148,7 @@
         sorter: true,
         sortDirections: ['descend', 'ascend'],
       },
+      width: 200,
     },
     {
       title: t('scan.record.ipv4'),
@@ -159,6 +157,7 @@
         sorter: true,
         sortDirections: ['descend', 'ascend'],
       },
+      width: 150,
     },
     {
       title: t('scan.record.ipv6'),
@@ -167,6 +166,7 @@
         sorter: true,
         sortDirections: ['descend', 'ascend'],
       },
+      width: 100,
     },
     {
       title: t('scan.record.port'),
@@ -175,6 +175,7 @@
         sorter: true,
         sortDirections: ['descend', 'ascend'],
       },
+      width: 100,
     },
     {
       title: t('scan.record.componentName'),
@@ -183,22 +184,26 @@
         sorter: true,
         sortDirections: ['descend', 'ascend'],
       },
+      width: 120,
     },
     {
       title: t('scan.record.proof'),
       dataIndex: 'proof',
       ellipsis: true,
       tooltip: { position: 'top' },
+      width: 100,
     },
     {
       title: t('scan.record.safe'),
       dataIndex: 'safe',
       slotName: 'safe',
+      width: 100,
     },
     {
       title: t('scan.record.potential'),
       dataIndex: 'potential',
       slotName: 'potential',
+      width: 100,
     },
     {
       title: t('scan.record.accuracy'),
@@ -207,6 +212,7 @@
         sorter: true,
         sortDirections: ['descend', 'ascend'],
       },
+      width: 120,
     },
     {
       title: t('scan.record.severity'),
@@ -215,6 +221,7 @@
         sorter: true,
         sortDirections: ['descend'],
       },
+      width: 120,
     },
   ]);
   // 扫描配置ID
