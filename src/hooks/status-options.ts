@@ -10,7 +10,7 @@ export function getStatusColor(status: number) {
   } else if (status === 3) {
     color = '#ff5722'
   } else if (status === 4) {
-    color = '#ffb40'
+    color = '#ffb400'
   } else if (status === 5) {
     color = '#f53f3f'
   } else if (status === 6) {
@@ -30,7 +30,7 @@ export function getStatusColorInDetail(status: number) {
   } else if (status === 3) {
     color = '#ff5722'
   } else if (status === 4) {
-    color = '#ffb40'
+    color = '#ffb400'
   } else if (status === 5) {
     color = '#f53f3f'
   } else if (status === 6) {

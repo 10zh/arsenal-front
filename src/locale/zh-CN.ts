@@ -4,10 +4,13 @@ import localeLogin from '@/views/login/locale/zh-CN';
 import localeWorkplace from '@/views/dashboard/workplace/locale/zh-CN';
 
 import localeMonitor from '@/views/dashboard/monitor/locale/zh-CN';
-
+// 扫描引入
 import localeSearchTable from '@/views/hostscan/scan-engine/locale/zh-CN';
 import localeCardList from '@/views/hostscan/scan-template/locale/zh-CN';
 import scanConfig from '@/views/hostscan/scan-config/locale/zh-CN';
+// 管理
+import localManageUser from '@/views/manage/userList/locale/zh-CN'
+
 
 import localeStepForm from '@/views/form/step/locale/zh-CN';
 import localeGroupForm from '@/views/form/group/locale/zh-CN';
@@ -37,6 +40,11 @@ export default {
   'menu.hostscan.config.add': '添加主机扫描配置',
   'menu.hostscan.config.detail': '主机扫描配置详情',
   'menu.hostscan.config.record.host.detail': '主机记录详情',
+
+
+  'menu.manage':'管理',
+  'menu.manage.userList':'用户列表',
+  'menu.manage.organization':'组织架构',
   'menu.dashboard': '仪表盘',
   'menu.server.dashboard': '仪表盘-服务端',
   'menu.server.workplace': '工作台-服务端',
@@ -73,4 +81,5 @@ export default {
   ...localeUserSetting,
   ...globalSettings,
   ...scanConfig,
+  ...localManageUser,
 };

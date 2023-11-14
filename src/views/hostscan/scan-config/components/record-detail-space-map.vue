@@ -1,7 +1,9 @@
 <template>
   <!-- 网络空间测绘 -->
   <a-layout>
+
     <a-card ref="header">
+
       <a-layout-header style="padding: 10px; background: #f6f8fa">
         <a-row :gutter="24">
           <a-col :span="8">
@@ -79,15 +81,9 @@
               </span>
             </a-row>
             <a-row style="padding: 0px 10px">
-              <a-button
-                v-for="(item, index) in props.serviceDetail"
-                :key="index"
-                type="primary"
-                style="margin: 5px"
-                @click="handleClick(item)"
-              >
-                {{ item.port }}</a-button
-              >
+              <a-button v-for="(item, index) in props.serviceDetail" :key="index" type="primary" style="margin: 5px"
+                @click="handleClick(item)">
+                {{ item.port }}</a-button>
             </a-row>
           </a-space>
         </a-scrollbar>
@@ -103,26 +99,15 @@
           <a-breadcrumb-item :style="{ fontWeight: 'bold' }">
             {{ props.tabDetail.applicationProtocol }}
           </a-breadcrumb-item>
-          <a-breadcrumb-item
-            v-if="props.tabDetail.supportSSLVersion"
-            :style="{ fontWeight: 'bold' }"
-          >
+          <a-breadcrumb-item v-if="props.tabDetail.supportSSLVersion" :style="{ fontWeight: 'bold' }">
             {{ props.tabDetail.supportSSLVersion }}
           </a-breadcrumb-item>
-          <a-breadcrumb-item
-            v-if="
-              ['HTTP', 'HTTPS'].includes(props.tabDetail.applicationProtocol)
-            "
-            :style="{ fontWeight: 'bold' }"
-          >
+          <a-breadcrumb-item v-if="['HTTP', 'HTTPS'].includes(props.tabDetail.applicationProtocol)
+            " :style="{ fontWeight: 'bold' }">
             {{ props.tabDetail.httpTitle }}
           </a-breadcrumb-item>
-          <a-breadcrumb-item
-            v-if="
-              ['HTTP', 'HTTPS'].includes(props.tabDetail.applicationProtocol)
-            "
-            :style="{ fontWeight: 'bold' }"
-          >
+          <a-breadcrumb-item v-if="['HTTP', 'HTTPS'].includes(props.tabDetail.applicationProtocol)
+            " :style="{ fontWeight: 'bold' }">
             {{ props.tabDetail.httpUrl }}
           </a-breadcrumb-item>
           <a-breadcrumb-item :style="{ fontWeight: 'bold' }">
@@ -138,12 +123,7 @@
               </template>
               <a-scrollbar style="height: 450px; overflow: auto">
                 <a-typography>
-                  <a-typography-paragraph
-                    v-for="cp in props.tabDetail.components"
-                    :key="cp.name"
-                    bold
-                    class="wrap-text"
-                  >
+                  <a-typography-paragraph v-for="cp in props.tabDetail.components" :key="cp.name" bold class="wrap-text">
                     {{ cp.name + ' ' + cp.version }}
                   </a-typography-paragraph>
                 </a-typography>
@@ -190,42 +170,42 @@
 </template>
 
 <script lang="ts" setup>
-  // ==========================声明模块==========================
-  import { ref, onMounted, defineProps, defineEmits } from 'vue';
-  import { useI18n } from 'vue-i18n';
-  import formatDate from '@/utils/times';
-  // ==========================数据定义==========================
-  const { t } = useI18n();
+// ==========================声明模块==========================
+import { ref, onMounted, defineProps, defineEmits } from 'vue';
+import { useI18n } from 'vue-i18n';
+import formatDate from '@/utils/times';
+// ==========================数据定义==========================
+const { t } = useI18n();
 
-  // 头部实例
-  const header = ref();
-  // 动态高度
-  const tabsHeight = ref();
-  // 接收来自父组件的值
-  const props: any = defineProps({
-    serviceDetail: {
-      type: Array,
-    },
-    tabDetail: {
-      type: Object,
-    },
-    hostDetail: {
-      type: Object,
-    },
-  });
+// 头部实例
+const header = ref();
+// 动态高度
+const tabsHeight = ref();
+// 接收来自父组件的值
+const props: any = defineProps({
+  serviceDetail: {
+    type: Array,
+  },
+  tabDetail: {
+    type: Object,
+  },
+  hostDetail: {
+    type: Object,
+  },
+});
 
-  const emit = defineEmits(['changeTabDetail']);
+const emit = defineEmits(['changeTabDetail']);
 
-  // 处理左侧端口开放情况点击事件
-  const handleClick = (row: any) => {
-    emit('changeTabDetail', row);
-  };
-  onMounted(() => {
-    // 动态计算高度
-    const height =
-      document.documentElement.clientHeight -
-      header.value.$el.offsetHeight -
-      320;
-    tabsHeight.value = height;
-  });
+// 处理左侧端口开放情况点击事件
+const handleClick = (row: any) => {
+  emit('changeTabDetail', row);
+};
+onMounted(() => {
+  // 动态计算高度
+  const height =
+    document.documentElement.clientHeight -
+    header.value.$el.offsetHeight -
+    350;
+  tabsHeight.value = height;
+});
 </script>

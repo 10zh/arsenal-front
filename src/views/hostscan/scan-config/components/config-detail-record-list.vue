@@ -46,7 +46,7 @@
     <a-pagination :style="{
       position: 'absolute',
       width: 'auto',
-      bottom: '-30px',
+      bottom: '-50px',
       right: '-15px',
     }" :current="pagination.pageIndex" :page-size="pagination.pageSize" :total="pagination.total" size="mini"
       :buffer-size="1" @change="changePageIndex" />
