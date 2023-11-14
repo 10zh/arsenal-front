@@ -1,3 +1,4 @@
+// 扫描配置的状态颜色显示
 export function getStatusColor(status: number) {
   let color = '#ff7d00';
   if (status === 0) {
@@ -14,6 +15,26 @@ export function getStatusColor(status: number) {
     color = '#f53f3f'
   } else if (status === 6) {
     color = '#00b42a'
+  }
+  return color;
+}
+// 扫描记录详情中的样式显示
+export function getStatusColorInDetail(status: number) {
+  let color = '#ff7d00';
+  if (status === 0) {
+    color = '#ff7d00'
+  } else if (status === 1) {
+    color = '#b71de8'
+  } else if (status === 2) {
+    color = "#168cff"
+  } else if (status === 3) {
+    color = '#ff5722'
+  } else if (status === 4) {
+    color = '#ffb40'
+  } else if (status === 5) {
+    color = '#f53f3f'
+  } else if (status === 6) {
+    color = 'green'
   }
   return color;
 }
