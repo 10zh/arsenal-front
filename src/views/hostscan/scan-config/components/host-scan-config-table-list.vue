@@ -113,13 +113,13 @@
     <template #operations="{ record }">
       <a-popconfirm v-if="[0, 4, 5, 6].includes(record.lastScanStatic.scanStatus)"
         :content="t('host.scan.config.operator.scan.ack')" @ok="startHostScan(record)">
-        <a-button type="text" size="small" style="padding: 0px">
+        <a-button type="text" size="small" style="padding: 10px">
           {{ $t('button.scan') }}
         </a-button>
       </a-popconfirm>
       <a-popconfirm v-if="[2].includes(record.lastScanStatic.scanStatus)"
         :content="t('host.scan.config.operator.scan.suspend.ack')" @ok="suspendHostScanEvent(record)">
-        <a-button type="text" size="small" style="padding: 0px; color: rgb(119, 117, 67)">
+        <a-button type="text" size="small" style="padding: 10px; color: rgb(119, 117, 67)">
           {{ $t('button.suspend') }}
         </a-button>
       </a-popconfirm>
@@ -318,6 +318,7 @@ onMounted(() => {
   const height =
     document.documentElement.clientHeight - header.value.offsetHeight - 350;
   tableHeight.value = height;
+  pagination.value.pageSize = Math.floor(height / 50);
   // 初始化主机扫描配置页面表格数据
   initConfigList();
   // 每10s刷新数据

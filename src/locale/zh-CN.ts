@@ -11,6 +11,9 @@ import scanConfig from '@/views/hostscan/scan-config/locale/zh-CN';
 // 管理
 import localManageUser from '@/views/manage/userList/locale/zh-CN'
 
+// 资产
+import localAsset from '@/views/asset/locale/zh-CN'
+
 
 import localeStepForm from '@/views/form/step/locale/zh-CN';
 import localeGroupForm from '@/views/form/group/locale/zh-CN';
@@ -42,9 +45,12 @@ export default {
   'menu.hostscan.config.record.host.detail': '主机记录详情',
 
 
-  'menu.manage':'管理',
+  'menu.manage':'系统管理',
   'menu.manage.userList':'用户列表',
   'menu.manage.organization':'组织架构',
+
+  'menu.asset':'资产',
+  'menu.asset.search':'资产搜索',
   'menu.dashboard': '仪表盘',
   'menu.server.dashboard': '仪表盘-服务端',
   'menu.server.workplace': '工作台-服务端',
@@ -82,4 +88,5 @@ export default {
   ...globalSettings,
   ...scanConfig,
   ...localManageUser,
+  ...localAsset,
 };
