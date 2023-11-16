@@ -1,28 +1,33 @@
 <template>
-  <div style="width:100%">
-    <div class="general-card">
+  <div style="width:100%;height:500px">
+    <div class="general-card" v-for="cardItem in cardList" :key="cardItem.id">
       <div class="card-left">
         <a-typography>
           <a-typography-paragraph copyable>
-            <span style="color:#333;font-size:20px">192.168.31.1</span>
+            <span style="color:#333;font-size:20px">{{ cardItem.ipv4 }}</span>
           </a-typography-paragraph>
           <a-typography-paragraph>
             <a-tag color="green">445/SMB</a-tag>
           </a-typography-paragraph>
           <a-typography-paragraph>
-            中国，长沙市，芙蓉区
+            {{ cardItem.position.country || '-' }},{{ cardItem.position.region || '-' }} ,{{ cardItem.position.province ||
+              '-'
+            }},{{ cardItem.position.city || '-' }}
           </a-typography-paragraph>
           <a-typography-paragraph>
-            中国，长沙市，芙蓉区
+            hostname:{{ cardItem.hostname }}
           </a-typography-paragraph>
           <a-typography-paragraph>
-            中国，长沙市，芙蓉区
+            macAddress:{{ cardItem.hardware.macAddress }}
           </a-typography-paragraph>
           <a-typography-paragraph>
-            中国，长沙市，芙蓉区
+            osName:{{ cardItem.os.osName }}
           </a-typography-paragraph>
           <a-typography-paragraph>
-            中国，长沙市，芙蓉区
+            supportSslVersion:{{ cardItem.supportSslVersion }}
+          </a-typography-paragraph>
+          <a-typography-paragraph>
+            ISP:{{ cardItem.position.isp }}
           </a-typography-paragraph>
         </a-typography>
       </div>
@@ -32,14 +37,14 @@
           <a-tab-pane key="1" :title="$t('asset.list.banner')">
             <a-typography style="padding-left: 10px;">
               <a-typography-paragraph copyable>
-                192.168.31.1
+                {{ cardItem.service.banner }}
               </a-typography-paragraph>
             </a-typography>
           </a-tab-pane>
           <a-tab-pane key="2" :title="$t('asset.list.certify')">
-            <a-typography>
-              <a-typography-paragraph copyable>
-                192.168.31.1
+            <a-typography style="padding-left: 10px;">
+              <a-typography-paragraph :copyable="cardItem.service.certificate ? true : false">
+                {{ cardItem.service.certificate }}
               </a-typography-paragraph>
             </a-typography>
           </a-tab-pane>
@@ -50,33 +55,32 @@
 
       </div>
     </div>
-    <a-pagination class="pagination" :total="page.total" :current="page.pageIndex" :page-size="page.pageSize" show-total
-      show-jumper show-page-size @change="changePageEvent" @page-size-change="changeSizeEvent" />
+
   </div>
 </template>
 <script setup>
 // ==========================声明模块==========================
-import { ref, reactive } from 'vue';
+import { ref, reactive, onMounted, defineProps } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { addScanEngine } from '@/api/scan/scan-engine';
 import { Message } from '@arco-design/web-vue';
 
+
 const { t } = useI18n();
 
-const page = reactive({
-  pageSize: 10,
-  pageIndex: 1,
-  total: 10
-})
+// 接收来自父组件的值
+const props = defineProps({
+  cardList: {
+    type: Array,
+    default: () => { },
+  },
+});
 
 // ==========================事件响应==========================
-// 分页
-const changeSizeEvent = () => {
 
-}
-const changePageEvent = () => {
+onMounted(() => {
 
-}
+})
 
 </script>
 <style scoped lang="less">
@@ -89,7 +93,7 @@ const changePageEvent = () => {
 
 
   .card-left {
-    padding: 10px 5px;
+    padding: 10px 10px;
 
     border: 1px solid var(--color-neutral-3);
     flex: 1;
@@ -114,12 +118,5 @@ const changePageEvent = () => {
 /deep/ .arco-tabs-nav {
   border-bottom: 1px solid var(--color-neutral-3);
   padding-bottom: 10px;
-}
-
-.pagination {
-  margin-top: 20px;
-  display: flex;
-  justify-content: center;
-  widows: 100%;
 }
 </style>

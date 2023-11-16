@@ -1,12 +1,15 @@
 <template>
   <div class="container">
     <div class="panel">
+      <!-- 搜索框start -->
       <div class="search-wrap">
-        <a-auto-complete :data="aotoCompleteData" size="large" :style="{ width: '600px' }"
-          placeholder="please enter something" strict v-model="q" />
-        <icon-search class="icon" @click="handleSearch" />
+        <a-auto-complete :data="autoCompleteData" size="large" :style="{ width: '600px' }"
+          placeholder="please enter something" @focus="handleSearch" @change="handleSearch" @select="handleClick"
+          v-model="queryFactor">
+        </a-auto-complete>
+        <icon-search class="icon" @click="handleClick('click')" />
       </div>
-
+      <!-- 搜索框end-->
     </div>
   </div>
 </template>
@@ -17,26 +20,45 @@ import { ref, reactive } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Message } from '@arco-design/web-vue';
 import { useRouter } from 'vue-router';
+import { getSearchAutoComplete } from '@/api/asset/search'
 
 const router = useRouter();
-
-const aotoCompleteData = ref(["1", "2"])
-// 查询条件
-const q = ref('')
-
+// 查询字段
+const queryFactor = ref('');
+// 自动补全
+const autoCompleteData = ref([''])
 // ==========================事件响应模块ss==========================
-// 搜索
-const handleSearch = () => {
-  router.push({
-    path: '/asset/searchList',
-    query: {
-      q: q.value,
-    },
-  });
+// 搜索框获取自动补全数据
+const handleSearch = async () => {
+  const response = await getSearchAutoComplete(queryFactor.value);
+  autoCompleteData.value = [];
+  if (response.data.length > 0) {
+    response.data.forEach(item => {
+      autoCompleteData.value.push(item.title.toString() + ' | '.toString() + item.query.toString())
+    })
+  }
+}
+// 点击搜索按钮
+const handleClick = (value) => {
+  if (value === 'click') {
+    router.push({
+      path: '/asset/searchList',
+      query: {
+        q: queryFactor.value,
+      },
+    });
+  } else {
+    router.push({
+      path: '/asset/searchList',
+      query: {
+        q: value,
+      },
+    });
+  }
+
 
 }
 
-const { t } = useI18n();
 </script>
 <style scoped lang="less">
 .container {
