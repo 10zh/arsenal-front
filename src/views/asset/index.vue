@@ -3,7 +3,7 @@
     <div class="panel">
       <!-- 搜索框start -->
       <div class="search-wrap">
-        <a-auto-complete :data="autoCompleteData" size="large" :style="{ width: '600px' }"
+        <a-auto-complete :data="autoCompleteData" size="large" virtual-list-props :style="{ width: '600px' }"
           placeholder="please enter something" @focus="handleSearch" @change="handleSearch" @select="handleClick"
           v-model="queryFactor">
         </a-auto-complete>
@@ -30,11 +30,11 @@ const autoCompleteData = ref([''])
 // ==========================事件响应模块ss==========================
 // 搜索框获取自动补全数据
 const handleSearch = async () => {
-  const response = await getSearchAutoComplete(queryFactor.value);
+  const response = await getSearchAutoComplete(queryFactor.value.trim());
   autoCompleteData.value = [];
   if (response.data.length > 0) {
     response.data.forEach(item => {
-      autoCompleteData.value.push(item.title.toString() + ' | '.toString() + item.query.toString())
+      autoCompleteData.value.push(`${item.title} | ${item.component} | ${item.query}`)
     })
   }
 }

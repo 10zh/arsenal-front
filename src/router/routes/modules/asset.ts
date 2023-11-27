@@ -24,13 +24,23 @@ const ASSET: AppRouteRecordRaw = {
     },{
       path: 'searchList', // The midline path complies with SEO specifications
       name: 'searchList',
-      component: () => import('@/views/asset/searchList.vue'),
+      component: () => import('@/views/asset/search-list.vue'),
       meta: {
         locale: 'menu.asset.search',
         requiresAuth: true,
         roles: ['*'],
         hideInMenu:true,
       },
-    }]
+    },{
+    path: 'clusterAnalysisChart', // The midline path complies with SEO specifications
+    name: 'clusterAnalysisChart',
+    component: () => import('@/views/asset/cluster-analysis-chart.vue'),
+    meta: {
+      locale: 'menu.asset.clusterAnalysis',
+      requiresAuth: true,
+      roles: ['*'],
+      hideInMenu:true,
+    },
+  }]
 }
 export default ASSET;

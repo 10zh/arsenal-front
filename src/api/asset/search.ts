@@ -7,6 +7,12 @@ export interface assetSearchListPageRequest {
   pageSize: number;
   q:string;
 }
+// 获取图表信息的搜索条件
+export interface assetSearchListChartRequest {
+  size: number;
+  type: string;
+  q: string;
+}
 // 获取搜索条件自动补全列表
 export function getSearchAutoComplete(key: string) {
   const url = `/asset/search/auto?key=${key}`;
@@ -18,6 +24,25 @@ export function getSearchList(params:  assetSearchListPageRequest) {
   if (params.q) {
     url = `${url}&q=${params.q}`;
   }
+  return axios.get<HttpResponse>(url);
+}
+// 获取资产聚合信息
+export function getSearchInfo(params:  assetSearchListPageRequest) {
+  let url = `/asset/search/aggregate`;
+  if (params.q) {
+    url = `${url}?q=${params.q}`;
+  }
+  return axios.get<HttpResponse>(url);
+}
+// 搜索图表信息
+export function getBarChartList(params:  assetSearchListChartRequest) {
+  let url = `/asset/search/aggregate/${params.type}/more`;
+  if (params.q) {
+    url = `${url}?q=${params.q}`;
+  }
+if(params.size) {
+  url = `${url}&size=${params.size}`;
+}
   return axios.get<HttpResponse>(url);
 }
 

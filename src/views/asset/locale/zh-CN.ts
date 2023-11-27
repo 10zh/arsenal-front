@@ -5,6 +5,10 @@ export default {
   'asset.tabs.bug':'相关漏洞',
   'asset.list.banner':'Banner',
   'asset.list.certify':'证书',
+  'asset.list.hostType':'主机类型',
+  'asset.list.components':'组件',
+  'asset.list.webTitles':'Web应用标题',
+
 
   // 用户列表
   'manage.user.all': '全部用户',
