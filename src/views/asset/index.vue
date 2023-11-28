@@ -26,7 +26,7 @@ const router = useRouter();
 // 查询字段
 const queryFactor = ref('');
 // 自动补全
-const autoCompleteData = ref([''])
+const autoCompleteData = ref(['数据加载中...'])
 // ==========================事件响应模块ss==========================
 // 搜索框获取自动补全数据
 const handleSearch = async () => {

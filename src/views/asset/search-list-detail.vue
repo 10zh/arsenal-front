@@ -24,7 +24,7 @@
     <!-- 基本信息tabs -->
     <detailMessage :detail-info='detailMessages'></detailMessage>
     <!-- 主机服务信息 -->
-    <detailList :port-services="detailMessage.portServices"></detailList>
+    <detailList :port-services="detailMessages.portServices"></detailList>
 
   </div>
 </template>
@@ -66,8 +66,8 @@ const timers = ref(null);
 const initData = async () => {
   const response = await getSearchDetail(route.query.id);
   detailMessages.basic = response.data.basic;
-  detailMessage.components = response.data.components;
-  detailMessage.portServices = response.data.portServices;
+  detailMessages.components = response.data.components;
+  detailMessages.portServices = response.data.portServices;
 }
 // 获取补全数据
 const getAutoData = async () => {
