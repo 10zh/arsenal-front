@@ -9,6 +9,41 @@ export default {
   'asset.list.components':'组件',
   'asset.list.webTitles':'Web应用标题',
 
+  // 聚合分析
+  "asset.cluster.components":'组件',
+  "asset.cluster.os":'系统',
+  "asset.cluster.title":'标题',
+  "asset.cluster.select":'聚合字段',
+  'asset.cluster.message':'语法说明',
+  'asset.cluster.charts.export':'导出',
+  'asset.searchList.more':'更多',
+  'asset.searchList.syntax':'语法说明',
+  'asset.searchList.searchSample':'搜索样例',
+  // 详情
+  'asset.searchListDetail.baseMessage':'基本信息',
+  'asset.searchListDetail.componentsDetail':'组件详情',
+  'asset.searchListDetail.basic.osName':'操作系统',
+  'asset.searchListDetail.basic.macVendor':'MAC厂商',
+  'asset.searchListDetail.basic.city':'市',
+  'asset.searchListDetail.basic.device':'设备',
+  'asset.searchListDetail.basic.country':'国家',
+  'asset.searchListDetail.basic.region':'区',
+  'asset.searchListDetail.basic.hostname':'主机名称',
+  'asset.searchListDetail.basic.macAddress':'MAC地址',
+  'asset.searchListDetail.basic.province':'省份',
+  'asset.searchListDetail.components.hierarchical':'层级关系',
+  'asset.searchListDetail.components.name':'组件名称',
+  'asset.searchListDetail.components.version':'组件版本',
+
+  'asset.searchListDetail.postServices':'端口服务',
+  'asset.searchListDetail.bugList':'漏洞列表',
+
+  'asset.searchListDetail.postServices.name':'组件:',
+  'asset.searchListDetail.postServices.supportSslVersion':'支持的SSL版本:',
+  'asset.searchListDetail.postServices.transportProtocol':'传输层协议:',
+  'asset.searchListDetail.postServices.applicationProtocol':'应用层协议:',
+  'asset.searchListDetail.postServices.banner':'Banner',
+  'asset.searchListDetail.postServices.certificate':'证书',
 
   // 用户列表
   'manage.user.all': '全部用户',

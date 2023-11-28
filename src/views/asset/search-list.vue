@@ -11,12 +11,13 @@
       <div class="search">
         <div class="search-wrap">
           <a-auto-complete :data="autoCompleteData" size="large" :style="{ width: '900px' }"
-            placeholder="please enter something" @focus="handleSearch('focus')" @change="handleSearch('change')"
+            placeholder="please enter something" @focus="handleSearch('focus')" @change="handleSearch('change')" loading
             v-model="searchText">
           </a-auto-complete>
           <icon-search class="icon" @click="getInitData('search')" />
         </div>
-        <span style="display:inline-block;margin-left:20px">语法说明 / 搜索样例</span>
+        <span style="display:inline-block;margin-left:20px">{{ $t('asset.searchList.syntax') }} /
+          {{ $t('asset.searchList.searchSample') }}</span>
       </div>
       <!-- 搜索框end -->
     </a-card>

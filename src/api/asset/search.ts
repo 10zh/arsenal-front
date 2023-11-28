@@ -45,4 +45,8 @@ if(params.size) {
 }
   return axios.get<HttpResponse>(url);
 }
-
+// 获取单个资产详情信息
+export function getSearchDetail(id:number) {
+  const url = `/asset/search/${id}/detail`;
+  return axios.get<HttpResponse>(url);
+}

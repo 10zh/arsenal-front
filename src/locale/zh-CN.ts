@@ -51,6 +51,7 @@ export default {
 
   'menu.asset':'资产',
   'menu.asset.search':'资产搜索',
+  'menu.asset.detail':'资产详情',
   'menu.asset.clusterAnalysis':'聚合分析',
   'menu.dashboard': '仪表盘',
   'menu.server.dashboard': '仪表盘-服务端',

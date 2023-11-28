@@ -41,6 +41,16 @@ const ASSET: AppRouteRecordRaw = {
       roles: ['*'],
       hideInMenu:true,
     },
+  },{
+    path: 'assetDetail', // The midline path complies with SEO specifications
+    name: 'assetDetail',
+    component: () => import('@/views/asset/search-list-detail.vue'),
+    meta: {
+      locale: 'menu.asset.detail',
+      requiresAuth: true,
+      roles: ['*'],
+      hideInMenu:true,
+    },
   }]
 }
 export default ASSET;

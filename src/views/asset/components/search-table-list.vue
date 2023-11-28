@@ -7,7 +7,8 @@
         <div class="card-left">
           <a-typography>
             <a-typography-paragraph copyable>
-              <span style="color:#333;font-size:20px">{{ cardItem.ipv4 }}</span>
+              <a-link @click="handleDetail(cardItem.id)"> <span style="font-size:20px">{{ cardItem.ipv4 }}</span></a-link>
+
             </a-typography-paragraph>
             <a-typography-paragraph>
               <a-tag color="green">445/SMB</a-tag>
@@ -85,7 +86,7 @@
 
       </a-space>
       <div style="text-align:right;padding:10px">
-        <a-link @click="handleMore('components')">更多</a-link>
+        <a-link @click="handleMore('components')">{{ t('asset.searchList.more') }}</a-link>
       </div>
       <a-divider />
       <!-- Web标题信息start -->
@@ -100,7 +101,7 @@
       </a-space>
       <!-- 查看更多 -->
       <div style="text-align:right;padding:10px">
-        <a-link @click="handleMore('title')">更多</a-link>
+        <a-link @click="handleMore('title')">{{ t('asset.searchList.more') }}</a-link>
       </div>
 
     </div>
@@ -147,6 +148,16 @@ const handleMore = (type) => {
   })
 
 }
+// 单个资产详情页面
+const handleDetail = (id) => {
+  router.push({
+    path: '/asset/assetDetail',
+    query: {
+      q: props.searchText,
+      id,
+    }
+  })
+}
 onMounted(() => {
 
 })
@@ -173,7 +184,8 @@ onMounted(() => {
 
     .space-item {
       padding: 10px;
-      flex: 1
+      flex: 1;
+      min-height: 100px;
     }
   }
 }

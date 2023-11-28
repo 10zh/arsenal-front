@@ -9,28 +9,28 @@
       <div class="search">
         <!-- 搜索框start -->
         <div class="search-wrap">
-          <a-auto-complete :data="autoCompleteData" allow-clear size="large" :style="{ width: '90%' }"
+          <a-auto-complete :data="autoCompleteData" size="large" :style="{ width: '90%' }"
             placeholder="please enter something" @focus="handleSearch('focus')" @change="handleSearch('change')"
             v-model="searchText">
           </a-auto-complete>
           <icon-search class="icon" @click="getInitData" />
-          <p style="margin-left:10px">语法说明</p>
+          <p style="margin-left:10px">{{ t('asset.cluster.message') }}</p>
         </div>
         <!-- 搜索结果start -->
         <div class="search-result">
           <p>找到约{{ resultCount }}条结果</p>
-          <a-button type="primary" @click="exportChart" size="small">导出</a-button>
+          <a-button type="primary" @click="exportChart" size="small">{{ t('asset.cluster.charts.export') }}</a-button>
         </div>
         <!-- 搜索下拉框&前n条数据 -->
         <div class="filter-container">
           <!-- 搜索下拉框 -->
           <div class="search-select">
-            <span>聚合字段：</span>
+            <span>{{ t('asset.cluster.select') }}：</span>
             <a-select v-model="search.type" :style="{ width: '320px' }" @change="handleSelect"
               placeholder="Please select ...">
-              <a-option value="components">组件</a-option>
-              <a-option value="os">系统</a-option>
-              <a-option value="title">标题</a-option>
+              <a-option value="components">{{ t('asset.cluster.components') }}</a-option>
+              <a-option value="os">{{ t('asset.cluster.os') }}</a-option>
+              <a-option value="title">{{ t('asset.cluster.title') }}</a-option>
             </a-select>
           </div>
           <!-- 选择n数据 -->
