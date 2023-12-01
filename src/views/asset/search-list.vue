@@ -209,11 +209,11 @@ onUnmounted(() => {
 
   /deep/ .arco-card-header-title {
     // font-weight: 700;
-    font-size: 20px;
+    font-size: 16px;
   }
 
   /deep/ .arco-card-header {
-    padding: 10px;
+    padding: 0 10px;
   }
 
   /deep/ .arco-tabs-content {

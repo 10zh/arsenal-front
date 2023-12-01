@@ -73,7 +73,20 @@
 
           <!-- 漏洞表格start -->
           <a-table :style="'height:' + pagination.pageSize * 50 + 'px'" :columns="columns" :pagination="false"
-            :data="vulnsList" />
+            :data="vulnsList">
+            <template #riskGrade="{ record }">
+              <span :style="{ 'color': setRiskGradeColor(record.riskGrade) }">{{ setRiskGradeText(record.riskGrade)
+              }}</span>
+            </template>
+            <template #severity="{ record }">
+              <span :style="{ 'color': setSeverityRatingColor(record.severity) }">{{
+                getSeverityRatingText(record.severity)
+              }}</span>
+            </template>
+            <template #createTime="{ record }">
+              {{ formatDate(record.createTime, 'YYYY-MM-DD hh:mm:ss') }}
+            </template>
+          </a-table>
           <a-pagination class="paginationStyle" :total="pagination.total" :page-size="pagination.pageSize"
             @change="changePageIndex" show-total />
         </a-tab-pane>
@@ -88,6 +101,8 @@ import { ref, reactive, computed, onMounted, onUnmounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Message } from '@arco-design/web-vue';
 import { useRoute, useRouter } from 'vue-router';
+import formatDate from '@/utils/times'
+import { setRiskGradeText, setRiskGradeColor, getSeverityRatingText, setSeverityRatingColor } from '@/hooks/status-options'
 import { getSearchDetailVulns } from '@/api/asset/search'
 
 const { t } = useI18n();
@@ -122,6 +137,7 @@ const columns = [
   {
     title: t('asset.search.detail.vulns.riskGrade'),
     dataIndex: 'riskGrade',
+    slotName: 'riskGrade'
   },
   {
     title: t('asset.search.detail.vulns.cvss2'),
@@ -134,10 +150,12 @@ const columns = [
   {
     title: t('asset.search.detail.vulns.severity'),
     dataIndex: 'severity',
+    slotName: 'severity'
   },
   {
     title: t('asset.search.detail.vulns.createTime'),
     dataIndex: 'createTime',
+    slotName: 'createTime'
   },
 ];
 // ==========================事件响应模块ss==========================
