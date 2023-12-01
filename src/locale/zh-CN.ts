@@ -9,7 +9,7 @@ import localeSearchTable from '@/views/hostscan/scan-engine/locale/zh-CN';
 import localeCardList from '@/views/hostscan/scan-template/locale/zh-CN';
 import scanConfig from '@/views/hostscan/scan-config/locale/zh-CN';
 // 管理
-import localManageUser from '@/views/manage/userList/locale/zh-CN'
+import localManageUser from '@/views/manage/user-list/locale/zh-CN'
 
 // 资产
 import localAsset from '@/views/asset/locale/zh-CN'
@@ -46,6 +46,8 @@ export default {
 
 
   'menu.manage':'系统管理',
+  'menu.manage.permissionsManage':'权限管理',
+  'menu.manage.roleManage':'角色管理',
   'menu.manage.userList':'用户列表',
   'menu.manage.organization':'组织架构',
 

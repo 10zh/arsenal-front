@@ -86,7 +86,6 @@ const changePageEvent = () => {
 .edit-btn {
   position: absolute;
   right: 5px;
-  top: 3px;
 
 }
 

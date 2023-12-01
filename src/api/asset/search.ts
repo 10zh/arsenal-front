@@ -13,6 +13,11 @@ export interface assetSearchListChartRequest {
   type: string;
   q: string;
 }
+// 分页参数
+export interface assetSearchVulnListReq {
+  pageIndex:number;
+  pageSize:number;
+}
 // 获取搜索条件自动补全列表
 export function getSearchAutoComplete(key: string) {
   const url = `/asset/search/auto?key=${key}`;
@@ -48,5 +53,10 @@ if(params.size) {
 // 获取单个资产详情信息
 export function getSearchDetail(id:number) {
   const url = `/asset/search/${id}/detail`;
+  return axios.get<HttpResponse>(url);
+}
+// 获取单个资产详情的漏洞列表信息
+export function getSearchDetailVulns(id:number,page:assetSearchVulnListReq) {
+  const url = `/asset/${id}/search/vulns?pageIndex=${page.pageIndex}&pageSize=${page.pageSize}`;
   return axios.get<HttpResponse>(url);
 }

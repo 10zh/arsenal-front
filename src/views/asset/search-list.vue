@@ -24,13 +24,32 @@
     <!-- 卡片列表 -->
     <a-card style="margin:10px 50px;height:90%">
       <a-scrollbar class="scrollbar" style="overflow:auto;height:calc(100% - 10px)">
-        <a-tabs type="rounded">
+        <a-tabs type="rounded" @change="changeTabs">
           <!-- 搜索结果start -->
           <a-tab-pane key="1" :title="$t('asset.tabs.result')">
             <searchList :card-list="cardList" :rightInfo="rightInfo" :searchText="searchText"></searchList>
           </a-tab-pane>
           <!-- 相关漏洞start -->
           <a-tab-pane key="2" :title="$t('asset.tabs.bug')">
+            <div style="padding:0 20px" v-for="item in rightInfo.vulns" :key="item.componentName">
+              <!-- 漏洞标题start -->
+              <a-typography>
+                <a-typography-title :heading="5">
+                  {{ item.componentName }}
+                </a-typography-title>
+              </a-typography>
+              <!-- 漏洞项的列表start -->
+              <a-list>
+                <a-list-item class="list-row" v-for="row in item.list" :key="row.vulnId">
+                  <span>{{ row.vulnId }}</span>
+                  <span class="risk-width">{{ formatDate(row.createTime, 'YYYY-MM-DD') }}</span>
+                  <span class="risk-width" :style="{ 'color': setRiskGradeColor(row.riskGrade) }">{{
+                    setRiskGradeText(row.riskGrade)
+                  }}</span>
+                  <span>{{ row.vulnName }}</span>
+                </a-list-item>
+              </a-list>
+            </div>
           </a-tab-pane>
 
         </a-tabs>
@@ -38,7 +57,7 @@
 
 
       <!-- 底部分页栏 -->
-      <a-pagination class="pagination" :total="pagination.total" :current="pagination.pageIndex"
+      <a-pagination v-if="activeTab === '1'" class="pagination" :total="pagination.total" :current="pagination.pageIndex"
         :page-size="pagination.pageSize" show-total show-jumper show-page-size @change="changePageEvent" />
 
     </a-card>
@@ -54,6 +73,8 @@ import { useI18n } from 'vue-i18n';
 import { Message } from '@arco-design/web-vue';
 import { useRoute, useRouter } from 'vue-router';
 import { getSearchList, getSearchAutoComplete, getSearchInfo } from '@/api/asset/search'
+import formatDate from '@/utils/times'
+import { setRiskGradeText, setRiskGradeColor } from '@/hooks/status-options'
 import searchList from './components/search-table-list.vue'
 
 
@@ -79,13 +100,15 @@ const rightInfo = reactive({
   components: [],
   ipv4Number: '',
   ipv6Number: '',
-  webTitles: []
+  webTitles: [],
+  vulns: []
 })
 // 自动补全
 const autoCompleteData = ref([''])
 // 防抖定时器
 const timers = ref(null)
-
+// 选中激活的tab项
+const activeTab = ref("1")
 // ==========================事件响应模块ss==========================
 // 获取补全数据
 const getAutoData = async () => {
@@ -155,6 +178,10 @@ const changePageEvent = (val) => {
 const goBack = () => {
   router.go(-1);
 };
+// 切换tab栏
+const changeTabs = (key) => {
+  activeTab.value = key
+}
 // 页面加载时初始化页面列表数据
 onMounted(() => {
   getInitInfo()
@@ -193,6 +220,15 @@ onUnmounted(() => {
     padding: 0;
   }
 
+  .back-btn {
+    text-align: right;
+    padding-top: 20px;
+    position: absolute;
+    top: -12px;
+    right: 20px;
+    z-index: 99;
+  }
+
 
 }
 
@@ -208,31 +244,22 @@ onUnmounted(() => {
   display: flex;
   justify-content: center;
   align-items: center;
-}
 
-.search-wrap {
-  position: relative;
-}
+  .search-wrap {
+    position: relative;
 
-.arco-icon-search {
-  font-size: 24px;
-}
+    .arco-icon-search {
+      font-size: 24px;
+    }
 
+    .icon {
+      position: absolute;
+      right: 5px;
+      top: 5px;
+      z-index: 999;
+    }
 
-.icon {
-  position: absolute;
-  right: 5px;
-  top: 5px;
-  z-index: 999;
-}
-
-.back-btn {
-  text-align: right;
-  padding-top: 20px;
-  position: absolute;
-  top: -12px;
-  right: 20px;
-  z-index: 99;
+  }
 }
 
 .pagination {
@@ -243,6 +270,20 @@ onUnmounted(() => {
 }
 
 /deep/ .scrollbar {
-  overflow: auto
+  overflow: auto;
+
+  .list-row {
+    span {
+      display: inline-block;
+      width: 400px;
+      margin-right: 20px;
+      color: var(--color-text-2);
+    }
+
+    .risk-width {
+      width: 150px;
+    }
+  }
+
 }
 </style>

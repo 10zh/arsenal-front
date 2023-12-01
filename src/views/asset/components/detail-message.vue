@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- 基本信息el-tabs -->
-    <a-card style="margin:10px 50px;">
+    <a-card style="margin:10px 50px;min-height:200px">
       <a-tabs type="rounded">
         <!-- 搜索结果start -->
         <a-tab-pane key="1" :title="$t('asset.searchListDetail.baseMessage')">

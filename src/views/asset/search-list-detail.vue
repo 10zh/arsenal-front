@@ -118,15 +118,19 @@ initData()
 
   /deep/ .arco-card-header-title {
     // font-weight: 700;
-    font-size: 20px;
+    font-size: 16px;
   }
 
   /deep/ .arco-card-header {
-    padding: 10px;
+    padding: 0 10px;
   }
 
   /deep/ .arco-tabs-content {
     padding: 0;
+  }
+
+  /deep/ .arco-card-body {
+    padding: 0 10px 10px 10px;
   }
 
 
@@ -144,6 +148,7 @@ initData()
   display: flex;
   justify-content: center;
   align-items: center;
+  min-height: 20px;
 }
 
 .search-wrap {

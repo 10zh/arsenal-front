@@ -11,7 +11,7 @@
 
             </a-typography-paragraph>
             <a-typography-paragraph>
-              <a-tag color="green">445/SMB</a-tag>
+              <a-tag color="green">{{ cardItem.service.port }} / {{ cardItem.service.transportProtocol }}</a-tag>
             </a-typography-paragraph>
             <a-typography-paragraph>
               {{ cardItem.position.country || '-' }},{{ cardItem.position.region || '-' }} ,{{ cardItem.position.province
@@ -47,8 +47,16 @@
                 </a-typography-paragraph>
               </a-typography>
             </a-tab-pane>
+            <!-- 快照 -->
+            <a-tab-pane key="2" :title="$t('asset.list.dumpData')">
+              <a-typography style="padding-left: 10px;">
+                <a-typography-paragraph :copyable="cardItem.service.dumpData ? true : false">
+                  {{ cardItem.service.dumpData }}
+                </a-typography-paragraph>
+              </a-typography>
+            </a-tab-pane>
             <!-- 证书 -->
-            <a-tab-pane key="2" :title="$t('asset.list.certify')">
+            <a-tab-pane key="3" :title="$t('asset.list.certify')">
               <a-typography style="padding-left: 10px;">
                 <a-typography-paragraph :copyable="cardItem.service.certificate ? true : false">
                   {{ cardItem.service.certificate }}

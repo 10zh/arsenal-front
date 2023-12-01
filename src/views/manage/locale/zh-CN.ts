@@ -4,7 +4,6 @@ export default {
   'asset.tabs.result':'搜索结果',
   'asset.tabs.bug':'相关漏洞',
   'asset.list.banner':'Banner',
-  'asset.list.dumpData':'快照',
   'asset.list.certify':'证书',
   'asset.list.hostType':'主机类型',
   'asset.list.components':'组件',
@@ -45,15 +44,6 @@ export default {
   'asset.searchListDetail.postServices.applicationProtocol':'应用层协议:',
   'asset.searchListDetail.postServices.banner':'Banner',
   'asset.searchListDetail.postServices.certificate':'证书',
-  // 单个详情的漏洞列表
-'asset.search.detail.vulns.vulnId':"漏洞ID",
-'asset.search.detail.vulns.vulnName':"漏洞名称",
-'asset.search.detail.vulns.riskGrade':"风险等级",
-'asset.search.detail.vulns.cvss2':"cvss2",
-'asset.search.detail.vulns.cvss3':"cvss3",
-'asset.search.detail.vulns.severity':"风险评估",
-'asset.search.detail.vulns.createTime':"创建时间",
-
 
   // 用户列表
   'manage.user.all': '全部用户',

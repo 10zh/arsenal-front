@@ -13,14 +13,36 @@ const MANAGE: AppRouteRecordRaw = {
   },
   children: [
     {
-      path: 'userList', // The midline path complies with SEO specifications
-      name: 'userList',
-      component: () => import('@/views/manage/userList/index.vue'),
+      path: 'user-list', // The midline path complies with SEO specifications
+      name: 'user-list',
+      component: () => import('@/views/manage/user-list/index.vue'),
       meta: {
         locale: 'menu.manage.userList',
         requiresAuth: true,
         roles: ['*'],
       },
-    },]
+    },
+    // {
+    //   path: 'permissionsManage', // The midline path complies with SEO specifications
+    //   name: 'permissionsManage',
+    //   component: () => import('@/views/manage/userList/index.vue'),
+    //   meta: {
+    //     locale: 'menu.manage.permissionsManage',
+    //     requiresAuth: true,
+    //     roles: ['*'],
+    //   },
+    // },
+    // {
+    //   path: 'roleManage', // The midline path complies with SEO specifications
+    //   name: 'roleManage',
+    //   component: () => import('@/views/manage/userList/index.vue'),
+    //   meta: {
+    //     locale: 'menu.manage.roleManage',
+    //     requiresAuth: true,
+    //     roles: ['*'],
+    //   },
+    // },
+  
+  ]
 }
 export default MANAGE;
