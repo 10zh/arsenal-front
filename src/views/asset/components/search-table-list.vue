@@ -41,27 +41,42 @@
           <a-tabs type="rounded">
             <!-- banner -->
             <a-tab-pane key="1" :title="$t('asset.list.banner')">
-              <a-typography style="padding-left: 10px;">
+              <!-- banner有数据 -->
+              <a-typography style="padding-left: 10px;" v-if="cardItem.service.banner">
                 <a-typography-paragraph copyable>
-                  {{ cardItem.service.banner }}
+                  <span v-html="cardItem.service.banner"></span>
                 </a-typography-paragraph>
               </a-typography>
+              <!-- banner无数据 -->
+              <a-empty v-else />
             </a-tab-pane>
             <!-- 快照 -->
             <a-tab-pane key="2" :title="$t('asset.list.dumpData')">
-              <a-typography style="padding-left: 10px;">
-                <a-typography-paragraph :copyable="cardItem.service.dumpData ? true : false">
-                  {{ cardItem.service.dumpData }}
+              <!-- 快照有数据 -->
+              <a-typography style="padding-left: 10px;" v-if="cardItem.service.dumpData">
+                <a-typography-paragraph copyable>
+                  <span v-html="cardItem.service.dumpData"></span>
                 </a-typography-paragraph>
               </a-typography>
+              <!-- 快照无数据展示banner数据-->
+              <a-typography style="padding-left: 10px;" v-else-if="cardItem.service.banner">
+                <a-typography-paragraph copyable>
+                  <span v-html="cardItem.service.banner"></span>
+                </a-typography-paragraph>
+              </a-typography>
+              <!-- 快照和banner均无数据 -->
+              <a-empty v-else />
             </a-tab-pane>
             <!-- 证书 -->
             <a-tab-pane key="3" :title="$t('asset.list.certify')">
-              <a-typography style="padding-left: 10px;">
-                <a-typography-paragraph :copyable="cardItem.service.certificate ? true : false">
-                  {{ cardItem.service.certificate }}
+              <!-- 证书有数据 -->
+              <a-typography style="padding-left: 10px;" v-if="cardItem.service.certificate">
+                <a-typography-paragraph copyable>
+                  <span v-html="cardItem.service.certificate"></span>
                 </a-typography-paragraph>
               </a-typography>
+              <!-- 证书无数据 -->
+              <a-empty v-else style="margin-top: 50px;" />
             </a-tab-pane>
           </a-tabs>
         </div>
@@ -213,11 +228,32 @@ onMounted(() => {
   }
 
   .card-center {
-    padding: 10px 0px;
+    padding: 10px;
     border-top: 1px solid var(--color-neutral-3);
     border-bottom: 1px solid var(--color-neutral-3);
     border-right: 1px solid var(--color-neutral-3);
     flex: 2;
+
+    /deep/ .arco-tabs-content {
+      padding-top: 5px;
+      padding-right: 10px;
+    }
+
+    /deep/ .arco-typography {
+      position: relative;
+    }
+
+    /deep/ .arco-typography-operation-copy {
+      position: absolute;
+      top: 0px;
+      right: 0px;
+    }
+
+    /deep/ .arco-typography-operation-copied {
+      position: absolute;
+      top: 0px;
+      right: 0px;
+    }
 
   }
 
@@ -227,9 +263,5 @@ onMounted(() => {
 /deep/ .arco-tabs-nav {
   border-bottom: 1px solid var(--color-neutral-3);
   padding-bottom: 10px;
-}
-
-/deep/ .arco-icon-copy {
-  font-size: 24px;
 }
 </style>

@@ -45,20 +45,24 @@
                       <!-- 搜索结果start -->
                       <a-tab-pane key="1" :title="$t('asset.searchListDetail.postServices.banner')">
                         <div class="banner-container">
-                          <a-typography>
-                            <a-typography-paragraph copyable>
-                              {{ item.banner }}
+                          <!-- banner有数据 -->
+                          <a-typography v-if="item.banner">
+                            <a-typography-paragraph copyable :copy-tooltip-props="{ top }">
+                              <span v-html="item.banner"></span>
                             </a-typography-paragraph>
                           </a-typography>
+                          <!-- banner无数据 -->
+                          <a-empty v-else />
                         </div>
 
                       </a-tab-pane>
                       <a-tab-pane key="2" :title="$t('asset.searchListDetail.postServices.certificate')">
-                        <a-typography>
+                        <a-typography v-if="item.certificate">
                           <a-typography-paragraph copyable>
                             {{ item.certificate }}
                           </a-typography-paragraph>
                         </a-typography>
+                        <a-empty v-else />
                       </a-tab-pane>
                     </a-tabs>
 
@@ -74,6 +78,10 @@
           <!-- 漏洞表格start -->
           <a-table :style="'height:' + pagination.pageSize * 50 + 'px'" :columns="columns" :pagination="false"
             :data="vulnsList">
+            <template #vulnId="{ record }">
+              <a-link @click="handleDetail(record.id)">{{ record.vulnId }}</a-link>
+
+            </template>
             <template #riskGrade="{ record }">
               <span :style="{ 'color': setRiskGradeColor(record.riskGrade) }">{{ setRiskGradeText(record.riskGrade)
               }}</span>
@@ -84,7 +92,7 @@
               }}</span>
             </template>
             <template #createTime="{ record }">
-              {{ formatDate(record.createTime, 'YYYY-MM-DD hh:mm:ss') }}
+              {{ formatDate(record.createTime, 'YYYY-MM-DD') }}
             </template>
           </a-table>
           <a-pagination class="paginationStyle" :total="pagination.total" :page-size="pagination.pageSize"
@@ -107,6 +115,7 @@ import { getSearchDetailVulns } from '@/api/asset/search'
 
 const { t } = useI18n();
 const route = useRoute();
+const router = useRouter();
 // 接收来自父组件的值
 const props = defineProps({
   portServices: {
@@ -129,6 +138,7 @@ const columns = [
   {
     title: t('asset.search.detail.vulns.vulnId'),
     dataIndex: 'vulnId',
+    slotName: 'vulnId'
   },
   {
     title: t('asset.search.detail.vulns.vulnName'),
@@ -180,6 +190,16 @@ const changePageIndex = (val) => {
 
 
 }
+// 漏洞详情
+const handleDetail = (id) => {
+  router.push({
+    path: '/asset/leakDetail',
+    query: {
+      id,
+    }
+  })
+
+}
 onMounted(() => {
   // 动态计算表格的高度
   // 动态计算表格的高度并进行分页
@@ -204,10 +224,20 @@ onMounted(() => {
   }
 
   /deep/ .arco-tabs-content {
-    padding: 0;
+    padding: 0 10px;
   }
 
 
+}
+
+/deep/ .arco-typography {
+  position: relative;
+}
+
+/deep/ .arco-typography-operation-copy {
+  position: absolute;
+  top: 0px;
+  right: 0px;
 }
 
 .tags {

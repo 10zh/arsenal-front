@@ -54,6 +54,33 @@ export default {
 'asset.search.detail.vulns.severity':"风险评估",
 'asset.search.detail.vulns.createTime':"创建时间",
 
+// 漏洞详情
+'asset.leak.detail.impactAsset':'影响资产',
+'asset.leak.detail.device':'设备详情',
+'asset.leak.detail.hostType':'主机类型',
+'asset.leak.detail.hostName':'主机名称',
+'asset.leak.detail.ipv4':'ipv4',
+'asset.leak.detail.ipv6':'ipv6',
+'asset.leak.detail.macAddress':'mac地址',
+'asset.leak.detail.macVendor':'mac地址提供商',
+'asset.leak.detail.osName':'操作系统名称',
+'asset.leak.detail.osVersion':'操作系统版本',
+'asset.search.detail.vulns.description':'描述',
+
+'asset.leak.detail.extras':'扩展信息',
+// 扩展信息表格字段
+'asset.leak.detail.extras.name':"名称",
+'asset.leak.detail.extras.value':"值",
+
+'asset.leak.detail.solutions':'解决方案',
+// 解决方案表格字段
+'asset.leak.detail.solutions.additionalInfo':"附加信息",
+'asset.leak.detail.solutions.appliesTo':"适用产品",
+'asset.leak.detail.solutions.patch':"补丁",
+'asset.leak.detail.solutions.rollUp':"资源",
+'asset.leak.detail.solutions.superCedeList':"可替代解决方案",
+'asset.leak.detail.solutions.title':"标题",
+'asset.leak.detail.solutions.workaround':"详情",
 
   // 用户列表
   'manage.user.all': '全部用户',

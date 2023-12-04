@@ -58,7 +58,7 @@
 
       <!-- 底部分页栏 -->
       <a-pagination v-if="activeTab === '1'" class="pagination" :total="pagination.total" :current="pagination.pageIndex"
-        :page-size="pagination.pageSize" show-total show-jumper show-page-size @change="changePageEvent" />
+        :page-size="pagination.pageSize" show-total show-page-size @change="changePageEvent" />
 
     </a-card>
 

@@ -51,6 +51,16 @@ const ASSET: AppRouteRecordRaw = {
       roles: ['*'],
       hideInMenu:true,
     },
+  },{
+    path: 'leakDetail', // The midline path complies with SEO specifications
+    name: 'leakDetail',
+    component: () => import('@/views/asset/list-leak-detail.vue'),
+    meta: {
+      locale: 'menu.asset.leak.detail',
+      requiresAuth: true,
+      roles: ['*'],
+      hideInMenu:true,
+    },
   }]
 }
 export default ASSET;

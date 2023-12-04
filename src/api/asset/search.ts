@@ -60,3 +60,8 @@ export function getSearchDetailVulns(id:number,page:assetSearchVulnListReq) {
   const url = `/asset/${id}/search/vulns?pageIndex=${page.pageIndex}&pageSize=${page.pageSize}`;
   return axios.get<HttpResponse>(url);
 }
+// 获取漏洞详情
+export function getLeakDetail(id:number) {
+  const url = `/asset/${id}/vuln/detail`;
+  return axios.get<HttpResponse>(url);
+}
