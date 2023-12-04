@@ -6,71 +6,73 @@
         <a-tab-pane key="1" :title="$t('asset.searchListDetail.postServices')">
           <!-- 端口start -->
           <div class="tags">
-            <a-tag color="blue" style="margin-right:10px" v-for="(tag, index) in portServices" :key="index" bordered>{{
-              tag.port }} / SSH</a-tag>
+            <a-anchor line-less v-for="(tag, index) in portServices" :key="index">
+              <a-anchor-link :href="'#' + tag.port">
+                <a-tag color="blue" style="margin-right:10px" bordered>{{
+                  tag.port }} / {{ tag.transportProtocol }}</a-tag>
+              </a-anchor-link>
+            </a-anchor>
           </div>
           <!-- 列表项start -->
-          <a-scrollbar style="height:calc(100vh - 550px);overflow:auto">
-            <a-list>
-              <a-list-item v-for="(item, index) in portServices" :key="index">
-                <div class="list-container">
-                  <!-- 左侧信息展示start -->
-                  <div class="left">
-                    <a-descriptions style="margin-top: 20px" :column="1">
-                      <a-descriptions-item>
-                        {{ item.port }} /SSH
+          <a-list>
+            <a-list-item v-for="(item, index) in portServices" :key="index" :id="item.port">
+              <div class="list-container">
+                <!-- 左侧信息展示start -->
+                <div class="left">
+                  <a-descriptions style="margin-top: 20px" :column="1">
+                    <a-descriptions-item>
+                      {{ item.port }} /{{ item.transportProtocol }}
 
-                      </a-descriptions-item>
-                      <a-descriptions-item>
-                        {{ t('asset.searchListDetail.postServices.name') }}
-                        <span v-for="name in item.components" :key="name.name">{{ name.name }}</span>
-                      </a-descriptions-item>
-                      <a-descriptions-item>
-                        {{ t('asset.searchListDetail.postServices.supportSslVersion') }}{{ item.supportSslVersion }}
+                    </a-descriptions-item>
+                    <a-descriptions-item>
+                      {{ t('asset.searchListDetail.postServices.name') }}
+                      <span v-for="name in item.components" :key="name.name">{{ name.name }}</span>
+                    </a-descriptions-item>
+                    <a-descriptions-item>
+                      {{ t('asset.searchListDetail.postServices.supportSslVersion') }}{{ item.supportSslVersion }}
 
-                      </a-descriptions-item>
-                      <a-descriptions-item>
-                        {{ t('asset.searchListDetail.postServices.transportProtocol') }}{{ item.transportProtocol }}
+                    </a-descriptions-item>
+                    <a-descriptions-item>
+                      {{ t('asset.searchListDetail.postServices.transportProtocol') }}{{ item.transportProtocol }}
 
-                      </a-descriptions-item>
-                      <a-descriptions-item>
-                        {{ t('asset.searchListDetail.postServices.applicationProtocol') }}{{ item.applicationProtocol }}
+                    </a-descriptions-item>
+                    <a-descriptions-item>
+                      {{ t('asset.searchListDetail.postServices.applicationProtocol') }}{{ item.applicationProtocol }}
 
-                      </a-descriptions-item>
-                    </a-descriptions>
-                  </div>
-                  <!-- 右侧信息展示start -->
-                  <div class="right">
-                    <a-tabs type="rounded" border>
-                      <!-- 搜索结果start -->
-                      <a-tab-pane key="1" :title="$t('asset.searchListDetail.postServices.banner')">
-                        <div class="banner-container">
-                          <!-- banner有数据 -->
-                          <a-typography v-if="item.banner">
-                            <a-typography-paragraph copyable :copy-tooltip-props="{ top }">
-                              <span v-html="item.banner"></span>
-                            </a-typography-paragraph>
-                          </a-typography>
-                          <!-- banner无数据 -->
-                          <a-empty v-else />
-                        </div>
-
-                      </a-tab-pane>
-                      <a-tab-pane key="2" :title="$t('asset.searchListDetail.postServices.certificate')">
-                        <a-typography v-if="item.certificate">
-                          <a-typography-paragraph copyable>
-                            {{ item.certificate }}
+                    </a-descriptions-item>
+                  </a-descriptions>
+                </div>
+                <!-- 右侧信息展示start -->
+                <div class="right">
+                  <a-tabs type="rounded" border>
+                    <!-- 搜索结果start -->
+                    <a-tab-pane key="1" :title="$t('asset.searchListDetail.postServices.banner')">
+                      <div class="banner-container">
+                        <!-- banner有数据 -->
+                        <a-typography v-if="item.banner">
+                          <a-typography-paragraph copyable :copy-tooltip-props="{ top }">
+                            {{ item.banner }}
                           </a-typography-paragraph>
                         </a-typography>
+                        <!-- banner无数据 -->
                         <a-empty v-else />
-                      </a-tab-pane>
-                    </a-tabs>
+                      </div>
 
-                  </div>
+                    </a-tab-pane>
+                    <a-tab-pane key="2" :title="$t('asset.searchListDetail.postServices.certificate')">
+                      <a-typography v-if="item.certificate">
+                        <a-typography-paragraph copyable>
+                          {{ item.certificate }}
+                        </a-typography-paragraph>
+                      </a-typography>
+                      <a-empty v-else />
+                    </a-tab-pane>
+                  </a-tabs>
+
                 </div>
-              </a-list-item>
-            </a-list>
-          </a-scrollbar>
+              </div>
+            </a-list-item>
+          </a-list>
         </a-tab-pane>
         <!-- 相关漏洞start -->
         <a-tab-pane key="2" :title="$t('asset.searchListDetail.bugList')">
@@ -232,6 +234,7 @@ onMounted(() => {
 
 /deep/ .arco-typography {
   position: relative;
+  white-space: pre-wrap;
 }
 
 /deep/ .arco-typography-operation-copy {
@@ -240,9 +243,19 @@ onMounted(() => {
   right: 0px;
 }
 
+/deep/ .arco-anchor {
+  background: none;
+  width: auto;
+}
+
+/deep/ .arco-anchor-link {
+  background: none;
+}
+
 .tags {
   margin-left: 10px;
   margin-bottom: 10px;
+  display: flex;
 }
 
 .list-container {

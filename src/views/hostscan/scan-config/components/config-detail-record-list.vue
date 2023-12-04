@@ -149,7 +149,7 @@ watch(
 }
 
 .select {
-  // border: 1px solid red;
+  border: 1px solid blue;
 }
 
 .label {

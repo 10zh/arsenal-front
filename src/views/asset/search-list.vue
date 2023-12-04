@@ -240,6 +240,10 @@ onUnmounted(() => {
   height: 100%;
 }
 
+/deep/ .arco-typography {
+  white-space: pre-wrap;
+}
+
 .search {
   display: flex;
   justify-content: center;

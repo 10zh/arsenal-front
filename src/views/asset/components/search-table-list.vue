@@ -14,24 +14,25 @@
               <a-tag color="green">{{ cardItem.service.port }} / {{ cardItem.service.transportProtocol }}</a-tag>
             </a-typography-paragraph>
             <a-typography-paragraph>
-              {{ cardItem.position.country || '-' }},{{ cardItem.position.region || '-' }} ,{{ cardItem.position.province
+              {{ cardItem.position.country || '' }}{{ cardItem.position.region || '' }} {{
+                cardItem.position.province
                 ||
-                '-'
-              }},{{ cardItem.position.city || '-' }}
+                ''
+              }}{{ cardItem.position.city || '-' }}
             </a-typography-paragraph>
-            <a-typography-paragraph>
-              hostname:{{ cardItem.hostname }}
+            <a-typography-paragraph v-show="cardItem.hostname">
+              {{ t('asset.searchListDetail.basic.hostname') }}:{{ cardItem.hostname }}
             </a-typography-paragraph>
-            <a-typography-paragraph>
-              macAddress:{{ cardItem.hardware.macAddress }}
+            <a-typography-paragraph v-show="cardItem.hardware.macAddress">
+              {{ t('asset.searchListDetail.basic.macAddress') }} :{{ cardItem.hardware.macAddress }}
             </a-typography-paragraph>
-            <a-typography-paragraph>
-              osName:{{ cardItem.os.osName }}
+            <a-typography-paragraph v-show="cardItem.os.osName">
+              {{ t('asset.leak.detail.osName') }}:{{ cardItem.os.osName }}
             </a-typography-paragraph>
-            <a-typography-paragraph>
-              supportSslVersion:{{ cardItem.supportSslVersion }}
+            <a-typography-paragraph v-show="cardItem.supportSslVersion">
+              {{ t('asset.searchListDetail.postServices.supportSslVersion') }}{{ cardItem.supportSslVersion }}
             </a-typography-paragraph>
-            <a-typography-paragraph>
+            <a-typography-paragraph v-show="cardItem.position.isp">
               ISP:{{ cardItem.position.isp }}
             </a-typography-paragraph>
           </a-typography>
@@ -44,7 +45,7 @@
               <!-- banner有数据 -->
               <a-typography style="padding-left: 10px;" v-if="cardItem.service.banner">
                 <a-typography-paragraph copyable>
-                  <span v-html="cardItem.service.banner"></span>
+                  {{ cardItem.service.banner }}
                 </a-typography-paragraph>
               </a-typography>
               <!-- banner无数据 -->
@@ -61,7 +62,7 @@
               <!-- 快照无数据展示banner数据-->
               <a-typography style="padding-left: 10px;" v-else-if="cardItem.service.banner">
                 <a-typography-paragraph copyable>
-                  <span v-html="cardItem.service.banner"></span>
+                  <span>{{ cardItem.service.banner }}</span>
                 </a-typography-paragraph>
               </a-typography>
               <!-- 快照和banner均无数据 -->
@@ -72,7 +73,7 @@
               <!-- 证书有数据 -->
               <a-typography style="padding-left: 10px;" v-if="cardItem.service.certificate">
                 <a-typography-paragraph copyable>
-                  <span v-html="cardItem.service.certificate"></span>
+                  <span>{{ cardItem.service.certificate }}</span>
                 </a-typography-paragraph>
               </a-typography>
               <!-- 证书无数据 -->
@@ -173,6 +174,7 @@ const handleMore = (type) => {
 }
 // 单个资产详情页面
 const handleDetail = (id) => {
+  localStorage.setItem('searchQ', props.searchText)
   router.push({
     path: '/asset/assetDetail',
     query: {

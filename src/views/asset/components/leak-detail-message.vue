@@ -1,9 +1,9 @@
 <template>
   <div>
     <!-- 头部漏洞描述信息start -->
-    <a-descriptions style="margin-top: 20px;max-height:150px">
+    <a-descriptions style="margin-top: 20px;max-height:150px;">
       <a-descriptions-item v-for="item in detailMessageData" :key="item.label" :label="item.label">
-        <span v-if="item.slot" v-html="item.value"></span>
+        <span v-if="item.slot === 'desc'" v-html="item.value"></span>
         <span v-else>{{ item.value }}</span>
       </a-descriptions-item>
     </a-descriptions>
@@ -42,6 +42,8 @@ import { ref, reactive, computed, onMounted, onUnmounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Message } from '@arco-design/web-vue';
 import { useRoute, useRouter } from 'vue-router';
+import formatDate from '@/utils/times'
+import { setRiskGradeText, setRiskGradeColor, getSeverityRatingText } from '@/hooks/status-options'
 
 // 接收来自父组件的值
 const props = defineProps({
@@ -58,7 +60,7 @@ const detailMessageData = computed(() => {
     value: props.detailMessage.vulnName,
   }, {
     label: t('asset.search.detail.vulns.riskGrade'),
-    value: props.detailMessage.riskGrade,
+    value: setRiskGradeText(props.detailMessage.riskGrade),
   }, {
     label: t('asset.search.detail.vulns.cvss2'),
     value: props.detailMessage.cvss2,
@@ -67,10 +69,10 @@ const detailMessageData = computed(() => {
     value: props.detailMessage.cvss3,
   }, {
     label: t('asset.search.detail.vulns.severity'),
-    value: props.detailMessage.severity,
+    value: getSeverityRatingText(props.detailMessage.severity),
   }, {
     label: t('asset.search.detail.vulns.createTime'),
-    value: props.detailMessage.createTime,
+    value: formatDate(props.detailMessage.createTime, 'YYYY-MM-DD'),
   }, {
     label: t('asset.search.detail.vulns.description'),
     value: `${props.detailMessage.description}`,
@@ -116,4 +118,8 @@ const solutionColumns = [
   },]
 
 </script>
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+/deep/ .arco-descriptions-item-value {
+  white-space: normal;
+}
+</style>

@@ -1,30 +1,35 @@
 <template>
-  <div class="container">
+  <div class="container" style="position:relative">
     <Breadcrumb :items="['menu.asset', 'menu.asset.detail']" />
 
-    <a-card class="general-card" :title="$t('menu.asset.detail')" @tab-click="handleClick">
-      <!-- 返回按钮 -->
-      <div class="back-btn">
-        <a-button @click="goBack">{{ t('scan.add.config.goback') }}</a-button>
-      </div>
-      <!-- 搜索框start -->
-      <div class="search">
-        <div class="search-wrap">
-          <a-auto-complete :data="autoCompleteData" size="large" :style="{ width: '900px' }"
-            placeholder="please enter something" @select="handleSelect" @focus="handleSearch('focus')"
-            @change="handleSearch('change')" v-model="searchText">
-          </a-auto-complete>
-          <icon-search class="icon" @click="getInitData('search')" />
+    <div id="basic-demo" style="height:calc(100vh - 150px);overflow:auto">
+
+      <a-card class=" general-card" :title="$t('menu.asset.detail')" @tab-click="handleClick">
+        <!-- 返回按钮 -->
+        <div class="back-btn">
+          <a-button @click="goBack">{{ t('scan.add.config.goback') }}</a-button>
         </div>
-        <span style="display:inline-block;margin-left:20px">{{ $t('asset.searchList.syntax') }} /
-          {{ $t('asset.searchList.searchSample') }}</span>
-      </div>
-      <!-- 搜索框end -->
-    </a-card>
-    <!-- 基本信息tabs -->
-    <detailMessage :detail-info='detailMessages'></detailMessage>
-    <!-- 主机服务信息 -->
-    <detailList :port-services="detailMessages.portServices"></detailList>
+        <!-- 搜索框start -->
+        <div class="search">
+          <div class="search-wrap">
+            <a-auto-complete :data="autoCompleteData" size="large" :style="{ width: '900px' }"
+              placeholder="please enter something" @select="handleSelect" @focus="handleSearch('focus')"
+              @change="handleSearch('change')" v-model="searchText">
+            </a-auto-complete>
+            <icon-search class="icon" @click="getInitData('search')" />
+          </div>
+          <span style="display:inline-block;margin-left:20px">{{ $t('asset.searchList.syntax') }} /
+            {{ $t('asset.searchList.searchSample') }}</span>
+        </div>
+        <!-- 搜索框end -->
+      </a-card>
+      <!-- 基本信息tabs -->
+      <detailMessage :detail-info='detailMessages'></detailMessage>
+      <!-- 主机服务信息 -->
+      <detailList :port-services="detailMessages.portServices"></detailList>
+    </div>
+    <a-back-top target-container="#basic-demo" :style="{ position: 'absolute' }" />
+
 
   </div>
 </template>
