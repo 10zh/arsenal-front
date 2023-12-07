@@ -1,15 +1,53 @@
 <template>
   <div>
     <!-- 基本信息el-tabs -->
-    <a-card style="margin:10px 50px;min-height:200px">
+    <a-card style="margin:10px 0px;min-height:200px">
       <a-tabs type="rounded">
         <!-- 搜索结果start -->
         <a-tab-pane key="1" :title="$t('asset.searchListDetail.baseMessage')">
-          <a-descriptions :data="baseData" :align="{ label: 'right' }" />
+          <a-descriptions :align="{ label: 'right' }">
+            <a-descriptions-item v-if="detailInfo.basic.ipv4" label="IPV4：">
+              {{ detailInfo.basic.ipv4 }}
+            </a-descriptions-item>
+            <a-descriptions-item v-if="detailInfo.basic.osName" :label="t('asset.searchListDetail.basic.osName') + '：'">
+              {{ detailInfo.basic.osName }}
+            </a-descriptions-item>
+            <a-descriptions-item v-if="detailInfo.basic.macVendor"
+              :label="t('asset.searchListDetail.basic.macVendor') + '：'">
+              {{ detailInfo.basic.macVendor }}
+            </a-descriptions-item>
+            <a-descriptions-item v-if="detailInfo.basic.city" :label="t('asset.searchListDetail.basic.city') + '：'">
+              {{ detailInfo.basic.city }}
+            </a-descriptions-item>
+            <a-descriptions-item v-if="detailInfo.basic.ipv6" label="IPV6：">
+              {{ detailInfo.basic.ipv6 }}
+            </a-descriptions-item>
+            <a-descriptions-item v-if="detailInfo.basic.device" :label="t('asset.searchListDetail.basic.device') + '：'">
+              {{ detailInfo.basic.device }}
+            </a-descriptions-item>
+            <a-descriptions-item v-if="detailInfo.basic.country" :label="t('asset.searchListDetail.basic.country') + '：'">
+              {{ detailInfo.basic.country }}
+            </a-descriptions-item>
+            <a-descriptions-item v-if="detailInfo.basic.region" :label="t('asset.searchListDetail.basic.region') + '：'">
+              {{ detailInfo.basic.region }}
+            </a-descriptions-item>
+            <a-descriptions-item v-if="detailInfo.basic.hostname"
+              :label="t('asset.searchListDetail.basic.hostname') + '：'">
+              {{ detailInfo.basic.hostname }}
+            </a-descriptions-item>
+            <a-descriptions-item v-if="detailInfo.basic.macAddress"
+              :label="t('asset.searchListDetail.basic.macAddress') + '：'">
+              {{ detailInfo.basic.macAddress }}
+            </a-descriptions-item>
+            <a-descriptions-item v-if="detailInfo.basic.province"
+              :label="t('asset.searchListDetail.basic.province') + '：'">
+              {{ detailInfo.basic.province }}
+            </a-descriptions-item>
+          </a-descriptions>
         </a-tab-pane>
         <!-- 相关漏洞start -->
         <a-tab-pane key="2" :title="$t('asset.searchListDetail.componentsDetail')">
-          <a-descriptions :data="componentData" :align="{ label: 'right' }" />
+          <a-table :pagination="false" :data="detailInfo.components" :columns="columns"></a-table>
         </a-tab-pane>
 
       </a-tabs>
@@ -33,54 +71,52 @@ const props = defineProps({
     default: () => { }
   }
 });
-const baseData = computed(() => {
-  return [{
-    label: 'IPV4',
-    value: props.detailInfo.basic.ipv4
-  }, {
-    label: t('asset.searchListDetail.basic.osName'),
-    value: props.detailInfo.basic.osName,
-  }, {
-    label: t('asset.searchListDetail.basic.macVendor'),
-    value: props.detailInfo.basic.macVendor
-  }, {
-    label: t('asset.searchListDetail.basic.city'),
-    value: props.detailInfo.basic.city
-  }, {
-    label: 'IPV6',
-    value: props.detailInfo.basic.ipv6
-  }, {
-    label: t('asset.searchListDetail.basic.device'),
-    value: props.detailInfo.basic.device
-  }, {
-    label: t('asset.searchListDetail.basic.country'),
-    value: props.detailInfo.basic.country
-  }, {
-    label: t('asset.searchListDetail.basic.region'),
-    value: props.detailInfo.basic.region
-  }, {
-    label: t('asset.searchListDetail.basic.hostname'),
-    value: props.detailInfo.basic.hostname
-  }, {
-    label: t('asset.searchListDetail.basic.macAddress'),
-    value: props.detailInfo.basic.macAddress
-  }, {
-    label: t('asset.searchListDetail.basic.province'),
-    value: props.detailInfo.basic.province
-  }]
-})
-const componentData = computed(() => {
-  return [{
-    label: t('asset.searchListDetail.components.hierarchical'),
-    value: props.detailInfo.components.hierarchical
-  }, {
-    label: t('asset.searchListDetail.components.name'),
-    value: props.detailInfo.components.name
-  }, {
-    label: t('asset.searchListDetail.components.version'),
-    value: props.detailInfo.components.version
-  }]
-})
+// const baseData = computed(() => {
+//   return [{
+//     label: 'IPV4',
+//     value: props.detailInfo.basic.ipv4,
+//   }, {
+//     label: t('asset.searchListDetail.basic.osName'),
+//     value: props.detailInfo.basic.osName,
+//   }, {
+//     label: t('asset.searchListDetail.basic.macVendor'),
+//     value: props.detailInfo.basic.macVendor
+//   }, {
+//     label: t('asset.searchListDetail.basic.city'),
+//     value: props.detailInfo.basic.city
+//   }, {
+//     label: 'IPV6',
+//     value: props.detailInfo.basic.ipv6
+//   }, {
+//     label: t('asset.searchListDetail.basic.device'),
+//     value: props.detailInfo.basic.device
+//   }, {
+//     label: t('asset.searchListDetail.basic.country'),
+//     value: props.detailInfo.basic.country
+//   }, {
+//     label: t('asset.searchListDetail.basic.region'),
+//     value: props.detailInfo.basic.region
+//   }, {
+//     label: t('asset.searchListDetail.basic.hostname'),
+//     value: props.detailInfo.basic.hostname
+//   }, {
+//     label: t('asset.searchListDetail.basic.macAddress'),
+//     value: props.detailInfo.basic.macAddress
+//   }, {
+//     label: t('asset.searchListDetail.basic.province'),
+//     value: props.detailInfo.basic.province
+//   }]
+// })
+const columns = [{
+  title: t('asset.searchListDetail.components.hierarchical'),
+  dataIndex: 'hierarchical'
+}, {
+  title: t('asset.searchListDetail.components.name'),
+  dataIndex: 'name'
+}, {
+  title: t('asset.searchListDetail.components.version'),
+  dataIndex: 'version'
+}]
 // ==========================事件响应模块ss==========================
 // 返回
 const goBack = () => {
@@ -103,10 +139,14 @@ const goBack = () => {
   }
 
   /deep/ .arco-tabs-content {
-    padding: 0;
+    padding: 5px;
   }
 
 
+}
+
+/deep/ .arco-descriptions-body {
+  padding: 0 20px;
 }
 
 .arco-scrollbar {

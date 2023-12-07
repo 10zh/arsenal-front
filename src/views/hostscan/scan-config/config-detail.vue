@@ -110,11 +110,11 @@ const initScanConfigDetail = async () => {
 };
 // 当页面加载时，显示数据
 onMounted(async () => {
-  console.log(header.value.offsetHeight);
+  console.log(header.value.$el.offsetHeight);
   const height =
     document.documentElement.clientHeight -
     header.value.$el.offsetHeight -
-    290;
+    260;
   tableHeight.value = height;
   // 扫描配置详情
   initScanConfigDetail();

@@ -116,6 +116,7 @@ initData()
 <style lang="less" scoped>
 .container {
   padding: 0 20px 20px 20px;
+  margin: 0 50px;
 }
 
 .general-card {
@@ -127,7 +128,7 @@ initData()
   }
 
   /deep/ .arco-card-header {
-    padding: 0 10px;
+    padding: 5px 10px 0px 10px;
   }
 
   /deep/ .arco-tabs-content {

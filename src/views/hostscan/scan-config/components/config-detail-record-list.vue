@@ -1,5 +1,5 @@
 <template>
-  <div style="position: relative; height: 100%">
+  <div class="content">
     <!-- 扫描记录列表 -->
     <a-card v-for="(item, index) in configRecordData" :key="item.scanId"
       :class="[{ select: selected === index }, 'inner-card']" @click="handleClickRecordCard(item, index)">
@@ -41,9 +41,15 @@
         </a-col>
       </a-row>
     </a-card>
+    <template v-if="configRecordData.length != 0">
+      <div style="height:150px;" v-for="n in 2" :key="n">
+
+      </div>
+    </template>
+
 
     <a-empty v-if="configRecordData.length == 0" />
-    <a-pagination :style="{
+    <a-pagination v-if="configRecordData.length != 0" :style="{
       position: 'absolute',
       width: 'auto',
       bottom: '-50px',
@@ -94,7 +100,7 @@ const pagination = ref({
 // 初始化当前扫描配置的所有列表
 const initScanConfigRecordData = async () => {
   // 动态计算表格的高度并进行分页
-  pagination.value.pageSize = Math.floor(props.tableHeight / 150);
+  pagination.value.pageSize = Math.floor(props.tableHeight / 160);
   const recordData = await getHostScanRecordList(id, pagination.value);
   configRecordData.value = recordData.data;
   if (recordData.data.length > 0) {
@@ -131,6 +137,14 @@ watch(
 </script>
 
 <style scoped lang="less">
+.content {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
 .inner-card {
   padding: 10px;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;

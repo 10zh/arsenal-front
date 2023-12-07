@@ -13,7 +13,7 @@
         <a-statistic :title="t('host.scan.config.target')" :extra="progressTextData.scanGoal" />
       </a-col>
       <a-col :span="7">
-        <a-statistic :title="t('host.scan.config.excludeTarget')" :extra="progressTextData.excludeScanGoal" />
+        <a-statistic :title="t('host.scan.config.excludeTarget')" :extra="progressTextData.excludeScanGoal || '-'" />
       </a-col>
       <a-col :span="3">
         <a-statistic :title="t('host.scan.config.hostNumber')" :value="progressTextData.hostNumber" />
@@ -196,6 +196,7 @@ const vulnerabilityData: any = ref([]);
 const initProgressTextData = async () => {
   const response = await getHostScanRecordDetail(scanIdStore.scanId);
   progressTextData.value = response.data;
+
   console.log(progressTextData.value);
 };
 // 初始化主机列表数据
@@ -257,8 +258,11 @@ watch(
   (newValue, oldValue) => {
     // 初始化进度条数据
     initProgressTextData();
+    hostPagination.value.pageSize = Math.floor((props.tableHeight - 150) / 60)
     // 初始化主机列表
     initHostData();
+    // 动态计算分页数
+    vulnerabilityPagination.value.pageSize = Math.floor((props.tableHeight - 150) / 100)
     // 初始化漏洞列表
     initHostVulnerabilityData();
   }
@@ -269,6 +273,8 @@ onMounted(() => {
     initProgressTextData();
     // 初始化主机列表
     initHostData();
+    // 动态计算分页数
+    vulnerabilityPagination.value.pageSize = Math.floor((props.tableHeight - 150) / 100)
     // 初始化漏洞列表
     initHostVulnerabilityData();
   }

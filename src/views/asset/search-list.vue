@@ -14,7 +14,7 @@
             placeholder="please enter something" @focus="handleSearch('focus')" @change="handleSearch('change')" loading
             v-model="searchText">
           </a-auto-complete>
-          <icon-search class="icon" @click="getInitData('search')" />
+          <icon-search class="icon" @click="search" />
         </div>
         <span style="display:inline-block;margin-left:20px">{{ $t('asset.searchList.syntax') }} /
           {{ $t('asset.searchList.searchSample') }}</span>
@@ -22,7 +22,7 @@
       <!-- 搜索框end -->
     </a-card>
     <!-- 卡片列表 -->
-    <a-card style="margin:10px 50px;height:90%">
+    <a-card style="margin:10px 0px;height:90%">
       <a-scrollbar class="scrollbar" style="overflow:auto;height:calc(100% - 10px)">
         <a-tabs type="rounded" @change="changeTabs">
           <!-- 搜索结果start -->
@@ -121,6 +121,14 @@ const getAutoData = async () => {
   }
 
 }
+// 获取右侧聚合搜索信息
+const getInitInfo = async () => {
+  const params = {
+    q: searchText.value
+  }
+  const response = await getSearchInfo(params);
+  Object.assign(rightInfo, response.data)
+}
 // 获取数据列表
 const getInitData = async () => {
   const params = {
@@ -131,6 +139,8 @@ const getInitData = async () => {
   cardList.value = response.data;
   pagination.total = response.totalCount;
 }
+
+
 // 搜索框数值改变时，获取自动补全数据以及获取列表
 const handleSearch = async (type) => {
   // 当获取焦点时获取自动补全数据
@@ -144,20 +154,14 @@ const handleSearch = async (type) => {
     timers.value = setTimeout(() => {
       getAutoData()
       getInitData('select')
+      getInitInfo()
+
     }, 500)
 
   }
 
 }
 
-// 获取右侧聚合搜索信息
-const getInitInfo = async () => {
-  const params = {
-    q: searchText.value
-  }
-  const response = await getSearchInfo(params);
-  Object.assign(rightInfo, response.data)
-}
 
 // 切换tab栏
 const handleClick = () => {
@@ -202,6 +206,7 @@ onUnmounted(() => {
 .container {
   padding: 0 20px 20px 20px;
   height: calc(100vh - 150px);
+  margin: 0 50px;
 }
 
 .general-card {
@@ -213,7 +218,7 @@ onUnmounted(() => {
   }
 
   /deep/ .arco-card-header {
-    padding: 0 10px;
+    padding: 5px 10px 0 10px;
   }
 
   /deep/ .arco-tabs-content {

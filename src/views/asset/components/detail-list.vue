@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-card style="margin:0px 50px;">
+    <a-card>
       <a-tabs type="rounded" @change="changeTabs">
         <!-- 主机服务start -->
         <a-tab-pane key="1" :title="$t('asset.searchListDetail.postServices')">
@@ -24,19 +24,19 @@
                       {{ item.port }} /{{ item.transportProtocol }}
 
                     </a-descriptions-item>
-                    <a-descriptions-item>
+                    <a-descriptions-item v-if="item.components">
                       {{ t('asset.searchListDetail.postServices.name') }}
                       <span v-for="name in item.components" :key="name.name">{{ name.name }}</span>
                     </a-descriptions-item>
-                    <a-descriptions-item>
+                    <a-descriptions-item v-if="item.supportSslVersion">
                       {{ t('asset.searchListDetail.postServices.supportSslVersion') }}{{ item.supportSslVersion }}
 
                     </a-descriptions-item>
-                    <a-descriptions-item>
+                    <a-descriptions-item v-if="item.transportProtocol">
                       {{ t('asset.searchListDetail.postServices.transportProtocol') }}{{ item.transportProtocol }}
 
                     </a-descriptions-item>
-                    <a-descriptions-item>
+                    <a-descriptions-item v-if="item.applicationProtocol">
                       {{ t('asset.searchListDetail.postServices.applicationProtocol') }}{{ item.applicationProtocol }}
 
                     </a-descriptions-item>
@@ -78,8 +78,7 @@
         <a-tab-pane key="2" :title="$t('asset.searchListDetail.bugList')">
 
           <!-- 漏洞表格start -->
-          <a-table :style="'height:' + pagination.pageSize * 50 + 'px'" :columns="columns" :pagination="false"
-            :data="vulnsList">
+          <a-table :columns="columns" :pagination="false" :data="vulnsList">
             <template #vulnId="{ record }">
               <a-link @click="handleDetail(record.id)">{{ record.vulnId }}</a-link>
 
@@ -203,11 +202,6 @@ const handleDetail = (id) => {
 
 }
 onMounted(() => {
-  // 动态计算表格的高度
-  // 动态计算表格的高度并进行分页
-  const height =
-    document.documentElement.clientHeight - 550;
-  pagination.pageSize = Math.floor(height / 50);
 })
 
 

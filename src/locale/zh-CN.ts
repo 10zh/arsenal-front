@@ -13,6 +13,8 @@ import localManageUser from '@/views/manage/user-list/locale/zh-CN'
 
 // 资产
 import localAsset from '@/views/asset/locale/zh-CN'
+// 凭证
+import localCert from '@/views/certmanage/locale/zh-CN'
 
 
 import localeStepForm from '@/views/form/step/locale/zh-CN';
@@ -56,6 +58,9 @@ export default {
   'menu.asset.detail':'资产详情',
   'menu.asset.leak.detail':'漏洞详情',
   'menu.asset.clusterAnalysis':'聚合分析',
+
+  'menu.certManage':'凭证管理',
+  
   'menu.dashboard': '仪表盘',
   'menu.server.dashboard': '仪表盘-服务端',
   'menu.server.workplace': '工作台-服务端',
@@ -94,4 +99,5 @@ export default {
   ...scanConfig,
   ...localManageUser,
   ...localAsset,
+  ...localCert,
 };

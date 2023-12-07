@@ -145,4 +145,6 @@ export default {
   'scan.detail.banner': 'banner',
   'scan.detail.ssl': 'ssl证书',
   'scan.detail.proof': '证据',
+  // 扫描凭证
+  'host.scan.config.proof':'扫描凭证',
 };
