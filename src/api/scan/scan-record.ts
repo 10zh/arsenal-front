@@ -159,3 +159,8 @@ export function resumeHostScan(scanId: string) {
   const url = `/host/scan/${scanId}/resume`;
   return axios.get<HttpResponse>(url);
 }
+// 漏洞详情
+export function getVulnerabilityRes(scanId: string,hostId:string,vulnerabilityId:string) {
+  const url = `/host/scan/${scanId}/${hostId}/${vulnerabilityId}/vulnerability/records`;
+  return axios.get<HttpResponse>(url);
+}

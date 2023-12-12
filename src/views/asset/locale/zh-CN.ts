@@ -2,6 +2,16 @@ export default {
   
   'asset.list': '资产搜索列表',
   'asset.tabs.result':'搜索结果',
+  'asset.search.history':'搜索历史',
+  'asset.search.bootstrapping':'搜索引导',
+  'asset.mapping.services':'测绘服务数',
+  'asset.mapping.vulnerabilities':"测绘漏洞数",
+  'asset.mapping.components':"测绘组件数",
+  'asset.mapping.host':'测绘主机数',
+  'asset.teach.syntax':'语法',
+  'asset.teach.explain':'说明',
+  'asset.teach.paradigm':'范例',
+
   'asset.tabs.bug':'相关漏洞',
   'asset.list.banner':'Banner',
   'asset.list.dumpData':'快照',

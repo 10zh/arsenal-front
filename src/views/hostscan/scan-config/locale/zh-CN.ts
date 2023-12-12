@@ -132,6 +132,7 @@ export default {
   'scan.record.accuracy': '准确度',
   'scan.record.host.basic.info': '主机基本信息',
   'scan.record.port.open': '端口开放情况',
+  'scan.record.port.components': '组件层次结构 ',
   'scan.record.service.banner': 'Banner',
   'scan.record.service.unmatch.banner': 'UnMatch Banner',
   'scan.record.service.ssl.certificate': 'SSL证书',
@@ -145,6 +146,26 @@ export default {
   'scan.detail.banner': 'banner',
   'scan.detail.ssl': 'ssl证书',
   'scan.detail.proof': '证据',
+  'scan.detail.snapshot':"快照",
   // 扫描凭证
   'host.scan.config.proof':'扫描凭证',
+  // 单个漏洞信息
+  'single.vulns.message':'漏洞信息',
+  'single.vulns.cvss3Score':'cvss3评分',
+  'single.vulns.cvss2Score':'cvss2评分',
+  'single.vulns.description':'描述',
+  'leak.detail.extras':"附加信息",
+  'leak.detail.extras.name':'名称',
+  'leak.detail.extras.value':'值',
+  'leak.detail.solutions':'解决方案',
+  'leak.detail.solutions.title':'标题',
+  'leak.detail.solutions.patch':'补丁',
+  'leak.detail.solutions.rollUp':'资源',
+  'leak.detail.solutions.superCedeList':'可替代解决方案',
+  'leak.detail.solutions.workaround':'详情',
+  'leak.detail.solutions.additionalInfo':'附加信息',
+  'scan.record.safe.true':'是',
+  'scan.record.safe.false':"否",
+
+
 };

@@ -246,6 +246,10 @@ onMounted(() => {
   background: none;
 }
 
+/deep/ .arco-anchor-link-item .arco-anchor-link {
+  width: 100%;
+}
+
 .tags {
   margin-left: 10px;
   margin-bottom: 10px;

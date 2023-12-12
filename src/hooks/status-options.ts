@@ -35,6 +35,8 @@ export function getStatusColorInDetail(status: number) {
     color = '#f53f3f'
   } else if (status === 6) {
     color = 'green'
+  }else if (status === 7) {
+    color = '#86909c'
   }
   return color;
 }
@@ -54,6 +56,8 @@ export function getStatusText(status: number) {
     color = '已失败'
   } else if (status === 6) {
     color = '已完成'
+  }else if (status === 7) {
+    color = '已中断'
   }
   return color;
 }

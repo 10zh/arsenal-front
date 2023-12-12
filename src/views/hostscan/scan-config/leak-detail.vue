@@ -12,11 +12,12 @@
     <div class="content">
       <!-- 右侧影响资产card start -->
       <a-card style="flex:1">
-        <impactAsset :impact-asset="impactAssetInfo"></impactAsset>
+        <!-- {{ detailMessageInfo }} -->
+        <leakMessage :detail-message="detailMessageInfo"></leakMessage>
       </a-card>
       <!-- 左侧描述信息&tabs信息 -->
       <a-card style="flex:3;margin-left:20px">
-        <detailMessage :detail-message="detailMessageInfo"></detailMessage>
+        <leakTabs :detail-message="detailMessageInfo"></leakTabs>
       </a-card>
     </div>
 
@@ -28,29 +29,25 @@ import { ref, reactive, computed, onMounted, onUnmounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Message } from '@arco-design/web-vue';
 import { useRoute, useRouter } from 'vue-router';
-import { getLeakDetail } from '@/api/asset/search'
-import impactAsset from './components/leak-detail-impact-asset.vue'
-import detailMessage from './components/leak-detail-message.vue'
+import { getVulnerabilityRes } from '@/api/scan/scan-record'
+import leakMessage from './components/leak-message.vue'
+import leakTabs from './components/leak-tabs.vue'
 
 
 
 const { t } = useI18n();
 const route = useRoute();
 const router = useRouter();
-// 路由参数上的id(漏洞Id)
-const leakId = ref();
-// 左侧详情数据
+// 路由参数上的id(漏洞Id,扫描id和主机Id)
+const { hostId, scanId, vulnId } = route.query;
+// 详情数据
 const detailMessageInfo = reactive({
 })
-// 右侧影响资产信息
-const impactAssetInfo = ref({});
-// 路由传递的资产id
-leakId.value = route.query.id;
+
 // ==========================事件响应==========================
 // 初始化数据
 const initInfo = async () => {
-  const response = await getLeakDetail(leakId.value)
-  impactAssetInfo.value = response.data.impactAsset;
+  const response = await getVulnerabilityRes(scanId, hostId, vulnId)
   Object.assign(detailMessageInfo, response.data)
 }
 // 返回

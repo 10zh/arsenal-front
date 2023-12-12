@@ -21,6 +21,19 @@ const HOSTSCAN: AppRouteRecordRaw = {
         requiresAuth: true,
         roles: ['*'],
       },
+      
+    },
+     // 查看漏洞详情
+     {
+      path: 'leakDetail',
+      name: 'leakDetail',
+      component: () =>
+        import('@/views/hostscan/scan-config/leak-detail.vue'),
+      meta: {
+        requiresAuth: true,
+        roles: ['*'],
+        hideInMenu: true,
+      },
     },
     {
       path: 'addHostScanConfig',
@@ -115,7 +128,6 @@ const HOSTSCAN: AppRouteRecordRaw = {
         hideInMenu: true,
       },
     },
-
   ],
 };
 

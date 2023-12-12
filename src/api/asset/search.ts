@@ -23,6 +23,16 @@ export function getSearchAutoComplete(key: string) {
   const url = `/asset/search/auto?key=${key}`;
   return axios.get<HttpResponse>(url);
 }
+// 获取搜索历史
+export function getSearchHistoryList() {
+  const url = `/asset/search/history`;
+  return axios.get<HttpResponse>(url);
+}
+// 获取统计数据
+export function getDiscoveryCount() {
+  const url = `/asset/asset/discovery/count`;
+  return axios.get<HttpResponse>(url);
+}
 // 获取资产搜索列表
 export function getSearchList(params:  assetSearchListPageRequest) {
   let url = `/asset/search?pageIndex=${params.pageIndex}&pageSize=${params.pageSize}`;

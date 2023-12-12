@@ -6,63 +6,55 @@
 
       <a-layout-header style="padding: 10px; background: #f6f8fa">
         <a-row :gutter="24">
-          <a-col :span="8">
+          <a-col :span="8" v-if="props.hostDetail.ipv4">
             <span class="label">{{ t('scan.record.ipv4') }}: </span>
             <span class="value">{{ props.hostDetail.ipv4 }}</span>
           </a-col>
-          <a-col :span="8">
+          <a-col :span="8" v-if="props.hostDetail.ipv6">
             <span class="label">{{ t('scan.record.ipv6') }}: </span>
             <span class="value">{{ props.hostDetail.ipv6 }}</span>
           </a-col>
-          <a-col :span="8">
+          <a-col :span="8" v-if="props.hostDetail.hostname">
             <span class="label">{{ t('scan.record.hostname') }}: </span>
             <span class="value">{{ props.hostDetail.hostname }}</span>
           </a-col>
-        </a-row>
-        <a-row :gutter="24">
-          <a-col :span="8">
+          <a-col :span="8" v-if="props.hostDetail.macAddress">
             <span class="label">{{ t('scan.record.macAddress') }}: </span>
             <span class="value">{{ props.hostDetail.macAddress }}</span>
           </a-col>
-          <a-col :span="8">
+          <a-col :span="8" v-if="props.hostDetail.hostType">
             <span class="label">{{ t('scan.record.hostType') }}: </span>
             <span class="value">{{ props.hostDetail.hostType }}</span>
           </a-col>
-          <a-col :span="8">
+          <a-col :span="8" v-if="props.hostDetail.osName">
             <span class="label">{{ t('scan.record.os') }}: </span>
             <span class="value">{{ props.hostDetail.osName }}</span>
           </a-col>
-        </a-row>
-        <a-row :gutter="24">
-          <a-col :span="8">
+          <a-col :span="8" v-if="props.hostDetail.domain">
             <span class="label">{{ t('scan.record.domain') }}: </span>
             <span class="value">{{ props.hostDetail.domain }}</span>
           </a-col>
-          <a-col :span="8">
+          <a-col :span="8" v-if="props.hostDetail.fqdn">
             <span class="label"> {{ t('scan.record.fqdn') }}: </span>
             <span class="value">{{ props.hostDetail.fqdn }}</span>
           </a-col>
-          <a-col :span="8">
+          <a-col :span="8" v-if="props.hostDetail.country">
             <span class="label">{{ t('scan.record.country') }}: </span>
             <span class="value">{{ props.hostDetail.country }}</span>
           </a-col>
-        </a-row>
-        <a-row :gutter="24">
-          <a-col :span="8">
+          <a-col :span="8" v-if="props.hostDetail.province">
             <span class="label">{{ t('scan.record.province') }}: </span>
             <span class="value">{{ props.hostDetail.province }}</span>
           </a-col>
-          <a-col :span="8">
+          <a-col :span="8" v-if="props.hostDetail.city">
             <span class="label">{{ t('scan.record.city') }}: </span>
             <span class="value">{{ props.hostDetail.city }}</span>
           </a-col>
-          <a-col :span="8">
+          <a-col :span="8" v-if="props.hostDetail.region">
             <span class="label">{{ t('scan.record.region') }}: </span>
             <span class="value">{{ props.hostDetail.region }}</span>
           </a-col>
-        </a-row>
-        <a-row :gutter="24">
-          <a-col :span="8">
+          <a-col :span="8" v-if="props.hostDetail.isp">
             <span class="label">{{ t('scan.record.isp') }}: </span>
             <span class="value">{{ props.hostDetail.isp }}</span>
           </a-col>
@@ -162,9 +154,46 @@
                 </a-typography>
               </a-scrollbar>
             </a-tab-pane>
+            <a-tab-pane key="4" :style="{ height: tabsHeight + 'px' }">
+              <template #title>
+                {{ t('scan.detail.snapshot') }}
+              </template>
+              <a-scrollbar style="height: 450px; overflow: auto">
+                <a-typography :style="{ marginTop: '-30px' }">
+                  <a-typography-title :heading="3"> </a-typography-title>
+                  <a-typography-paragraph bold class="wrap-text" copyable>
+                    {{ props.tabDetail.dumpData }}
+                  </a-typography-paragraph>
+                </a-typography>
+              </a-scrollbar>
+            </a-tab-pane>
+
           </a-tabs>
         </a-card>
       </a-layout-content>
+      <!-- 组件层级start -->
+      <a-layout-sider>
+        <a-space direction="vertical" style="width:100%">
+          <a-row style="margin: 10px 10px 20px 10px">
+            <span>
+              <icon-common style="color: #165dff" />
+              <span>{{ t('scan.record.port.components') }}</span>
+            </span>
+          </a-row>
+          <a-row style="margin:0 10px" v-for="item in props.tabDetail.components" :key="item.name">
+            <div class="level">{{ getLevelText(item.hierarchical) }}</div>
+            <!-- <a-divider /> -->
+
+          </a-row>
+        </a-space>
+
+
+        <!-- <a-list>
+          <a-list-item >
+          }}</a-list-item>
+        </a-list> -->
+
+      </a-layout-sider>
     </a-layout>
   </a-layout>
 </template>
@@ -174,6 +203,7 @@
 import { ref, onMounted, defineProps, defineEmits } from 'vue';
 import { useI18n } from 'vue-i18n';
 import formatDate from '@/utils/times';
+import { getLevelText } from '@/hooks/status-options'
 // ==========================数据定义==========================
 const { t } = useI18n();
 
@@ -209,3 +239,12 @@ onMounted(() => {
   tabsHeight.value = height;
 });
 </script>
+<style lang="less" scoped>
+.level {
+  width: 100%;
+  padding: 10px 0px;
+  background: rgb(232, 243, 255);
+  text-align: center;
+
+}
+</style>

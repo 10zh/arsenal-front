@@ -89,10 +89,13 @@ const initScanConfigDetail = async () => {
     label: t('host.scan.config.target'),
     value: configDetail.data.target,
   });
-  configDetailDataList.push({
-    label: t('host.scan.config.excludeTarget'),
-    value: configDetail.data.excludeTarget,
-  });
+  if (configDetail.data.excludeTarget) {
+    configDetailDataList.push({
+      label: t('host.scan.config.excludeTarget'),
+      value: configDetail.data.excludeTarget,
+    });
+  }
+
   configDetailDataList.push({
     label: t('host.scan.config.createTime'),
     value: formatDate(configDetail.data.createTime, 'YYYY-MM-DD hh:mm:ss'),

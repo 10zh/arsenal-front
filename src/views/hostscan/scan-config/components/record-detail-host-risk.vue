@@ -70,12 +70,19 @@
   </a-row>
   <a-table :columns="vulnerabilityTableColumns" :data="vulnerabilityData" column-resize :pagination="false"
     :style="{ height: tabsHeight + 'px' }" @sorter-change="sortedChangeEvent">
+    <template #vulnName="{ record }">
+      <a-link @click="handleDetail(record)"> {{ record.vulnName }}</a-link>
+    </template>
     <template #potential="{ record }">
       {{ record.potential ? t('global.true') : t('global.false') }}
     </template>
     <template #safe="{ record }">
       {{ record.safe ? t('global.true') : t('global.false') }}
     </template>
+    <template #severity="{ record }">
+      {{ getSeverityRatingText(record.severity) }}
+    </template>
+
   </a-table>
   <a-pagination class="paginationStyle" :total="vulnerabilityPagination.total"
     :current="vulnerabilityPagination.pageIndex" :page-size="vulnerabilityPagination.pageSize" show-total show-jumper
@@ -86,12 +93,16 @@
 // ==========================声明模块==========================
 import { ref, reactive, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { getHostVulnerabilityListRecordByScanHostId } from '@/api/scan/scan-record';
+import { getSeverityRatingText } from '@/hooks/status-options'
+
 
 // ==========================数据定义模块==========================
 const { t } = useI18n();
 const route = useRoute();
+const router = useRouter();
+
 // 漏洞列表表头
 const vulnerabilityTableColumns = reactive([
   {
@@ -102,6 +113,7 @@ const vulnerabilityTableColumns = reactive([
       sortDirections: ['descend', 'ascend'],
     },
     width: 200,
+    slotName: 'vulnName'
   },
   {
     title: t('scan.record.ipv4'),
@@ -174,6 +186,7 @@ const vulnerabilityTableColumns = reactive([
       sorter: true,
       sortDirections: ['descend'],
     },
+    slotName: 'severity',
     width: 120,
   },
 ]);
@@ -242,6 +255,18 @@ const sortedChangeEvent = (field, direction) => {
   // 重新刷新列表
   initHostVulnerabilityData();
 };
+// 查看漏洞详情
+const handleDetail = (record) => {
+  router.push({
+    path: '/hostscan/leakDetail',
+    query: {
+      vulnId: record.vulnId,
+      hostId,
+      scanId,
+
+    }
+  })
+}
 onMounted(() => {
   // 动态计算高度
   const height =

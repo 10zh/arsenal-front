@@ -8,7 +8,7 @@
     <div class="back-btn">
       <a-button @click="goBack">{{ t('scan.add.config.goback') }}</a-button>
     </div>
-    <a-tabs type="rounded" style="padding: 0 10px">
+    <a-tabs type="rounded" :active-key="activeKey" @tab-click="tabChange" style="padding: 0 10px">
 
       <!--网络资产空间测绘 start-->
       <a-tab-pane key="1">
@@ -61,8 +61,8 @@ const hostDetail = ref({});
 const serviceDetail = ref([]);
 // 对应端口详情数据
 const tabDetail = ref({});
-
-
+// 激活的tab - key
+const activeKey = ref();
 
 // ==========================数据操纵模块==========================
 // 初始化主机详情
@@ -87,6 +87,9 @@ const goBack = () => {
 };
 // 当页面加载时，显示数据
 onMounted(() => {
+  if (localStorage.getItem('tabsInfo')) {
+    activeKey.value = localStorage.getItem('tabsInfo')
+  }
   initHostScanRecordDetail();
   initHostScanServiceRecordDetail();
 });
@@ -95,6 +98,15 @@ onMounted(() => {
 const changeTabDetail = (row) => {
   tabDetail.value = row;
 };
+// 切换tabs标签(将activeKey存放到localStorage中便于放回当前tab)
+const tabChange = (key) => {
+  activeKey.value = key;
+  if (key === '2') {
+    localStorage.setItem('tabsInfo', key)
+  } else {
+    localStorage.removeItem('tabsInfo')
+  }
+}
 </script>
 
 <style lang="less">

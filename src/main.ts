@@ -13,6 +13,8 @@ import App from './App.vue';
 // https://arco.design/docs/designlab/use-theme-package
 import '@/assets/style/global.less';
 import '@/api/interceptor/axios';
+// 引入阿里图标
+import './assets/fonts/iconfont/iconfont.css'
 
 const app = createApp(App);
 
