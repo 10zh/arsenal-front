@@ -11,8 +11,8 @@
       <div class="search">
         <div class="search-wrap">
           <a-auto-complete :data="autoCompleteData" size="large" :style="{ width: '900px' }"
-            placeholder="please enter something" @focus="handleSearch('focus')" @change="handleSearch('change')" loading
-            v-model="searchText">
+            placeholder="please enter something" @focus="handleSearch" @select="handleSelect"
+            @change="handleInput(getAutoData, 500)" v-model="searchText">
           </a-auto-complete>
           <icon-search class="icon" @click="search" />
         </div>
@@ -144,28 +144,26 @@ const getInitData = async () => {
 // 搜索框数值改变时，获取自动补全数据以及获取列表
 const handleSearch = async (type) => {
   // 当获取焦点时获取自动补全数据
-  if (type === 'focus') {
-    // 改变值使用防抖函数获取自动补全数据（获取app=后的值）
-    splitSearchText.value = searchText.value.indexOf('=') !== -1 ? searchText.value.split('=')[1].replace("\"", "").replace("\"", "") : route.query.q;
-    getAutoData()
-  } else {
-    searchText.value = searchText.value.indexOf('|') !== -1 ? searchText.value.split("|")[2] : searchText.value
-    splitSearchText.value = searchText.value;
-    timers.value = setTimeout(() => {
-      getAutoData()
-      getInitData('select')
-      getInitInfo()
-
-    }, 500)
-
-  }
+  // 改变值使用防抖函数获取自动补全数据（获取app=后的值）
+  splitSearchText.value = searchText.value.indexOf('=') !== -1 ? searchText.value.split('=')[1].replace("\"", "").replace("\"", "") : route.query.q;
+  getAutoData()
 
 }
-
-
-// 切换tab栏
-const handleClick = () => {
-
+// 当输入框发生改变时
+const handleInput = (fn, delay) => {
+  searchText.value = searchText.value.indexOf('|') !== -1 ? searchText.value.split("|")[2] : searchText.value
+  splitSearchText.value = searchText.value;
+  clearTimeout(timers.value);
+  timers.value = setTimeout(() => {
+    fn()
+  }, 1000)
+}
+// 当选中下拉框选项时，进行搜索
+const handleSelect = (val) => {
+  searchText.value = val.indexOf('|') !== -1 ? val.split("|")[2] : val;
+  splitSearchText.value = searchText.value;
+  getInitData()
+  getInitInfo()
 }
 // 搜索
 const search = () => {
@@ -190,9 +188,9 @@ const changeTabs = (key) => {
 onMounted(() => {
   getInitInfo()
   // 动态计算表格的高度并进行分页
-  const height =
-    document.documentElement.clientHeight - 350;
-  pagination.pageSize = Math.floor(height / 300);
+  // const height =
+  //   document.documentElement.clientHeight - 350;
+  // pagination.pageSize = Math.floor(height / 300);
   getInitData();
 
 })

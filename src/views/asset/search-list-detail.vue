@@ -13,8 +13,8 @@
         <div class="search">
           <div class="search-wrap">
             <a-auto-complete :data="autoCompleteData" size="large" :style="{ width: '900px' }"
-              placeholder="please enter something" @select="handleSelect" @focus="handleSearch('focus')"
-              @change="handleSearch('change')" v-model="searchText">
+              placeholder="please enter something" @focus="handleSearch" @select="handleSelect"
+              @change="handleInput(getAutoData, 500)" v-model="searchText">
             </a-auto-complete>
             <icon-search class="icon" @click="getInitData('search')" />
           </div>
@@ -88,17 +88,19 @@ const getAutoData = async () => {
 // 搜索框数值改变时，获取自动补全数据以及获取列表
 const handleSearch = async (type) => {
   // 当获取焦点时获取自动补全数据
-  if (type === 'focus') {
-    // 改变值使用防抖函数获取自动补全数据（获取app=后的值）
-    splitSearchText.value = searchText.value.indexOf('=') !== -1 ? searchText.value.split('=')[1].replace("\"", "").replace("\"", "") : route.query.q;
-    getAutoData()
-  } else {
-    searchText.value = searchText.value.indexOf('|') !== -1 ? searchText.value.split("|")[2] : searchText.value;
-    splitSearchText.value = searchText.value;
-    timers.value = setTimeout(() => {
-      getAutoData()
-    }, 500)
-  }
+  // 改变值使用防抖函数获取自动补全数据（获取app=后的值）
+  splitSearchText.value = searchText.value.indexOf('=') !== -1 ? searchText.value.split('=')[1].replace("\"", "").replace("\"", "") : route.query.q;
+  getAutoData()
+
+}
+// 当输入框发生改变时
+const handleInput = (fn, delay) => {
+  searchText.value = searchText.value.indexOf('|') !== -1 ? searchText.value.split("|")[2] : searchText.value
+  splitSearchText.value = searchText.value;
+  clearTimeout(timers.value);
+  timers.value = setTimeout(() => {
+    fn()
+  }, 1000)
 }
 // 切换搜索条件
 const handleSelect = () => {

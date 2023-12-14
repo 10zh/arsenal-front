@@ -10,6 +10,8 @@ import localeCardList from '@/views/hostscan/scan-template/locale/zh-CN';
 import scanConfig from '@/views/hostscan/scan-config/locale/zh-CN';
 // 管理
 import localManageUser from '@/views/manage/user-list/locale/zh-CN'
+import localManageRole from '@/views/manage/role-manage/locale/zh-CN'
+import localOrganizationChart from '@/views/manage/organization-chart/locale/zh-CN'
 
 // 资产
 import localAsset from '@/views/asset/locale/zh-CN'
@@ -98,6 +100,8 @@ export default {
   ...globalSettings,
   ...scanConfig,
   ...localManageUser,
+  ...localManageRole,
+  ...localOrganizationChart,
   ...localAsset,
   ...localCert,
 };

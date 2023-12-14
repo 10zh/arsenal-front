@@ -18,6 +18,14 @@ export interface assetSearchVulnListReq {
   pageIndex:number;
   pageSize:number;
 }
+// 统计数据返回参数
+export interface staticCounteReq {
+  componentNumber:number,
+  hostNumber:number,
+  serviceNumber:number,
+  vulnerabilityNumber:number,
+
+}
 // 获取搜索条件自动补全列表
 export function getSearchAutoComplete(key: string) {
   const url = `/asset/search/auto?key=${key}`;

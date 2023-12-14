@@ -22,26 +22,26 @@ const MANAGE: AppRouteRecordRaw = {
         roles: ['*'],
       },
     },
-    // {
-    //   path: 'permissionsManage', // The midline path complies with SEO specifications
-    //   name: 'permissionsManage',
-    //   component: () => import('@/views/manage/userList/index.vue'),
-    //   meta: {
-    //     locale: 'menu.manage.permissionsManage',
-    //     requiresAuth: true,
-    //     roles: ['*'],
-    //   },
-    // },
-    // {
-    //   path: 'roleManage', // The midline path complies with SEO specifications
-    //   name: 'roleManage',
-    //   component: () => import('@/views/manage/userList/index.vue'),
-    //   meta: {
-    //     locale: 'menu.manage.roleManage',
-    //     requiresAuth: true,
-    //     roles: ['*'],
-    //   },
-    // },
+    {
+      path: 'roleManage', // The midline path complies with SEO specifications
+      name: 'roleManage',
+      component: () => import('@/views/manage/role-manage/index.vue'),
+      meta: {
+        locale: 'menu.manage.roleManage',
+        requiresAuth: true,
+        roles: ['*'],
+      },
+    },
+    {
+      path: 'organizationChart', // The midline path complies with SEO specifications
+      name: 'organizationChart',
+      component: () => import('@/views/manage/organization-chart/index.vue'),
+      meta: {
+        locale: 'menu.manage.organization',
+        requiresAuth: true,
+        roles: ['*'],
+      },
+    },
   
   ]
 }

@@ -102,14 +102,14 @@
     </div>
   </div>
 </template>
-<script setup>
+<script setup lang="ts">
 
 // ==========================声明模块==========================
 import { ref, reactive, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Message } from '@arco-design/web-vue';
 import { useRouter } from 'vue-router';
-import { getSearchAutoComplete, getSearchHistoryList, getDiscoveryCount } from '@/api/asset/search'
+import { getSearchAutoComplete, getSearchHistoryList, getDiscoveryCount, staticCounteReq } from '@/api/asset/search'
 
 const router = useRouter();
 const { t } = useI18n()
@@ -120,11 +120,11 @@ const autoCompleteData = ref(['数据加载中...'])
 // 搜索历史列表
 const historyList = ref([])
 // 统计数据
-const staticCount = reactive({
-  "componentNumber": '0',
-  'hostNumber': '0',
-  "serviceNumber": '0',
-  'vulnerabilityNumber': 0,
+const staticCount = reactive<staticCounteReq>({
+  componentNumber: 0,
+  hostNumber: 0,
+  serviceNumber: 0,
+  vulnerabilityNumber: 0,
 })
 
 // ==========================数据定义模块==========================
@@ -133,13 +133,13 @@ const scroll = {
   y: 200
 }
 // 搜索历史列表颜色
-const linkColor = (key) => {
+const linkColor = (key: number) => {
   const colorMap = {
     0: 'success',
     1: 'warning',
     2: 'danger',
   }
-  return colorMap[key]
+  return colorMap[key]<string>
 
 }
 // 检索引导表头
@@ -209,12 +209,12 @@ const initCount = async () => {
   Object.assign(staticCount, res.data)
 }
 // 点击搜索历史
-const searchHistory = (key) => {
+const searchHistory = (key: string) => {
   queryFactor.value = key
 
 }
 // 点击搜索按钮
-const handleClick = (value) => {
+const handleClick = (value: string) => {
   if (value === 'click') {
     router.push({
       path: '/asset/searchList',
@@ -286,7 +286,7 @@ onMounted(() => {
   margin-top: 20px;
 
   .history {
-    min-height: 250px;
+    max-height: 300px;
     flex: 1;
     border: 1px solid var(--color-neutral-4);
     border-radius: 3px;
