@@ -85,9 +85,10 @@
       </div>
     </div>
     <!-- 右侧聚合搜索信息start -->
-    <div class="card-right">
+    <div class="card-right"
+      :style="{ 'maxHeight': (rightInfo.components.length + rightInfo.webTitles.length) * 70 + 'px' }">
       <!-- 主机类型start -->
-      <a-space direction="vertical" size="large" class="space-item">
+      <a-space direction="vertical" size="large" class="space-item" style="max-height: 100px;">
         <a-descriptions :title="$t('asset.list.hostType')" align="left" :column="1">
           <a-descriptions-item label="IPV4:">
             {{ rightInfo.ipv4Number }}
@@ -99,7 +100,8 @@
       </a-space>
       <a-divider />
       <!-- 组件信息start -->
-      <a-space direction="vertical" size="large" class="space-item">
+      <a-space direction="vertical" size="large" class="space-item"
+        :style="{ 'maxHeight': rightInfo.components.length * 40 + 'px' }">
         <a-descriptions :title="$t('asset.list.components')" align="left" :column="1">
           <template v-for="(item, index) in rightInfo.components" :key="index">
             <a-descriptions-item :label="item.name">
@@ -114,7 +116,8 @@
       </div>
       <a-divider />
       <!-- Web标题信息start -->
-      <a-space direction="vertical" size="large" class="space-item">
+      <a-space direction="vertical" size="large" class="space-item"
+        :style="{ 'maxHeight': rightInfo.webTitles.length * 40 + 'px' }">
         <a-descriptions :title="$t('asset.list.webTitles')" align="left" :column="1">
           <template v-for="item in rightInfo.webTitles" :key="item">
             <a-descriptions-item :label="item.name">
@@ -204,13 +207,14 @@ onMounted(() => {
 
 
 
+
     margin: 20px;
     border: 1px solid var(--color-neutral-3);
 
     .space-item {
       padding: 10px;
       flex: 1;
-      min-height: 100px;
+      max-height: 100px;
     }
   }
 }
