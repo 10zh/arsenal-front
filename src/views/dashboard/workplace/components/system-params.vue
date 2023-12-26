@@ -22,7 +22,7 @@
                 <div class="nums">{{ paramsObj.cpu.sys }}</div>
               </div>
               <!-- 数据进度条 -->
-              <a-progress size="large" color="#f4d135" :percent="paramsObj.cpu.sys" />
+              <a-progress size="large" color="#f4d135" :percent="operation(paramsObj.cpu.sys, 100, '/')" />
             </div>
             <div class="wrapper-item">
               <!-- 数据描述 -->
@@ -34,7 +34,7 @@
                 <div class="nums">{{ paramsObj.cpu.used }}</div>
               </div>
               <!-- 数据进度条 -->
-              <a-progress size="large" color="#f4d135" :percent="paramsObj.cpu.used" />
+              <a-progress size="large" color="#f4d135" :percent="operation(paramsObj.cpu.used, 100, '/')" />
             </div>
             <div class="wrapper-item">
               <!-- 数据描述 -->
@@ -75,7 +75,7 @@
               </div>
               <!-- 数据进度条 -->
               <a-progress size="large" color="#88c89e"
-                :percent="props.paramsObj.disk.free / props.paramsObj.disk.total" />
+                :percent="operation(props.paramsObj.disk.free, props.paramsObj.disk.total, '/')" :show-text="false" />
             </div>
           </div>
         </div>
@@ -114,7 +114,8 @@
                 <div class="nums">{{ paramsObj.memory.used }}GB/{{ paramsObj.memory.total }}GB</div>
               </div>
               <!-- 数据进度条 -->
-              <a-progress size="large" color="#50a5db" :percent="paramsObj.memory.used / paramsObj.memory.total" />
+              <a-progress size="large" color="#50a5db"
+                :percent="operation(paramsObj.memory.used, paramsObj.memory.total, '/')" />
             </div>
           </div>
         </div>
@@ -125,6 +126,7 @@
 </template>
 <script lang="ts" setup>
 import { defineProps } from 'vue';
+import { operation } from '@/hooks/opration'
 
 
 const props = defineProps({

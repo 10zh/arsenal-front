@@ -4,9 +4,9 @@
     <!-- 数量下拉框 -->
     <template #extra>
       <a-select v-model="number" @change="initVulnsTop" :style="{ width: '80px' }">
-        <a-option :value="10">20个</a-option>
         <a-option :value="20">20个</a-option>
         <a-option :value="30">30个</a-option>
+        <a-option :value="40">40个</a-option>
       </a-select>
     </template>
     <div>
