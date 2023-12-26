@@ -10,7 +10,7 @@ const CERTMAGE: AppRouteRecordRaw = {
     locale: 'menu.certManage',
     requiresAuth: true,
     icon: 'icon-find-replace',
-    order: 3,
+    order: 4,
     hideChildrenInMenu:true,
   },
   children: [

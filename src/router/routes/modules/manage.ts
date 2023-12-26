@@ -9,7 +9,7 @@ const MANAGE: AppRouteRecordRaw = {
     locale: 'menu.manage',
     requiresAuth: true,
     icon: 'icon-find-replace',
-    order: 2,
+    order: 5,
   },
   children: [
     {
