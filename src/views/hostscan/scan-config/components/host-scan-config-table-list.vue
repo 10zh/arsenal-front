@@ -380,6 +380,15 @@ const addHostScanConfig = () => {
     name: 'addHostScanConfig',
   });
 };
+// 编辑事件
+const handleListener = (flag, record) => {
+  router.push({
+    name: 'addHostScanConfig',
+    query: {
+      id: record.id
+    }
+  });
+}
 // 删除单个扫描配置事件
 const deleteSingleHostScanConfig = async (record: any) => {
   const response: any = await deleteHostScanConfig(record.id);

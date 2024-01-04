@@ -118,30 +118,28 @@ export function setSeverityRatingColor(status: any) {
 // 资产详情中漏洞等级	0-提示 1-低危 2-中危 3-高危
 export function setRiskGradeColor(status: any) {
   let color = '#333';
-  if (!status) return color
   if (status ===1) {
     color = 'green'
   } else if (status === 2) {
     color = "#ff7d00"
   } else if (status ===3) {
     color = 'red'
-  } else {
+  } else if (status === 0){
     color = '#86909c'
   }
   return color;
 
 }
 export function setRiskGradeText(status: any) {
-  let color = '暂无';
-  if (!status) return color
+  let color = '';
   if (status ===1 ) {
     color = '低危'
   } else if (status ===2) {
     color = "中危"
   } else if (status ===3) {
     color = '高危'
-  } else {
-    color = '暂无'
+  } else if(status === 0){
+    color = '提示'
   }
   return color;
 

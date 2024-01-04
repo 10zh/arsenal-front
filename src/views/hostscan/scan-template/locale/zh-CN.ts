@@ -46,6 +46,8 @@ export default {
   // nav栏
   'menu.hostscan.addScanTemplate': '新建扫描模板',
   'menu.hostscan.editScanTemplate': '编辑扫描模板',
+  'hostscan.addTemplate':'模板基本信息',
+  'hostscan.vulns':'漏洞库信息',
   'hostscan.addTemplate.hostDiscovery.nav': '主机发现',
   'hostscan.addTemplate.performParams.nav': '性能参数',
   'hostscan.addTemplate.serviceDiscovery.nav': '服务参数',
@@ -95,4 +97,25 @@ export default {
   'scan.add.template.reset': '重置',
   'scan.add.template.back': '返回',
   'scan.template.operator.delete.question': '删除该模板',
+
+  // 漏洞库
+  'scan.template.vulnerabilityName':'漏洞名称',
+  'scan.template.riskGrade':'漏洞等级',
+  'scan.template.extraValue':'漏洞扩展值',
+  'scan.template.tag':'漏洞标签',
+  'scan.template.enableVulnerabilityScan':'是否开启漏洞扫描',
+  'scan.template.isPotential':'是否扫描潜在漏洞',
+  'scan.template.isSafe':'是否执行安全检查',
+
+  'scan.template.cvss2':'cvss2',
+  'scan.template.cvss2Score':'cvss2评分',
+  'scan.template.cvss3':'cvss3',
+  'scan.template.cvss3Score':'cvss3评分',
+  'scan.template.severity':'风险评分',
+  'scan.template.low':'低危',
+  'scan.template.mid':'中危',
+  'scan.template.hight':'高危',
+  'scan.template.show':'提示',
+
+
 };

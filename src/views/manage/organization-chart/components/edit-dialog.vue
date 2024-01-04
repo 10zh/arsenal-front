@@ -1,11 +1,11 @@
 <template>
-  <!--添加表单对话层 start-->
+  <!--编辑表单对话层 start-->
   <a-modal v-model:visible="visible" width="700" :title="t('organization.list.add')"
-    @cancel="handleAddOrganizationVisible(false)" @before-ok="handleBeforeOk">
+    @cancel="handleEditOrganizationVisible(false)" @before-ok="handleBeforeOk">
     <a-form ref="formRef" auto-label-width :model="form">
       <a-form-item field="parentId" :label="t('organization.form.parentId')">
-        <a-tree-select v-model="form.parentId" @focus="initOrganizationList"
-          :placeholder="t('organization.form.parentId')" :blockNode="true" :checkable="true" :data="treeData" :fieldNames="{
+        <a-tree-select v-model="form.parentId" :placeholder="t('organization.form.parentId')" :blockNode="true"
+          :checkable="true" :data="treeData" :fieldNames="{
             key: 'id',
             title: 'companyName',
             children: 'children',
@@ -33,7 +33,7 @@
       </a-form-item>
     </a-form>
   </a-modal>
-  <!--添加表单对话层 end-->
+  <!--编辑表单对话层 end-->
 </template>
 
 <script lang="ts" setup>
@@ -41,9 +41,8 @@
 import { ref, reactive, watch, defineEmits } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { getManageUser } from '@/api/manage/user'
-import { addCompany } from '@/api/manage/organization-chart'
+import { querySingleCompany, getOrganizationPageList, editCompany } from '@/api/manage/organization-chart'
 import { Message } from '@arco-design/web-vue';
-import { getOrganizationPageList } from '@/api/manage/organization-chart'
 
 const { t } = useI18n();
 // 表单参数
@@ -54,16 +53,19 @@ const form = reactive({
   users: [],
   parentId: null,
 });
-// 组织树
-const treeData = ref([])
 // 是否可见
 const visible = ref(false);
 // 表单引用
 const formRef = ref();
 // 管理员列表
 const manageList = ref([])
+// 组织id
+const companyId = ref()
+// 组织树
+const treeData = ref([])
 // 调用父组件列表接口，刷新
 const emits = defineEmits(['initData'])
+
 // ==========================事件响应模块==========================
 // 点击确认事件
 const handleBeforeOk = (done) => {
@@ -73,7 +75,7 @@ const handleBeforeOk = (done) => {
       done(false);
     } else {
       // 添加引擎
-      const res = await addCompany(form);
+      const res = await editCompany(form, companyId.value);
       if (res.success) {
         Message.success(t('global.insert.success'));
         emits('initData')
@@ -83,14 +85,31 @@ const handleBeforeOk = (done) => {
   });
 };
 // 取消事件
-const handleAddOrganizationVisible = (flag) => {
+const handleEditOrganizationVisible = (flag, id) => {
   visible.value = flag;
+  if (id) {
+    companyId.value = id;
+  }
 };
 // 查询管理员用户
 const getUserByRoleId = async () => {
   const data = await getManageUser()
   manageList.value = data.data;
-};
+}
+// 表单数据回显
+const initForm = async () => {
+  const res = await querySingleCompany(companyId.value)
+  let newAdmins = [];
+  if (res.data.admins.length > 0) {
+    newAdmins = res.data.admins.map(item => item.toString())
+  }
+  console.log(res.data.admins)
+  form.companyAddress = res.data.companyAddress;
+  form.companyName = res.data.companyName;
+  form.sort = res.data.sort;
+  form.users = newAdmins;
+  form.parentId = res.data.parentId || null;
+}
 // 初始化上级组织
 const initOrganizationList = async () => {
   const res = await getOrganizationPageList();
@@ -100,13 +119,14 @@ const initOrganizationList = async () => {
 
 // ==========================父子组件通信模块==========================
 defineExpose({
-  handleAddOrganizationVisible,
+  handleEditOrganizationVisible,
 });
-// ==========================监听模块==========================
+// ==========================表单对话框监听模块==========================
 watch(visible, (newValue, oldValue) => {
   if (newValue) {
     getUserByRoleId()
-    formRef.value.resetFields()
+    initForm()
+    initOrganizationList()
 
   }
 })

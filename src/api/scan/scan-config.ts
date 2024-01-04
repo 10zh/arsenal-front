@@ -68,3 +68,13 @@ export function getHostScanConfigDetail(configId: number) {
   const url = `/host/scan/configs/${configId}/detail`;
   return axios.get<HttpResponse>(url);
 }
+// 查看扫描配置
+export function getHostScanConfig(configId: number) {
+  const url = `/host/scan/configs/${configId}/config`;
+  return axios.get<HttpResponse>(url);
+}
+// 编辑扫描配置
+export function editHostScanConfig(configId: number,data: HostScanConfigInsertRequest) {
+  const url = `/host/scan/configs/${configId}/config`;
+  return axios.put<HttpResponse>(url,data);
+}

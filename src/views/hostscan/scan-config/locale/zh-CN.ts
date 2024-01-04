@@ -166,6 +166,25 @@ export default {
   'leak.detail.solutions.additionalInfo':'附加信息',
   'scan.record.safe.true':'是',
   'scan.record.safe.false':"否",
-
-
+  // 扫描计划
+  'host.scan.config.scanPlan':'扫描计划',
+'host.scan.config.continueTime':'周期任务持续时间',
+'host.scan.config.continueTimeStatus':'到达最长持续时间后的状态',
+'host.scan.config.maxContinueTime':'计划最长持续时间',
+'host.scan.config.enable':'是否开启扫描计划',
+'host.scan.config.planType':'计划类型',
+'host.scan.config.scanType':'扫描类型',
+'host.scan.config.startTime':'开始时间',
+'host.scan.config.timezone':'时区',
+'host.scan.scanPlan.enable.true':'是',
+'host.scan.scanPlan.enable.false':'否',
+'host.scan.scanPlan.continue.stop':'停止扫描',
+'host.scan.scanPlan.continue.pause':'暂停扫描',
+'host.scan.scanPlan.continue.stop.next':'停止扫描,下周期继续扫描',
+'host.scan.scanPlan.continue.pause.next':'暂停扫描,下周期继续扫描',
+'host.scan.scanPlan.planType.one':'周期任务',
+'host.scan.scanPlan.planType.two':'一次性任务',
+'host.scan.scanPlan.scanType.two':'主机扫描',
+'menu.hostscan.config.edit':'编辑主机扫描配置',
+'host.scan.config.edit.success':'修改成功',
 };

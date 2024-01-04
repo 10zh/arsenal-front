@@ -1,14 +1,14 @@
 <template>
-  <a-card style="record-message">
+  <a-card class="record-message">
     <!-- 单个扫描记录信息start -->
-    <a-row>
-      <a-progress :percent="progressTextData.processBar / 100" :stroke-width="100" :style="{ width: '100%' }"
-        :show-text="false" :color="{
+    <a-row v-if="progressTextData.scanGoal">
+      <a-progress :percent="progressTextData.processBar / 100" :stroke-width="100"
+        :style="{ width: '100%', height: processHeight + 'px' }" :show-text="false" :color="{
           '0%': 'rgb(var(--primary-6))',
           '100%': 'rgb(var(--success-6))',
         }" />
     </a-row>
-    <a-row id="record-detail-progress-text" :gutter="24">
+    <a-row id="record-detail-progress-text" ref="process" :gutter="24">
       <a-col :span="7">
         <a-statistic :title="t('host.scan.config.target')" :extra="progressTextData.scanGoal" />
       </a-col>
@@ -77,7 +77,7 @@
 
 <script lang="ts" setup>
 // ==========================声明模块==========================
-import { ref, reactive, onMounted, defineProps, watch } from 'vue';
+import { ref, reactive, onMounted, defineProps, watch, nextTick } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 import {
@@ -98,6 +98,10 @@ const props = defineProps({
     default: () => { },
   },
 });
+// 进度条
+const process = ref();
+// 进度条动态高度
+const processHeight = ref();
 // 主机列表表头
 const hostTableColumns: any = reactive([
   {
@@ -116,11 +120,12 @@ const hostTableColumns: any = reactive([
   },
   {
     title: t('scan.record.macAddress'),
-    dataIndex: 'osName',
+    dataIndex: 'macAddress',
   },
   {
     title: t('scan.record.osName'),
-    dataIndex: 'macAddress',
+    dataIndex: 'osName',
+
   },
 ]);
 
@@ -194,10 +199,12 @@ const vulnerabilityPagination: any = ref({
 const vulnerabilityData: any = ref([]);
 // 初始化进度条文本数据
 const initProgressTextData = async () => {
+  debugger
   const response = await getHostScanRecordDetail(scanIdStore.scanId);
   progressTextData.value = response.data;
-
-  console.log(progressTextData.value);
+  nextTick(() => {
+    processHeight.value = process.value.$el.clientHeight;
+  })
 };
 // 初始化主机列表数据
 const initHostData = async () => {
@@ -305,4 +312,9 @@ const vulnerabilityPageIndexChangeEvent = (pageIndex: number) => {
 };
 </script>
 
-<style scoped lang="less"></style>
+<style scoped lang="less">
+/deep/.arco-statistic-extra {
+  white-space: normal;
+  word-break: break-all;
+}
+</style>

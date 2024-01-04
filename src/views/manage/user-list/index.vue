@@ -1,7 +1,8 @@
 <template>
   <div class="container">
     <Breadcrumb :items="['menu.manage', 'menu.manage.userList']" />
-    <a-card class="general-card" :title="$t('menu.manage.userList')" @tab-click="handleClick">
+    <a-card class="general-card" :style="{ height: tableHeight + 'px' }" :title="$t('menu.manage.userList')"
+      @tab-click="handleClick">
       <!-- 搜索框&新增按钮 -->
       <div class="search">
         <a-space>
@@ -10,52 +11,72 @@
         </a-space>
       </div>
       <!-- tabs栏 -->
-      <a-tabs type="rounded">
+      <a-tabs type="rounded" :style="{ height: (tableHeight - 150) + 'px' }">
         <!-- 全部用户 -->
         <a-tab-pane key="1" :title="$t('manage.user.all')">
-          <userTableList></userTableList>
+          <userTableList :card-data="cardList" @init-data="initData"></userTableList>
         </a-tab-pane>
         <!-- 正常用户 -->
         <a-tab-pane key="2" :title="$t('manage.user.normal')">
-          <userTableList></userTableList>
+          <userTableList :card-data="cardList" @init-data="initData"></userTableList>
         </a-tab-pane>
         <!-- 锁定用户 -->
         <a-tab-pane key="3" :title="$t('manage.user.lock')">
-          <userTableList></userTableList>
+          <userTableList :card-data="cardList" @init-data="initData"></userTableList>
         </a-tab-pane>
       </a-tabs>
+      <a-pagination class="pagination" :total="page.total" :current="page.pageIndex" :page-size="page.pageSize" show-total
+        @change="changePageEvent" />
+
 
     </a-card>
+
     <!-- 新增用户对话框 -->
-    <addDialog ref="addUserRef"></addDialog>
+    <addDialog ref="addUserRef" @init-data="initData"></addDialog>
   </div>
 </template>
 <script setup>
 
 // ==========================声明模块==========================
-import { ref, reactive } from 'vue';
+import { ref, reactive, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Message } from '@arco-design/web-vue';
+import { getUserPageList } from '@/api/manage/user';
 import userTableList from './components/user-table-list.vue'
 import addDialog from './components/add-dialog.vue'
+
 
 const { t } = useI18n();
 // 卡片数据
 const cardList = ref();
 const addUserRef = ref()
-
+const page = reactive({
+  pageSize: 10,
+  pageIndex: 1,
+  total: 10
+})
+// 列表的高度
+const tableHeight = ref()
 // ==========================事件响应模块==========================
-// 获取数据列表
-const getInitData = () => {
-
+const initData = async () => {
+  const data = await getUserPageList(page);
+  cardList.value = data.data;
+  page.total = data.totalCount;
 }
+
 
 // 切换tab栏
 const handleClick = () => {
 
 }
-// 搜索
-const search = () => {
+
+// 分页
+const changeSizeEvent = () => {
+
+}
+const changePageEvent = (val) => {
+  page.pageIndex = val;
+  initData()
 
 }
 // 新增用户
@@ -63,6 +84,15 @@ const handleAdd = () => {
   addUserRef.value.handleAddRoleVisible(true);
 
 }
+onMounted(() => {
+  // 动态计算表格的高度并进行分页
+  const height =
+    document.documentElement.clientHeight - 150;
+  tableHeight.value = height;
+  page.pageSize = Math.floor((height / 250)) * Math.floor((document.documentElement.clientWidth / 340));
+  // 初始化数据
+  initData()
+})
 
 </script>
 <style scoped lang="less">
@@ -72,6 +102,7 @@ const handleAdd = () => {
 
 .general-card {
   position: relative;
+  min-height: 150px;
 
   /deep/ .arco-card-header-title {
     // font-weight: 700;
@@ -83,5 +114,11 @@ const handleAdd = () => {
   position: absolute;
   right: 10px;
   z-index: 999;
+}
+
+.pagination {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
 }
 </style>

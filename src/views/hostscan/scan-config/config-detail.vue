@@ -136,7 +136,7 @@ const goBack = () => {
 
 .out-card {
   /deep/ .arco-card-body {
-    height: calc(100% - 50px);
+    height: calc(100% - 40px);
   }
 }
 
@@ -185,7 +185,7 @@ const goBack = () => {
 #record-detail-progress-text {
   position: absolute;
   width: 100%;
-  height: 100px;
+  min-height: 100px;
   top: 16px;
   left: 36px;
   display: flex;
@@ -207,6 +207,7 @@ const goBack = () => {
 .arco-progress-line {
   opacity: 0.5;
   border-radius: 0px;
+  height: 100% !important;
 }
 
 .arco-progress-line-bar {

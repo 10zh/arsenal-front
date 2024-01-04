@@ -13,7 +13,8 @@
       <!-- 列表展示 -->
       <a-scrollbar style="height:400px;overflow: auto;">
         <div v-for="(item, idx) in vulnsTop" :key="idx" class="item">
-          <a-tag :color="setRiskGradeColor(item.grade)" size="small">{{ setRiskGradeText(item.grade) }}</a-tag>
+          <a-tag :color="setRiskGradeColor(item.grade)" size="small">{{ setRiskGradeText(item.grade)
+          }}</a-tag>
           <span class="item-content">
             {{ item.name
             }}:{{ item.assetNumber }}

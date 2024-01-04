@@ -6,22 +6,23 @@
       <template #title>
         <div class="card-header">
           <div class="card-header-title">
-            <span> {{ t('host.scan.config.scanGoal') + ': ' + item.scanGoal }}</span>
+            <div style="width:100%;white-space:normal;word-break:break-all;margin-right:5px"> {{
+              t('host.scan.config.scanGoal') + ': ' +
+              item.scanGoal
+            }}</div>
             <a-tag :color="getStatusColorInDetail(item.scanStatus)">{{
               t(getStatusText(item.scanStatus))
             }}</a-tag>
           </div>
-          <span style="font-size: 12px; color: #ccc">{{
-            formatDate(item.scanStartTime, 'YYYY-MM-DD hh:mm:ss')
-          }}</span>
+
         </div>
-
-      </template>
-
-      <template #description>
-
       </template>
       <a-row>
+        <a-col>
+          <span style="font-size: 14px; color: #ccc">{{
+            formatDate(item.scanStartTime, 'YYYY-MM-DD hh:mm:ss')
+          }}</span>
+        </a-col>
         <a-col>
           <span class="label">
             {{ t('host.scan.config.scanCostTime') + ':' }}</span>
@@ -100,7 +101,7 @@ const pagination = ref({
 // 初始化当前扫描配置的所有列表
 const initScanConfigRecordData = async () => {
   // 动态计算表格的高度并进行分页
-  pagination.value.pageSize = Math.floor(props.tableHeight / 160);
+  pagination.value.pageSize = Math.floor(props.tableHeight / 180);
   const recordData = await getHostScanRecordList(id, pagination.value);
   configRecordData.value = recordData.data;
   if (recordData.data.length > 0) {
@@ -146,9 +147,9 @@ watch(
 }
 
 .inner-card {
-  padding: 10px;
+  padding: 5px 10px;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-  margin-top: 10px;
+  margin-top: 15px;
   position: relative;
 
   /deep/ .arco-card-body {
@@ -156,9 +157,10 @@ watch(
   }
 
   /deep/ .arco-card-header {
-    height: 50px;
+    // height: 50px;
     padding: 0px;
     border: none;
+    height: auto;
   }
 }
 
@@ -178,10 +180,12 @@ watch(
 .card-header {
   display: flex;
   flex-direction: column;
+  position: relative;
 
   .card-header-title {
     display: flex;
     justify-content: space-between;
+
   }
 }
 </style>

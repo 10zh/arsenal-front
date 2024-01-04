@@ -1,12 +1,11 @@
 <template>
   <!--添加引擎表单对话层 start-->
-  <a-modal v-model:visible="visible" width="700" :title="t('manage.user.add')" @cancel="handleAddRoleVisible(false)"
+  <a-modal v-model:visible="visible" width="700" :title="t('manage.user.edit.dialog')" @cancel="handleEditVisible(false)"
     @before-ok="handleBeforeOk">
     <a-form ref="formRef" auto-label-width :model="form">
-      <a-form-item field="companyIds" @change="handleChangeCompany" :label="t('manage.user.companyId')"
-        :rules="[{ required: true, message: t('manage.user.companyId') }]">
-        <a-tree-select v-model="form.companyIds" @focus="initOrganizationList" :placeholder="t('manage.user.companyId')"
-          :blockNode="true" :tree-checkable="true" :checkable="true" :data="organizationList" :fieldNames="{
+      <a-form-item field="companyIds" :label="t('manage.user.companyId')">
+        <a-tree-select v-model="form.companyIds" @change="handleChangeCompany" placeholder="t('manage.user.companyId')"
+          :blockNode="true" :checkable="true" :data="organizationList" :tree-checkable="true" multiple :fieldNames="{
             key: 'id',
             title: 'companyName',
             children: 'children',
@@ -22,12 +21,10 @@
         :rules="[{ required: true, message: t('manage.user.username') }]">
         <a-input v-model="form.username" :placeholder="t('manage.user.username')" />
       </a-form-item>
-      <a-form-item field="nickName" :label="t('manage.user.nickName')"
-        :rules="[{ required: true, message: t('manage.user.nickName') }]">
+      <a-form-item field="nickName" :label="t('manage.user.nickName')">
         <a-input v-model="form.nickName" :placeholder="t('manage.user.nickName')" />
       </a-form-item>
-      <a-form-item field="email" :rules="[{ required: true, message: t('manage.user.email') }]"
-        :label="t('manage.user.email')">
+      <a-form-item field="email" :label="t('manage.user.email')">
         <a-input v-model="form.email" :placeholder="t('manage.user.email')" />
       </a-form-item>
 
@@ -35,8 +32,7 @@
         :rules="[{ required: true, message: t('manage.user.password') }]">
         <a-input v-model="form.password" :placeholder="t('manage.user.password')" />
       </a-form-item> -->
-      <a-form-item field="phone" :label="t('manage.user.phone')"
-        :rules="[{ required: true, message: t('manage.user.phone') }]">
+      <a-form-item field="phone" :label="t('manage.user.phone')">
         <a-input v-model="form.phone" :placeholder="t('manage.user.phone')" />
       </a-form-item>
 
@@ -51,9 +47,9 @@
 
 <script lang="ts" setup>
 // ==========================声明模块==========================
-import { ref, reactive, watch, defineEmits } from 'vue';
+import { ref, reactive, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { queryAllRoles, addUser } from '@/api/manage/user';
+import { queryAllRoles, getSingleUser, addUser, updateSingleUser } from '@/api/manage/user';
 import { getOrganizationPageList } from '@/api/manage/organization-chart'
 import { Message } from '@arco-design/web-vue';
 
@@ -61,13 +57,18 @@ const { t } = useI18n();
 // 表单参数
 const form = reactive({
   companyIds: [],
-  email: '2765443121@qq.com',
+  email: '',
   nickName: '',
-  phone: '19972345161',
+  phone: '',
   roleId: null,
   username: '',
   status: 0,
 });
+// 组织架构列表分页参数
+const page = reactive({
+  pageIndex: 1,
+  pageSize: 10
+})
 // 用户状态
 const statusOptions = [{
   label: '禁用',
@@ -82,10 +83,10 @@ const visible = ref(false);
 const formRef = ref();
 // 角色列表
 const roleList = ref([])
+// 用户id
+const userId = ref();
 // 组织架构列表
 const organizationList = ref([])
-// 添加成功后调用父组件的获取列表
-const emits = defineEmits(['initData'])
 // ==========================事件响应模块==========================
 // 点击确认事件
 const handleBeforeOk = (done) => {
@@ -96,18 +97,21 @@ const handleBeforeOk = (done) => {
       done(false);
     } else {
       // 添加引擎
-      const res = await addUser(form);
+      const res = await updateSingleUser(userId.value, form);
       if (res.success) {
-        Message.success(t('global.insert.success'));
-        emits('initData')
+        Message.success(t('global.edit.success'));
       }
       done();
     }
   });
 };
 // 取消事件
-const handleAddRoleVisible = (flag) => {
+const handleEditVisible = (flag, id) => {
   visible.value = flag;
+  if (id) {
+    userId.value = id;
+  }
+  formRef.value.resetFields()
 };
 // 查询角色列表
 const queryAllRolesList = async () => {
@@ -126,18 +130,28 @@ const handleChangeCompany = async () => {
   queryAllRolesList()
 
 }
+// 回显用户信息
+const initUserInfo = async () => {
+  const res = await getSingleUser(userId.value)
+  Object.assign(form, res.data);
+
+  form.roleId = res.data.roleId.toString();
+
+  console.log(form)
+
+}
 // ==========================父子组件通信模块==========================
 defineExpose({
-  handleAddRoleVisible,
+  handleEditVisible,
 });
 // ==========================对话框监听模块==========================
-watch(visible, (newValue, oldValue) => {
+watch(visible, async (newValue, oldValue) => {
   if (newValue) {
-    queryAllCompanyIdList()
-    if (!form.companyId) {
-      queryAllRolesList()
-    }
-    formRef.value.resetFields()
+    // 回显用户信息
+    initUserInfo()
+    // 获取组织架构
+    await queryAllCompanyIdList()
+    await queryAllRolesList()
   }
 
 })

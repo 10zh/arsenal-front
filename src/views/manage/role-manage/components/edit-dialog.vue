@@ -1,5 +1,5 @@
 <template>
-  <!--添加引擎表单对话层 start-->
+  <!--编辑表单对话层 start-->
   <a-modal v-model:visible="visible" width="700" :title="t('role.edit')" @cancel="handleEditRoleVisible(false)"
     @before-ok="handleBeforeOk">
     <a-form ref="formRef" auto-label-width :model="form">
@@ -8,15 +8,19 @@
           <a-option v-for="item in companyIdList" :key="item.value" :value="item.value">{{ item.label }}</a-option>
         </a-select>
       </a-form-item>
-      <a-form-item field="roleName" :label="t('role.list.roleName')"
+      <a-form-item field="name" :label="t('role.list.roleName')"
         :rules="[{ required: true, message: t('role.list.roleName') }]">
-        <a-input v-model="form.roleName" :placeholder="t('role.list.roleName')" />
+        <a-input v-model="form.name" :placeholder="t('role.list.roleName')" />
       </a-form-item>
-      <!-- <a-form-item field="roleType" :label="t('role.list.roleType')">
-        <a-input v-model="form.roleType" :placeholder="t('role.list.roleType')" />
-      </a-form-item> -->
-      <a-form-item field="roleDescription" :label="t('role.list.roleDescription')">
-        <a-input-number v-model="form.roleDescription" :placeholder="t('role.list.roleDescription')" />
+      <a-form-item field="type" :rules="[{ required: true, message: t('role.list.roleType') }]"
+        :label="t('role.list.roleType')">
+        <a-select v-model="form.type" :placeholder="t('role.list.roleType')">
+          <a-option value="default">{{ t('role.select.type.default') }}</a-option>
+          <a-option value="custom">{{ t('role.select.type.custom') }}</a-option>
+        </a-select>
+      </a-form-item>
+      <a-form-item field="description" :label="t('role.list.roleDescription')">
+        <a-input v-model="form.description" :placeholder="t('role.list.roleDescription')" />
       </a-form-item>
       <a-form-item field="sort" :label="t('role.list.sort')" :rules="[{ required: true, message: t('role.list.sort') }]">
         <a-input-number v-model="form.sort" :placeholder="t('role.list.sort')" class="input-demo" :min="10" :max="100" />
@@ -27,27 +31,27 @@
       </a-form-item>
     </a-form>
   </a-modal>
-  <!--添加引擎表单对话层 end-->
+  <!--编辑表单对话层 end-->
 </template>
 
 <script lang="ts" setup>
 // ==========================声明模块==========================
-import { ref, reactive, defineEmits } from 'vue';
+import { ref, reactive, defineEmits, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Message } from '@arco-design/web-vue';
-import { addRole } from '@/api/manage/role'
+import { editRole, getRole } from '@/api/manage/role'
 
 const { t } = useI18n();
 const emits = defineEmits(['initRefresh'])
 // 表单参数
 const form = reactive({
-  companyId: 0,
+  companyId: null,
   menuIds: [],
-  roleDescription: '',
-  sort: 4,
-  status: 0,
-  roleName: '管理人员-01',
-  roleType: '管理人员',
+  description: '',
+  sort: null,
+  status: null,
+  name: '',
+  type: '',
 
 });
 // 角色状态
@@ -67,6 +71,8 @@ const companyIdList = [{
 const visible = ref(false);
 // 表单引用
 const formRef = ref();
+// 角色id
+const roleId = ref()
 
 // ==========================事件响应模块==========================
 // 点击确认事件
@@ -77,9 +83,9 @@ const handleBeforeOk = (done) => {
       done(false);
     } else {
       // 添加引擎
-      const res = await addRole(form);
+      const res = await editRole(roleId.value, form);
       if (res.success) {
-        Message.success(t('global.insert.success'));
+        Message.success(t('global.edit.success'));
         emits('initRefresh')
       }
       done();
@@ -87,14 +93,28 @@ const handleBeforeOk = (done) => {
   });
 };
 // 取消事件
-const handleEditRoleVisible = (flag) => {
+const handleEditRoleVisible = (flag, id = null) => {
   visible.value = flag;
+  if (id) {
+    roleId.value = id
+  }
 };
-
+// 回显角色信息
+const initForm = async () => {
+  const res = await getRole(roleId.value);
+  Object.assign(form, res.data)
+}
 // ==========================父子组件通信模块==========================
 defineExpose({
   handleEditRoleVisible,
 });
+// 
+watch(visible, (newValue, oldValue) => {
+  if (newValue) {
+    initForm()
+  }
+
+})
 </script>
 
 <style scoped lang="less"></style>

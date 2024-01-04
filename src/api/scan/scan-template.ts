@@ -41,6 +41,19 @@ interface TemplateRequest {
   tcpPort: string;
   udpPort: string;
 }
+// 漏洞列表参数
+interface vulnsRequest {
+  vulnerabilityName?:Array<string>,
+  riskGrade?:Array<number>,
+  total: number;
+  pageIndex: number;
+  pageSize: number;
+  order: string;
+  sort: string;
+  extraValue?:Array<string>,
+  tag?:Array<number>,
+
+}
 
 // 端口扫描速度枚举
 // eslint-disable-next-line no-shadow
@@ -117,4 +130,21 @@ export function deleteScanTemplates(templateId: string) {
   return axios.delete<HttpResponse>(
     `/host/scan/templates/${templateId}/template`
   );
+}
+// 查询漏洞库信息
+export function getVulnerabilityList(params: vulnsRequest) {
+  let url = `/vulnerability/condition/list?pageIndex=${params.pageIndex}&pageSize=${params.pageSize}`;
+  if (params.vulnerabilityName.length > 0) {
+    url = `${url}&vulnerabilityName-op=il&vulnerabilityName=${JSON.stringify(params.vulnerabilityName)}&vulnerabilityName-ic=true`;
+  }
+  if (params.riskGrade.length > 0) {
+    url = `${url}&riskGrade-op=il&riskGrade=${JSON.stringify(params.riskGrade)}`;
+  }
+  if (params.extraValue.length > 0) {
+    url = `${url}&extraValue-op=il&extraValue=${JSON.stringify(params.extraValue)}&extraValue-ic=true`;
+  }
+  if (params.tag.length > 0) {
+    url = `${url}&tag-op=il&tag=${JSON.stringify(params.tag)}&tag-ic=true`;
+  }
+  return axios.get<HostScanTemplateRes[]>(encodeURI(url));
 }

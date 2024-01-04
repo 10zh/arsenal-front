@@ -1,6 +1,12 @@
 export function isInteger (obj) {
   return Math.floor(obj) === obj;
 }
+/*
+ * 将一个浮点数转成整数，返回整数和倍数。如 3.14 >> 314，倍数是 100
+ * @param floatNum {number} 小数
+ * @return {object}
+ *   {times:100, num: 314}
+ */
 export function toInteger(floatNum) {
  const ret = {times: 1, num: 0};
   if (isInteger(floatNum)) {
@@ -16,6 +22,16 @@ export function toInteger(floatNum) {
   ret.num    = intNum;
   return ret;
 }
+/*
+* 核心方法，实现加减乘除运算，确保不丢失精度
+* 思路：把小数放大为整数（乘），进行算术运算，再缩小为小数（除）
+*
+* @param a {number} 运算数1
+* @param b {number} 运算数2
+* @param digits {number} 精度，保留的小数点数，比如 2, 即保留为两位小数
+* @param op {string} 运算类型，有加减乘除（+/-/*）
+*
+*/
 export function operation (a, b, op) {
   const o1 = toInteger(a);
   const o2 = toInteger(b);

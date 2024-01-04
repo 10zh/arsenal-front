@@ -188,14 +188,20 @@ const rowSelection = reactive({
 const router = useRouter();
 
 // ==========================数据操纵模块==========================
+// 定义子组件传值
+const emits = defineEmits(['receiveSelect']);
+// 将选择内容传递给父组件
+const sendParentComponentSelectRowKey = () => {
+  emits('receiveSelect', selectedKeys);
+};
 // 初始化引擎列表
 const initCertList = async () => {
   const response = await getCertList(pagination.value);
   tableData.value = response.data;
   // 默认选中第一个凭证
-  console.log(response.data[0].id)
   selectedKeys.value[0] = tableData.value[0].id;
   rowSelection.defaultSelectedRowKeys = selectedKeys.value;
+  sendParentComponentSelectRowKey()
   // 分页参数赋值
   pagination.value.total = response.totalCount;
   pagination.value.pageIndex = response.pageIndex;
@@ -247,12 +253,6 @@ const reset = () => {
 const changePageIndex = (val) => {
   pagination.value.pageIndex = val;
   initCertList();
-};
-// 定义子组件传值
-const emits = defineEmits(['receiveSelect']);
-// 将选择内容传递给父组件
-const sendParentComponentSelectRowKey = () => {
-  emits('receiveSelect', selectedKeys);
 };
 // 单选事件
 const selectRowKey = (key) => {
