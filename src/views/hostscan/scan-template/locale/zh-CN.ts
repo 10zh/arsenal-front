@@ -63,9 +63,15 @@ export default {
   'form.assetConcurrency.label': '资产并发数量',
   'form.singleAssetThread.label': '单个主机线程数量',
   'form.portScanSpeed.label': '端口扫描速度',
+  'form.initialRttTimeout.label':'初始往返超时时间(ms)',
+  'form.maxPackageRate.label':'最大发包数率',
+  'form.maxRttTimeout.label':'最大往返超时时间(ms)',
+  'form.minRttTimeout.label':'最小往返超时时间(ms)',
+  'form.minPackageRate.label':'最小发包数率',
   'form.survivalMode.label': '验证存活方式',
   'form.tcpPort.label': 'TCP服务端口',
   'form.udpPort.label': 'UDP服务端口',
+
 
   // 选择下拉框
   'form.enable.true': '开启',
@@ -78,6 +84,12 @@ export default {
   'form.assetConcurrency.validate': '资产并发数量必填',
   'form.singleAssetThread.validate': '单个主机线程数量必填',
   'form.portScanSpeed.validate': '端口扫描速度必填',
+  'form.initialRttTimeout.validate':'初始往返超时时间',
+  'form.maxPackageRate.validate':'最大发包数率',
+  'form.maxRttTimeout.validate':'最大往返超时时间',
+  'form.minRttTimeout.validate':'最小往返超时时间',
+  'form.minPackageRate.validate':'最小发包数率',
+  'form.survivalMode.validate': '验证存活方式',
 
   // 表单placeHolder
   'form.templateName.placeHolder': '请输入模板名称',

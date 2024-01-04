@@ -77,6 +77,31 @@
                 ]">
                   <a-select v-model="formModel.performance.portScanSpeed" :options="singleAssetThreadOptions" />
                 </a-form-item>
+                <a-form-item field="performance.initialRttTimeout" :label="t('form.initialRttTimeout.label')" :rules="[
+                  { required: true, message: $t('form.initialRttTimeout.validate') },
+                ]">
+                  <a-input-number :min="50" v-model="formModel.performance.initialRttTimeout" />
+                </a-form-item>
+                <a-form-item field="performance.maxPackageRate" :label="t('form.maxPackageRate.label')" :rules="[
+                  { required: true, message: $t('form.maxPackageRate.validate') },
+                ]">
+                  <a-input-number :max="3000" v-model="formModel.performance.maxRttTimeout" />
+                </a-form-item>
+                <a-form-item field="performance.maxPackageRate" :label="t('form.maxPackageRate.label')" :rules="[
+                  { required: true, message: $t('form.maxPackageRate.validate') },
+                ]">
+                  <a-input-number :max="20000" v-model="formModel.performance.maxPackageRate" />
+                </a-form-item>
+                <a-form-item field="performance.minRttTimeout" :label="t('form.minRttTimeout.label')" :rules="[
+                  { required: true, message: $t('form.minRttTimeout.validate') },
+                ]">
+                  <a-input-number :min="50" v-model="formModel.performance.minRttTimeout" />
+                </a-form-item>
+                <a-form-item field="performance.minPackageRate" :label="t('form.minPackageRate.label')" :rules="[
+                  { required: true, message: $t('form.minPackageRate.validate') },
+                ]">
+                  <a-input-number :min="2000" v-model="formModel.performance.minPackageRate" />
+                </a-form-item>
                 <!-- 性能参数表单end -->
               </div>
               <a-divider direction="vertical"> </a-divider>
@@ -174,6 +199,11 @@ const formData = {
     assetConcurrency: 100,
     singleAssetThread: 10,
     portScanSpeed: 'T3',
+    minPackageRate: 2000,
+    minRttTimeout: 300,
+    maxRttTimeout: 3000,
+    maxPackageRate: 20000,
+    initialRttTimeout: 500,
   },
   serviceDiscovery: {
     tcpPort: '1-1024',

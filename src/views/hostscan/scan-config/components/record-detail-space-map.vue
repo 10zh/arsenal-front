@@ -63,7 +63,7 @@
     </a-card>
 
     <a-layout style="margin-top: 10px">
-      <a-layout-sider :style="{ height: tabsHeight + 105 + 'px' }">
+      <a-layout-slider :style="{ height: tabsHeight + 105 + 'px' }">
         <a-scrollbar style="height: 280px; overflow: auto">
           <a-space direction="vertical">
             <a-row style="padding: 10px">
@@ -79,7 +79,8 @@
             </a-row>
           </a-space>
         </a-scrollbar>
-      </a-layout-sider>
+      </a-layout-slider>
+
       <a-layout-content :style="{ marginLeft: '10px' }">
         <a-breadcrumb>
           <a-breadcrumb-item :style="{ fontWeight: 'bold' }">

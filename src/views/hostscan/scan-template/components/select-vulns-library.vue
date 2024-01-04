@@ -46,6 +46,7 @@
                     :placeholder="t('scan.template.vulnerabilityName')" :max-tag-count="1"
                     @dropdown-reach-bottom="loadMore('vulnerability.vuln', 'name', pagination.vulnerabilityName)"
                     @focus="searchSingleField('vulnerability.vuln', 'name', pagination.vulnerabilityName)"
+                    @search="handleSearch($event, 'vulnerability.vuln', 'name')" :loading="loading"
                     @change="selectItem('vulnerabilityName', pagination.vulnerabilityName)" multiple />
                 </a-form-item>
               </a-col>
@@ -60,8 +61,9 @@
                 <a-form-item field="extraValue" :label="t('scan.template.extraValue')">
                   <a-select v-model="pagination.extraValue" :options="autoCompleteData"
                     :placeholder="t('scan.template.extraValue')" :max-tag-count="1"
-                    @dropdown-reach-bottom="loadMore('vulnerability.vuln_extra', 'value', pagination.vulnerabilityName)"
+                    @dropdown-reach-bottom="loadMore('vulnerability.vuln_extra', 'value', pagination.extraValue)"
                     @change="selectItem('extraValue', pagination.extraValue)"
+                    @search="handleSearch($event, 'vulnerability.vuln_extra', 'value')" :loading="loading"
                     @focus="searchSingleField('vulnerability.vuln_extra', 'value', pagination.extraValue)" multiple />
                 </a-form-item>
               </a-col>
@@ -69,8 +71,9 @@
                 <a-form-item field="tag" :label="t('scan.template.tag')">
                   <a-select v-model="pagination.tag" :options="autoCompleteData" :placeholder="t('scan.template.tag')
                     " :max-tag-count="1"
-                    @dropdown-reach-bottom="loadMore('vulnerability.vuln_tag', 'id', pagination.vulnerabilityName)"
+                    @dropdown-reach-bottom="loadMore('vulnerability.vuln_tag', 'id', pagination.tag)"
                     @change="selectItem('tag', pagination.tag)"
+                    @search="handleSearch($event, 'vulnerability.vuln_tag', 'id')" :loading="loading"
                     @focus="searchSingleField('vulnerability.vuln_tag', 'id', pagination.tag)" multiple />
 
                 </a-form-item>
@@ -328,17 +331,37 @@ const reset = () => {
   initVulnerabilityList();
 };
 // 获取自动补全数据
-const searchSingleField = async (table, field, value) => {
+const loading = ref(false);
+const searchSingleField = async (table, field, value, flag = null) => {
+  if (!flag) {
+    autoCompleteData.value = [];
+    singleFieldPagination.value.pageIndex = 1;
+  }
+  loading.value = true;
   singleFieldPagination.value.table = table;
   singleFieldPagination.value.field = field;
   singleFieldPagination.value.value = value;
   const res = await aotuCompleteByTableField(singleFieldPagination.value);
+  loading.value = false;
   autoCompleteData.value = autoCompleteData.value.concat(res.data)
 }
 // 下拉框加载更多
 const loadMore = (table, field, value) => {
   singleFieldPagination.value.pageIndex += 1;
-  searchSingleField(table, field, value)
+  searchSingleField(table, field, value, 'more')
+}
+// 实时搜索(注意防抖节流)
+
+const handleSearch = (value, table, field) => {
+  singleFieldPagination.value.pageIndex = 1;
+  if (value) {
+    window.setTimeout(() => {
+      searchSingleField(table, field, value)
+    }, 1000)
+  } else {
+    autoCompleteData.value = [];
+  }
+
 }
 // 将筛选条件全部传递给父组件
 const emits = defineEmits(['receiveFilter'])
