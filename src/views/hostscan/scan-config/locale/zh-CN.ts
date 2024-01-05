@@ -140,6 +140,33 @@ export default {
   'scan.record.service.proof': '证据',
   'scan.record.network.discovery': '网络空间测绘',
   'scan.record.host.risk': '主机风险',
+  // Windows补丁
+  "scan.record.host.patch":'windows补丁',
+  'scan.record.host.patch.caption':'补丁更新名称',
+  'scan.record.host.patch.csName':'已安装更新计算机名称',
+  'scan.record.host.patch.description':'描述',
+  'scan.record.host.patch.fixComment':'修复备注',
+  'scan.record.host.patch.hotfixId':'请输入',
+  'scan.record.host.patch.installDate':'更新安装时间',
+  'scan.record.host.patch.installedBy':'更新用户/系统账户名称',
+  'scan.record.host.patch.installedOn':'所适用日期',
+  'scan.record.host.patch.name':'修补程序类型',
+  'scan.record.host.patch.servicePackInEffect':'服务包密码',
+  'scan.record.host.patch.status':'是否成功安装',
+  // 主机进程列表
+  'scan.record.host.process':'主机进程',
+  'scan.record.host.process.bindAddress':"进程绑定地址",
+  'scan.record.host.process.port':'进程绑定端口',
+  'scan.record.host.process.processName':'进程名称',
+  'scan.record.host.process.protocol':'进程协议',
+// 主机安装软件列表
+'scan.record.host.softWare':'安装软件',
+'scan.record.host.softWare.family':'安装家族',
+'scan.record.host.softWare.name':'安装名称',
+'scan.record.host.softWare.product':'安装产品',
+'scan.record.host.softWare.vendor':'安装提供商',
+'scan.record.host.softWare.version':'安装版本',
+
   // 操作按钮
   'scan.add.config.goback': '返回',
   // 扫描详情

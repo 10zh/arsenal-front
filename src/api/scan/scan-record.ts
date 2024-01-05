@@ -54,6 +54,33 @@ export interface HostVulnerabilityListRecordPageRequest {
   potential: string;
   safe: string;
 }
+// windows补丁列表
+export interface windowsPatchPageRequest {
+  total: number;
+  pageIndex: number;
+  pageSize: number;
+  order: string;
+  sort: string;
+  hotfixId: string;
+}
+// 主机进程列表参数
+export interface hostProcPageRequest{
+  total: number;
+  pageIndex: number;
+  pageSize: number;
+  order: string;
+  sort: string;
+  port: string;
+}
+// 主机安装软件列表
+export interface installSoftwarePageRequest{
+  total: number;
+  pageIndex: number;
+  pageSize: number;
+  order: string;
+  sort: string;
+  name: string;
+}
 
 // 扫描配置详情
 export function getHostScanRecordList(
@@ -78,7 +105,6 @@ export function getHostListRecordByScanId(
   const url = `/host/scan/${scanId}/host/records?pageIndex=${params.pageIndex}&pageSize=${params.pageSize}`;
   return axios.get<HttpResponse>(url);
 }
-
 // 获取漏洞列表数据
 export function getHostVulnerabilityListRecordByScanId(
   scanId: string,
@@ -124,6 +150,30 @@ export function getHostVulnerabilityListRecordByScanHostId(
   return axios.get<HttpResponse>(url);
 }
 
+// 获取windows补丁列表数据
+export function getHotfixList(hostId:string, params:windowsPatchPageRequest){
+  let url = `/host/scan/${hostId}/hotfix/records?pageIndex=${params.pageIndex}&pageSize=${params.pageSize}&sort=${params.sort}&order=${params.order}`;
+  if (params.hotfixId) {
+    url = `${url}&hotfixId=${params.hotfixId}&hotfixId-ic=true&hotfixId-op=ct`;
+  }
+  return axios.get<HttpResponse>(url);
+}
+// 查询主机进程列表
+export function getHostProcList(hostId:string, params:hostProcPageRequest){
+  let url = `/host/scan/${hostId}/proc/records?pageIndex=${params.pageIndex}&pageSize=${params.pageSize}&sort=${params.sort}&order=${params.order}`;
+  if (params.port) {
+    url = `${url}&port-op=eq&port=${params.port}`;
+  }
+  return axios.get<HttpResponse>(url);
+}
+// 主机安装软件列表
+export function getInstallSoftwareList(hostId:string, params:installSoftwarePageRequest){
+  let url = `/host/scan/${hostId}/software/records?pageIndex=${params.pageIndex}&pageSize=${params.pageSize}&sort=${params.sort}&order=${params.order}`;
+  if (params.name) {
+    url = `${url}&name-op=ct&port=${params.name}&name-ic=true`;
+  }
+  return axios.get<HttpResponse>(url);
+}
 // 根据扫描ID和主机ID获取主机详情信息
 export function getHostRecordDetailByScanHostId(
   scanId: string,

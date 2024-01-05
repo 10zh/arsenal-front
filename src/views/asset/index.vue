@@ -24,17 +24,17 @@
               <template #header>
                 <div style="display:flex;justify-content: space-between">
                   <span class="history-text">{{ t('asset.search.history') }}</span>
-                  <div class="change-btn" @click="queryHistoryList">
+                  <!-- <div class="change-btn" @click="queryHistoryList">
                     <icon-sync style="color:#868181;margin-right:5px" />
                     <span style="font-size:14px;color:#a29e9e">换一批</span>
 
-                  </div>
+                  </div> -->
                 </div>
               </template>
               <a-list-item style="cursor: pointer;" v-for="(item, index) in  historyList" :key="index">
-                <a-link :status="linkColor(index)" @click="searchHistory(item.query)">{{ index + 1 }}、{{
-                  item.query
+                <a-link class="item-list-row" :status="linkColor(index)" @click="searchHistory(item.query)">{{ item.query
                 }}</a-link>
+                <!-- <span :style="{ 'color': linkColor(index) }"></span> -->
               </a-list-item>
 
             </a-list>
@@ -62,7 +62,7 @@
           <div class="static">
             <i class="iconfont icon-zhujifangbingdu"></i>
             <div class="static-item">
-              <span>{{ t('asset.mapping.host') }}</span>
+              <span>{{ t('asset.mapping.services') }}</span>
               <span class="nums">{{ staticCount.serviceNumber }}</span>
             </div>
 
@@ -157,34 +157,46 @@ const columns = [
   }]
 // 检索引导静态数据
 const data = [{
-  syntax: 'ip',
-  explain: '支持检索单个ip',
+  syntax: 'ipv4',
+  explain: ' IPV4搜索',
   paradigm: [{
-    name: 'ip="1.1.1'
+    name: 'ipv4="127.0.0.1"'
   }]
 }, {
-  syntax: 'ip',
-  explain: '支持检索单个ip',
+  syntax: 'ipv6',
+  explain: ' IPV6搜索',
   paradigm: [{
-    name: 'ip="1.1.1'
+    name: 'ipv6="fe80::7ad8:f730:302e:b0bf%16"'
   }]
 }, {
-  syntax: 'ip',
-  explain: '支持检索单个ip',
+  syntax: 'app',
+  explain: '应用层协议名称',
   paradigm: [{
-    name: 'ip="1.1.1'
+    name: 'app="http"'
   }]
 }, {
-  syntax: 'ip',
-  explain: '支持检索单个ip',
+  syntax: 'comp',
+  explain: ' 组件名称',
   paradigm: [{
-    name: 'ip="1.1.1'
+    name: 'comp="Nginx"'
   }]
 }, {
-  syntax: 'ip',
-  explain: '支持检索单个ip',
+  syntax: 'port',
+  explain: '端口',
   paradigm: [{
-    name: 'ip="1.1.1'
+    name: 'transportProtocol="TCP"'
+  }]
+}, {
+  syntax: 'httpUrl ',
+  explain: 'HTTP URL',
+  paradigm: [{
+    name: 'httpUrl="https://127.0.0.1"'
+  }]
+}, {
+  syntax: 'banner',
+  explain: 'Banner信息',
+  paradigm: [{
+    name: 'banner="hello world"'
   }]
 }]
 // ==========================事件响应模块ss==========================
@@ -194,7 +206,18 @@ const handleSearch = async () => {
   autoCompleteData.value = [];
   if (response.data.length > 0) {
     response.data.forEach(item => {
-      autoCompleteData.value.push(`${item.title} | ${item.component} | ${item.query}`)
+      let str = '';
+      if (item.title) {
+        str += item.title;
+
+      }
+      if (item.component) {
+        str = `${str} | ${item.component}`;
+      }
+      if (item.query) {
+        str = `${str} | ${item.query}`;
+      }
+      autoCompleteData.value.push(str)
     })
   }
 }
@@ -245,6 +268,12 @@ onMounted(() => {
   width: 100vw;
   height: calc(100vh - 100px);
 
+}
+
+.item-list-row {
+  width: 100%;
+  justify-content: start;
+  padding: 13px
 }
 
 .panel {
@@ -318,7 +347,7 @@ onMounted(() => {
 }
 
 /deep/ .arco-list-item {
-  padding: 8px 10px;
+  padding: 0 !important;
   font-size: 12px;
 }
 

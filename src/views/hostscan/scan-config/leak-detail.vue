@@ -30,6 +30,7 @@ import { useI18n } from 'vue-i18n';
 import { Message } from '@arco-design/web-vue';
 import { useRoute, useRouter } from 'vue-router';
 import { getVulnerabilityRes } from '@/api/scan/scan-record'
+import { getLeakDetail } from '@/api/asset/search'
 import leakMessage from './components/leak-message.vue'
 import leakTabs from './components/leak-tabs.vue'
 
@@ -38,8 +39,8 @@ import leakTabs from './components/leak-tabs.vue'
 const { t } = useI18n();
 const route = useRoute();
 const router = useRouter();
-// 路由参数上的id(漏洞Id,扫描id和主机Id)
-const { hostId, scanId, vulnId } = route.query;
+// 路由参数上的id(漏洞Id,扫描id和主机Id),资产漏洞id
+const { hostId, scanId, vulnId, id } = route.query;
 // 详情数据
 const detailMessageInfo = reactive({
 })
@@ -47,8 +48,16 @@ const detailMessageInfo = reactive({
 // ==========================事件响应==========================
 // 初始化数据
 const initInfo = async () => {
-  const response = await getVulnerabilityRes(scanId, hostId, vulnId)
-  Object.assign(detailMessageInfo, response.data)
+  // 扫描记录的漏洞详情
+  if (!id) {
+    const response = await getVulnerabilityRes(scanId, hostId, vulnId)
+    Object.assign(detailMessageInfo, response.data)
+  } else {
+    const response = await getLeakDetail(id)
+    Object.assign(detailMessageInfo, response.data)
+  }
+  // 资产的漏洞详情
+
 }
 // 返回
 const goBack = () => {

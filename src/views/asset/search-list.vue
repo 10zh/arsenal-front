@@ -81,7 +81,7 @@ import searchList from './components/search-table-list.vue'
 const { t } = useI18n();
 const route = useRoute();
 const router = useRouter()
-// 搜索条件
+// 搜索条件w1shi1
 const searchText = ref('');
 // 判断来自父组件的路由参数,列表传的是例如（app="RESP"）
 searchText.value = route.query.q.indexOf('|') !== -1 ? route.query.q.split('|')[2] : route.query.q;

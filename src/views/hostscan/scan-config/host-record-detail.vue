@@ -30,6 +30,36 @@
         </a-card>
       </a-tab-pane>
       <!--主机漏洞列表 end-->
+      <!-- windows补丁列表 -->
+      <a-tab-pane key="3">
+        <template #title>
+          <icon-save />
+          {{ t('scan.record.host.patch') }}
+        </template>
+        <a-card>
+          <WindowsPatch></WindowsPatch>
+        </a-card>
+      </a-tab-pane>
+      <!-- 主机进程列表 -->
+      <a-tab-pane key="4">
+        <template #title>
+          <icon-common />
+          {{ t('scan.record.host.process') }}
+        </template>
+        <a-card>
+          <HostProcess></HostProcess>
+        </a-card>
+      </a-tab-pane>
+      <!-- 主机安装软件列表 -->
+      <a-tab-pane key="5">
+        <template #title>
+          <icon-tool />
+          {{ t('scan.record.host.softWare') }}
+        </template>
+        <a-card>
+          <InstallSoft></InstallSoft>
+        </a-card>
+      </a-tab-pane>
     </a-tabs>
   </div>
 </template>
@@ -45,6 +75,9 @@ import {
 } from '@/api/scan/scan-record';
 import SpaceMap from './components/record-detail-space-map.vue';
 import HostRisk from './components/record-detail-host-risk.vue';
+import WindowsPatch from './components/record-detail-windows-patch.vue'
+import HostProcess from './components/record-detail-host-process.vue'
+import InstallSoft from './components/record-detail-install-software.vue'
 
 // ==========================数据定义模块==========================
 const { t } = useI18n();
@@ -62,7 +95,7 @@ const serviceDetail = ref([]);
 // 对应端口详情数据
 const tabDetail = ref({});
 // 激活的tab - key
-const activeKey = ref();
+const activeKey = ref("1");
 
 // ==========================数据操纵模块==========================
 // 初始化主机详情

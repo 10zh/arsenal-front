@@ -64,7 +64,7 @@ const { chartOption } = useChartOption((isDark) => {
       axisLabel: {
         show: true,
         interval: 0,
-        // rotate: 45,
+        rotate: 30,
       }
     },
     yAxis: {

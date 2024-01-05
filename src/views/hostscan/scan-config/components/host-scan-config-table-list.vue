@@ -123,7 +123,7 @@
           {{ $t('button.suspend') }}
         </a-button>
       </a-popconfirm>
-      <a-popconfirm v-if="[3].includes(record.lastScanStatic.scanStatus)"
+      <a-popconfirm v-if="[3, 7].includes(record.lastScanStatic.scanStatus)"
         :content="t('host.scan.config.operator.scan.resume.ack')" @ok="resumeHostScanEvent(record)">
         <a-button type="text" size="small" style="padding: 10px">
           {{ $t('button.continue') }}

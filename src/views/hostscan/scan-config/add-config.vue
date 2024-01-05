@@ -85,28 +85,6 @@
             <icon-storage /> {{ t('host.scan.config.scanPlan') }}</template>
           <a-form ref="formRef" :model="form" :style="{ width: '700px', marginLeft: '15px' }" auto-label-width
             label-align="left" size="large" @submit="handleSubmit">
-            <a-form-item field="scanPlan.continueTimeStatus" :tooltip="t('host.scan.config.continueTimeStatus')" :rules="[
-              {
-                required: true,
-                message: t('host.scan.config.continueTimeStatus'),
-              },
-            ]" :label="t('host.scan.config.continueTimeStatus')">
-              <a-select v-model="form.scanPlan.continueTimeStatus" :options="continueTimeStatusOptions"
-                :placeholder="t('host.scan.config.continueTimeStatus')" />
-            </a-form-item>
-            <a-form-item field="scanPlan.continueTime" :tooltip="t('host.scan.config.continueTime')"
-              :label="t('host.scan.config.continueTime')" :rules="[
-                {
-                  required: true,
-                  message: t('host.scan.config.continueTime'),
-                },
-              ]">
-              <a-input v-model="form.scanPlan.continueTime" :placeholder="t('host.scan.config.continueTime')" allow-clear>
-                <template #append>
-                  h
-                </template>
-              </a-input>
-            </a-form-item>
             <a-form-item field="scanPlan.enable" :tooltip="t('host.scan.config.enable')"
               :label="t('host.scan.config.enable')" :rules="[
                 {
@@ -116,6 +94,36 @@
               ]">
               <a-select v-model="form.scanPlan.enable" :options="enableOptions"
                 :placeholder="t('host.scan.config.enable')" />
+            </a-form-item>
+            <a-form-item field="scanPlan.timezone" :tooltip="t('host.scan.config.timezone')"
+              :label="t('host.scan.config.timezone')" :rules="[
+                {
+                  required: true,
+                  message: t('host.scan.config.timezone'),
+                },
+              ]">
+              <a-select v-model="form.scanPlan.timezone" :placeholder="t('host.scan.config.timezone')"
+                :options="timeZoneOptions" />
+            </a-form-item>
+            <a-form-item field="scanPlan.startTime" :tooltip="t('host.scan.config.startTime')"
+              :label="t('host.scan.config.startTime')" :rules="[
+                {
+                  required: true,
+                  message: t('host.scan.config.startTime'),
+                },
+              ]">
+              <a-date-picker format="YYYY-MM-DD HH:mm:ss" show-time style="width:100%" v-model="form.scanPlan.startTime"
+                :disabledDate="disabledDate" :placeholder="t('host.scan.config.startTime')" />
+            </a-form-item>
+            <a-form-item field="scanPlan.scanType" :tooltip="t('host.scan.config.scanType')"
+              :label="t('host.scan.config.scanType')" :rules="[
+                {
+                  required: true,
+                  message: t('host.scan.config.scanType'),
+                },
+              ]">
+              <a-select v-model="form.scanPlan.scanType" :placeholder="t('host.scan.config.scanType')"
+                :options="scanTypeOptions" />
             </a-form-item>
             <a-form-item field="scanPlan.maxContinueTime" :tooltip="t('host.scan.config.maxContinueTime')"
               :label="t('host.scan.config.maxContinueTime')" :rules="[
@@ -141,35 +149,28 @@
               <a-select v-model="form.scanPlan.planType" :placeholder="t('host.scan.config.planType')"
                 :options="planTypeOptions" />
             </a-form-item>
-            <a-form-item field="scanPlan.scanType" :tooltip="t('host.scan.config.scanType')"
-              :label="t('host.scan.config.scanType')" :rules="[
-                {
-                  required: true,
-                  message: t('host.scan.config.scanType'),
-                },
-              ]">
-              <a-select v-model="form.scanPlan.scanType" :placeholder="t('host.scan.config.scanType')"
-                :options="scanTypeOptions" />
+            <a-form-item field="scanPlan.continueTimeStatus" :tooltip="t('host.scan.config.continueTimeStatus')" :rules="[
+              {
+                required: true,
+                message: t('host.scan.config.continueTimeStatus'),
+              },
+            ]" :label="t('host.scan.config.continueTimeStatus')">
+              <a-select v-model="form.scanPlan.continueTimeStatus"
+                :options="form.scanPlan.planType === 1 ? continueTimeStatusOptionsTwo : continueTimeStatusOptionsOne"
+                :placeholder="t('host.scan.config.continueTimeStatus')" />
             </a-form-item>
-            <a-form-item field="scanPlan.startTime" :tooltip="t('host.scan.config.startTime')"
-              :label="t('host.scan.config.startTime')" :rules="[
+            <a-form-item v-if="form.scanPlan.planType === 1" field="scanPlan.continueTime"
+              :tooltip="t('host.scan.config.continueTime')" :label="t('host.scan.config.continueTime')" :rules="[
                 {
                   required: true,
-                  message: t('host.scan.config.startTime'),
+                  message: t('host.scan.config.continueTime'),
                 },
               ]">
-              <a-date-picker format="YYYY-MM-DD HH:mm:ss" show-time style="width:100%" v-model="form.scanPlan.startTime"
-                :disabledDate="disabledDate" :placeholder="t('host.scan.config.startTime')" />
-            </a-form-item>
-            <a-form-item field="scanPlan.timezone" :tooltip="t('host.scan.config.timezone')"
-              :label="t('host.scan.config.timezone')" :rules="[
-                {
-                  required: true,
-                  message: t('host.scan.config.timezone'),
-                },
-              ]">
-              <a-select v-model="form.scanPlan.timezone" :placeholder="t('host.scan.config.timezone')"
-                :options="timeZoneOptions" />
+              <a-input v-model="form.scanPlan.continueTime" :placeholder="t('host.scan.config.continueTime')" allow-clear>
+                <template #append>
+                  h
+                </template>
+              </a-input>
             </a-form-item>
 
           </a-form>
@@ -207,8 +208,8 @@ const form = reactive({
   hostCredentials: [''],
   scanPlan: {
     continueTime: '',
-    continueTimeStatus: 1,
-    enable: true,
+    continueTimeStatus: null,
+    enable: false,
     maxContinueTime: '',
     planType: 1,
     scanType: 1,
@@ -238,14 +239,16 @@ const enableOptions = [{
   label: t('host.scan.scanPlan.enable.false'),
   value: false,
 }]
-// 到达最长持续时间后的状态select框
-const continueTimeStatusOptions = [{
+// 周期性任务时：到达最长持续时间后的状态select框
+const continueTimeStatusOptionsTwo = [{
   label: t('host.scan.scanPlan.continue.stop'),
   value: 1,
 }, {
   label: t('host.scan.scanPlan.continue.pause'),
   value: 2,
-}, {
+}]
+// 一次性任务时：到达最长持续时间后的状态select框
+const continueTimeStatusOptionsOne = [{
   label: t('host.scan.scanPlan.continue.stop.next'),
   value: 3,
 }, {

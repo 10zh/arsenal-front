@@ -194,7 +194,7 @@ const changePageIndex = (val) => {
 // 漏洞详情
 const handleDetail = (id) => {
   router.push({
-    path: '/asset/leakDetail',
+    path: '/hostscan/leakDetail',
     query: {
       id,
     }
