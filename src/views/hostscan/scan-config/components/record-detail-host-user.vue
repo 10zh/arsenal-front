@@ -7,8 +7,8 @@
         <a-row :gutter="24">
           <a-col :span="6">
             <a-form-item>
-              <a-input-search allow-clear="true" v-model="pagination.hotfixId" @search="initTableData"
-                :placeholder="t('scan.record.host.patch.hotfixId')" />
+              <a-input-search allow-clear="true" v-model="pagination.keyword" @search="initTableData"
+                :placeholder="t('scan.record.host.user.keyword')" />
             </a-form-item>
           </a-col>
         </a-row>
@@ -18,11 +18,12 @@
   <!-- 查询条件end -->
   <a-table :columns="tableColumns" :data="tableData" column-resize :pagination="false"
     :style="{ height: tabsHeight + 'px' }" @sorter-change="sortedChangeEvent">
-    <template #potential="{ record }">
-      {{ record.potential ? t('global.true') : t('global.false') }}
+    <template #mainDir="{ record }">
+      <a-link>{{ record.mainDir }}</a-link>
     </template>
-    <template #safe="{ record }">
-      {{ record.safe ? t('global.true') : t('global.false') }}
+    <template #groups="{ record }">
+      <a-tag v-for="item in record.groups" :key="item"> {{ item }}</a-tag>
+
     </template>
     <template #severity="{ record }">
       {{ getSeverityRatingText(record.severity) }}
@@ -39,7 +40,7 @@
 import { ref, reactive, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
-import { getHotfixList } from '@/api/scan/scan-record';
+import { getHostUserList } from '@/api/scan/scan-record';
 import { getSeverityRatingText } from '@/hooks/status-options'
 
 
@@ -51,67 +52,20 @@ const router = useRouter();
 // 列表表头
 const tableColumns = reactive([
   {
-    title: t('scan.record.host.patch.caption'),
-    dataIndex: 'caption',
-    slotName: 'caption'
+    title: t('scan.record.host.user.username'),
+    dataIndex: 'username',
   },
   {
-    title: t('scan.record.host.patch.csName'),
-    dataIndex: 'csName',
+    title: t('scan.record.host.user.groups'),
+    dataIndex: 'groups',
+    slotName: 'groups'
   },
   {
-    title: t('scan.record.host.patch.description'),
-    dataIndex: 'description',
-  },
-  {
-    title: t('scan.record.host.patch.fixComment'),
-    dataIndex: 'fixComment',
+    title: t('scan.record.host.user.mainDir'),
+    dataIndex: 'mainDir',
+    slotName: 'mainDir'
+  }
 
-  },
-  {
-    title: t('scan.record.host.patch.installDate'),
-    dataIndex: 'installDate',
-    sortable: {
-      sorter: true,
-      sortDirections: ['descend', 'ascend'],
-    },
-
-  },
-  {
-    title: t('scan.record.host.patch.installedBy'),
-    dataIndex: 'installedBy',
-    ellipsis: true,
-    tooltip: { position: 'top' },
-
-  },
-  {
-    title: t('scan.record.host.patch.installedOn'),
-    dataIndex: 'installedOn',
-    slotName: 'installedOn',
-
-    sortable: {
-      sorter: true,
-      sortDirections: ['descend', 'ascend'],
-    },
-  },
-  {
-    title: t('scan.record.host.patch.name'),
-    dataIndex: 'name',
-    slotName: 'name',
-
-  },
-  {
-    title: t('scan.record.host.patch.servicePackInEffect'),
-    dataIndex: 'servicePackInEffect',
-
-
-  },
-  {
-    title: t('scan.record.host.patch.status'),
-    dataIndex: 'status',
-    slotName: 'status',
-
-  },
 ]);
 // 扫描配置ID
 const { scanId, hostId } = route.query;
@@ -122,7 +76,7 @@ const pagination = ref({
   pageSize: 10,
   order: 'desc',
   sort: 'severity',
-  hotfixId: '',
+  keyword: '',
 });
 // 卡片高度
 const tabsHeight = ref();
@@ -133,7 +87,7 @@ const tableData = ref([]);
 // ==========================数据操纵模块==========================
 // 初始化列表数据
 const initTableData = async () => {
-  const response = await getHotfixList(
+  const response = await getHostUserList(
     hostId,
     pagination.value
   );

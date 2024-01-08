@@ -159,13 +159,24 @@ export default {
   'scan.record.host.process.port':'进程绑定端口',
   'scan.record.host.process.processName':'进程名称',
   'scan.record.host.process.protocol':'进程协议',
-// 主机安装软件列表
-'scan.record.host.softWare':'安装软件',
-'scan.record.host.softWare.family':'安装家族',
-'scan.record.host.softWare.name':'安装名称',
-'scan.record.host.softWare.product':'安装产品',
-'scan.record.host.softWare.vendor':'安装提供商',
-'scan.record.host.softWare.version':'安装版本',
+  // 主机安装软件列表
+  'scan.record.host.softWare':'安装软件',
+  'scan.record.host.softWare.family':'安装家族',
+  'scan.record.host.softWare.name':'安装名称',
+  'scan.record.host.softWare.product':'安装产品',
+  'scan.record.host.softWare.vendor':'安装提供商',
+  'scan.record.host.softWare.version':'安装版本',
+  // 主机用户列表
+  'scan.record.host.user':'主机用户',
+  'scan.record.host.user.groups':'用户所属组',
+  'scan.record.host.user.mainDir':'主目录',
+  'scan.record.host.user.username':'用户名',
+  'scan.record.host.user.keyword':'请输入关键词',
+  // 主机用户组列表
+  'scan.record.host.userGroup':'主机用户组',
+  'scan.record.host.userGroup.name':'主机用户组名称',
+  'scan.record.host.userGroup.users':'主机用户组列表',
+
 
   // 操作按钮
   'scan.add.config.goback': '返回',

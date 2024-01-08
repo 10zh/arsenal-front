@@ -30,7 +30,7 @@
         </a-card>
       </a-tab-pane>
       <!--主机漏洞列表 end-->
-      <!-- windows补丁列表 -->
+      <!-- windows补丁列表start -->
       <a-tab-pane key="3">
         <template #title>
           <icon-save />
@@ -40,7 +40,8 @@
           <WindowsPatch></WindowsPatch>
         </a-card>
       </a-tab-pane>
-      <!-- 主机进程列表 -->
+      <!-- windows补丁列表 end-->
+      <!-- 主机进程列表start -->
       <a-tab-pane key="4">
         <template #title>
           <icon-common />
@@ -50,7 +51,8 @@
           <HostProcess></HostProcess>
         </a-card>
       </a-tab-pane>
-      <!-- 主机安装软件列表 -->
+      <!-- 主机进程列表end -->
+      <!-- 主机安装软件列表start -->
       <a-tab-pane key="5">
         <template #title>
           <icon-tool />
@@ -60,6 +62,29 @@
           <InstallSoft></InstallSoft>
         </a-card>
       </a-tab-pane>
+      <!-- 主机安装软件列表end -->
+      <!-- 主机用户列表start -->
+      <a-tab-pane key="6">
+        <template #title>
+          <icon-user />
+          {{ t('scan.record.host.user') }}
+        </template>
+        <a-card>
+          <HostUser></HostUser>
+        </a-card>
+      </a-tab-pane>
+      <!-- 主机用户列表end -->
+      <!-- 主机用户组列表start -->
+      <a-tab-pane key="7">
+        <template #title>
+          <icon-user-group />
+          {{ t('scan.record.host.userGroup') }}
+        </template>
+        <a-card>
+          <HostGroups></HostGroups>
+        </a-card>
+      </a-tab-pane>
+      <!-- 主机用户组列表end -->
     </a-tabs>
   </div>
 </template>
@@ -78,6 +103,8 @@ import HostRisk from './components/record-detail-host-risk.vue';
 import WindowsPatch from './components/record-detail-windows-patch.vue'
 import HostProcess from './components/record-detail-host-process.vue'
 import InstallSoft from './components/record-detail-install-software.vue'
+import HostUser from './components/record-detail-host-user.vue'
+import HostGroups from './components/record-detail-host-usergroup.vue'
 
 // ==========================数据定义模块==========================
 const { t } = useI18n();

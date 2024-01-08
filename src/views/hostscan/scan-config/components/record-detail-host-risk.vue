@@ -85,8 +85,8 @@
 
   </a-table>
   <a-pagination class="paginationStyle" :total="vulnerabilityPagination.total"
-    :current="vulnerabilityPagination.pageIndex" :page-size="vulnerabilityPagination.pageSize" show-total show-jumper
-    show-page-size @change="handleVulnerabilityPageIndexChange" @page-size-change="handleVulnerabilityPageSizeChange" />
+    :current="vulnerabilityPagination.pageIndex" :page-size="vulnerabilityPagination.pageSize" show-total show-page-size
+    @change="handleVulnerabilityPageIndexChange" @page-size-change="handleVulnerabilityPageSizeChange" />
 </template>
 
 <script setup>

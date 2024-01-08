@@ -81,7 +81,15 @@ export interface installSoftwarePageRequest{
   sort: string;
   name: string;
 }
-
+// 主机用户列表
+export interface hostUserPageRequest{
+  total: number;
+  pageIndex: number;
+  pageSize: number;
+  order: string;
+  sort: string;
+  keyword: string;
+}
 // 扫描配置详情
 export function getHostScanRecordList(
   configId: number,
@@ -152,7 +160,7 @@ export function getHostVulnerabilityListRecordByScanHostId(
 
 // 获取windows补丁列表数据
 export function getHotfixList(hostId:string, params:windowsPatchPageRequest){
-  let url = `/host/scan/${hostId}/hotfix/records?pageIndex=${params.pageIndex}&pageSize=${params.pageSize}&sort=${params.sort}&order=${params.order}`;
+  let url = `/host/scan/${hostId}/hotfix/records?pageIndex=${params.pageIndex}&pageSize=${params.pageSize}`;
   if (params.hotfixId) {
     url = `${url}&hotfixId=${params.hotfixId}&hotfixId-ic=true&hotfixId-op=ct`;
   }
@@ -160,7 +168,7 @@ export function getHotfixList(hostId:string, params:windowsPatchPageRequest){
 }
 // 查询主机进程列表
 export function getHostProcList(hostId:string, params:hostProcPageRequest){
-  let url = `/host/scan/${hostId}/proc/records?pageIndex=${params.pageIndex}&pageSize=${params.pageSize}&sort=${params.sort}&order=${params.order}`;
+  let url = `/host/scan/${hostId}/proc/records?pageIndex=${params.pageIndex}&pageSize=${params.pageSize}`;
   if (params.port) {
     url = `${url}&port-op=eq&port=${params.port}`;
   }
@@ -168,9 +176,25 @@ export function getHostProcList(hostId:string, params:hostProcPageRequest){
 }
 // 主机安装软件列表
 export function getInstallSoftwareList(hostId:string, params:installSoftwarePageRequest){
-  let url = `/host/scan/${hostId}/software/records?pageIndex=${params.pageIndex}&pageSize=${params.pageSize}&sort=${params.sort}&order=${params.order}`;
+  let url = `/host/scan/${hostId}/software/records?pageIndex=${params.pageIndex}&pageSize=${params.pageSize}`;
   if (params.name) {
     url = `${url}&name-op=ct&port=${params.name}&name-ic=true`;
+  }
+  return axios.get<HttpResponse>(url);
+}
+// 主机用户列表
+export function getHostUserList(hostId:string, params:hostUserPageRequest){
+  let url = `/host/scan/${hostId}/user/records?pageIndex=${params.pageIndex}&pageSize=${params.pageSize}`;
+  if (params.keyword) {
+    url = `${url}&keyword=${params.keyword}`;
+  }
+  return axios.get<HttpResponse>(url);
+}
+// 主机用户组列表
+export function getHostUsersList(hostId:string, params){
+  let url = `/host/scan/${hostId}/user/group/records?pageIndex=${params.pageIndex}&pageSize=${params.pageSize}`;
+  if (params.keyword) {
+    url = `${url}&keyword=${params.keyword}`;
   }
   return axios.get<HttpResponse>(url);
 }

@@ -18,11 +18,13 @@
   <!-- 查询条件end -->
   <a-table :columns="tableColumns" :data="tableData" column-resize :pagination="false"
     :style="{ height: tabsHeight + 'px' }" @sorter-change="sortedChangeEvent">
-    <template #potential="{ record }">
-      {{ record.potential ? t('global.true') : t('global.false') }}
+    <template #port="{ record }">
+
+      <a-tag color="#168cff">
+        {{ record.port }}</a-tag>
     </template>
-    <template #safe="{ record }">
-      {{ record.safe ? t('global.true') : t('global.false') }}
+    <template #protocol="{ record }">
+      <a-tag color="orangered">{{ record.protocol }}</a-tag>
     </template>
     <template #severity="{ record }">
       {{ getSeverityRatingText(record.severity) }}
@@ -51,6 +53,10 @@ const router = useRouter();
 // 列表表头
 const tableColumns = reactive([
   {
+    title: t('scan.record.host.process.processName'),
+    dataIndex: 'processName',
+  },
+  {
     title: t('scan.record.host.process.bindAddress'),
     dataIndex: 'bindAddress',
     slotName: 'bindAddress'
@@ -58,14 +64,13 @@ const tableColumns = reactive([
   {
     title: t('scan.record.host.process.port'),
     dataIndex: 'port',
+    slotName: 'port'
   },
-  {
-    title: t('scan.record.host.process.processName'),
-    dataIndex: 'processName',
-  },
+
   {
     title: t('scan.record.host.process.protocol'),
     dataIndex: 'protocol',
+    slotName: 'protocol'
 
   }
 ]);
