@@ -2,7 +2,7 @@
   <div>
     <a-card>
       <a-tabs type="rounded" @change="changeTabs">
-        <!-- 主机服务start -->
+        <!-- 端口服务start -->
         <a-tab-pane key="1" :title="$t('asset.searchListDetail.postServices')">
           <!-- 端口start -->
           <div class="tags">
@@ -74,9 +74,8 @@
             </a-list-item>
           </a-list>
         </a-tab-pane>
-        <!-- 相关漏洞start -->
+        <!-- 漏洞列表start -->
         <a-tab-pane key="2" :title="$t('asset.searchListDetail.bugList')">
-
           <!-- 漏洞表格start -->
           <a-table :columns="columns" :pagination="false" :data="vulnsList">
             <template #vulnId="{ record }">
@@ -99,6 +98,22 @@
           <a-pagination class="paginationStyle" :total="pagination.total" :page-size="pagination.pageSize"
             @change="changePageIndex" show-total />
         </a-tab-pane>
+        <!-- 用户组列表start -->
+        <a-tab-pane key="3" :title="$t('asset.search.detail.users')">
+          <UserGroup></UserGroup>
+        </a-tab-pane>
+        <!-- Windows补丁列表start -->
+        <a-tab-pane key="4" :title="$t('asset.search.detail.patch')">
+          <WindowsPatch></WindowsPatch>
+        </a-tab-pane>
+        <!-- 单个主机进程列表start -->
+        <a-tab-pane key="5" :title="$t('asset.search.detail.process')">
+          <HostProcess></HostProcess>
+        </a-tab-pane>
+        <!-- 单主机安装软件列表start -->
+        <a-tab-pane key="6" :title="$t('asset.search.detail.softWare')">
+          <InstallSoft></InstallSoft>
+        </a-tab-pane>
       </a-tabs>
 
     </a-card>
@@ -113,6 +128,10 @@ import { useRoute, useRouter } from 'vue-router';
 import formatDate from '@/utils/times'
 import { setRiskGradeText, setRiskGradeColor, getSeverityRatingText, setSeverityRatingColor } from '@/hooks/status-options'
 import { getSearchDetailVulns } from '@/api/asset/search'
+import UserGroup from './detail-list-users.vue'
+import WindowsPatch from './detail-list-patch.vue'
+import HostProcess from './detail-list-process.vue'
+import InstallSoft from './detail-list-software.vue'
 
 const { t } = useI18n();
 const route = useRoute();

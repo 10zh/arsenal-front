@@ -26,10 +26,6 @@
     <template #protocol="{ record }">
       <a-tag color="orangered">{{ record.protocol }}</a-tag>
     </template>
-    <template #severity="{ record }">
-      {{ getSeverityRatingText(record.severity) }}
-    </template>
-
   </a-table>
   <a-pagination class="paginationStyle" :total="pagination.total" :current="pagination.pageIndex"
     :page-size="pagination.pageSize" show-total show-jumper show-page-size @change="handleVulnerabilityPageIndexChange"

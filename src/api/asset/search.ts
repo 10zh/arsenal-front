@@ -26,6 +26,39 @@ export interface staticCounteReq {
   vulnerabilityNumber:number,
 
 }
+// 资产用户组列表参数
+export interface assetUsersReq {
+  pageIndex:number,
+  pageSize:number,
+  username:string,
+}
+// windows补丁列表
+export interface windowsPatchPageRequest {
+  total: number;
+  pageIndex: number;
+  pageSize: number;
+  order: string;
+  sort: string;
+  hotfixId: string;
+}
+// 主机进程列表参数
+export interface hostProcPageRequest{
+  total: number;
+  pageIndex: number;
+  pageSize: number;
+  order: string;
+  sort: string;
+  port: string;
+}
+// 主机安装软件列表
+export interface installSoftwarePageRequest{
+  total: number;
+  pageIndex: number;
+  pageSize: number;
+  order: string;
+  sort: string;
+  name: string;
+}
 // 获取搜索条件自动补全列表
 export function getSearchAutoComplete(key: string) {
   const url = `/asset/search/auto?key=${key}`;
@@ -81,5 +114,37 @@ export function getSearchDetailVulns(id:number,page:assetSearchVulnListReq) {
 // 获取漏洞详情
 export function getLeakDetail(id:number) {
   const url = `/asset/${id}/vuln/detail`;
+  return axios.get<HttpResponse>(url);
+}
+// 查询单个主机用户和组列表
+export function getUsersList(assetId:number,params:assetUsersReq) {
+  let url = `/asset/${assetId}/both/user/group?pageIndex=${params.pageIndex}&pageSize=${params.pageSize}`;
+  if(params.username){
+    url = `${url}&username=${params.username}&username-ic=true&username-op=ct`
+  }
+  return axios.get<HttpResponse>(url);
+}
+// 查询单个资产Windows补丁列表
+export function getAssetHotfixList(assetId:string, params:windowsPatchPageRequest){
+  let url = `/asset/${assetId}/hotfix?pageIndex=${params.pageIndex}&pageSize=${params.pageSize}`;
+  if (params.hotfixId) {
+    url = `${url}&hotfixId=${params.hotfixId}&hotfixId-ic=true&hotfixId-op=ct`;
+  }
+  return axios.get<HttpResponse>(url);
+}
+// 查询主机进程列表
+export function getAssetHostProcList(assetId:string, params:hostProcPageRequest){
+  let url = `/asset/${assetId}/proc?pageIndex=${params.pageIndex}&pageSize=${params.pageSize}`;
+  if (params.port) {
+    url = `${url}&port-op=eq&port=${params.port}`;
+  }
+  return axios.get<HttpResponse>(url);
+}
+// 查询单个主机安装软件列表
+export function getAssetInstallSoftwareList(assetId:string, params:installSoftwarePageRequest){
+  let url = `/asset/${assetId}/software?pageIndex=${params.pageIndex}&pageSize=${params.pageSize}`;
+  if (params.name) {
+    url = `${url}&name-op=ct&port=${params.name}&name-ic=true`;
+  }
   return axios.get<HttpResponse>(url);
 }

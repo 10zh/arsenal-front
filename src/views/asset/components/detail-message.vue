@@ -47,7 +47,11 @@
         </a-tab-pane>
         <!-- 相关漏洞start -->
         <a-tab-pane key="2" :title="$t('asset.searchListDetail.componentsDetail')">
-          <a-table :pagination="false" :data="detailInfo.components" :columns="columns"></a-table>
+          <a-table :pagination="false" :data="detailInfo.components" :columns="columns">
+            <template #hierarchical="{ record }">
+              {{ getLevelText(record.hierarchical) }}
+            </template>
+          </a-table>
         </a-tab-pane>
 
       </a-tabs>
@@ -60,7 +64,9 @@
 import { ref, reactive, computed, onMounted, onUnmounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Message } from '@arco-design/web-vue';
+import { getLevelText } from '@/hooks/status-options'
 import { useRoute, useRouter } from 'vue-router';
+
 
 const { t } = useI18n();
 const router = useRouter()
@@ -109,7 +115,8 @@ const props = defineProps({
 // })
 const columns = [{
   title: t('asset.searchListDetail.components.hierarchical'),
-  dataIndex: 'hierarchical'
+  dataIndex: 'hierarchical',
+  slotName: 'hierarchical'
 }, {
   title: t('asset.searchListDetail.components.name'),
   dataIndex: 'name'

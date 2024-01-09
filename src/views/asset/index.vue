@@ -206,18 +206,7 @@ const handleSearch = async () => {
   autoCompleteData.value = [];
   if (response.data.length > 0) {
     response.data.forEach(item => {
-      let str = '';
-      if (item.title) {
-        str += item.title;
-
-      }
-      if (item.component) {
-        str = `${str} | ${item.component}`;
-      }
-      if (item.query) {
-        str = `${str} | ${item.query}`;
-      }
-      autoCompleteData.value.push(str)
+      autoCompleteData.value.push(`${item.title} | ${item.components} | ${item.query}`)
     })
   }
 }
@@ -239,19 +228,23 @@ const searchHistory = (key: string) => {
 // 点击搜索按钮
 const handleClick = (value: string) => {
   if (value === 'click') {
-    router.push({
+    const routeUrlOne = router.resolve({
       path: '/asset/searchList',
       query: {
         q: queryFactor.value,
       },
     });
+    // 新打开一个页面
+    window.open(routeUrlOne.href, '_blank');
   } else {
-    router.push({
+    const routeUrlTwo = router.resolve({
       path: '/asset/searchList',
       query: {
         q: value,
       },
     });
+    // 新打开一个页面
+    window.open(routeUrlTwo.href, '_blank');
   }
 }
 // 初始化搜索列表

@@ -7,8 +7,8 @@
         <a-row :gutter="24">
           <a-col :span="6">
             <a-form-item>
-              <a-input-search allow-clear="true" v-model="pagination.keyword" @search="initTableData"
-                :placeholder="t('scan.record.host.user.keyword')" />
+              <a-input-search allow-clear="true" v-model="pagination.name" @search="initTableData"
+                :placeholder="t('scan.record.host.softWare.name')" />
             </a-form-item>
           </a-col>
         </a-row>
@@ -16,16 +16,8 @@
     </a-col>
   </a-row>
   <!-- 查询条件end -->
-  <a-table :columns="tableColumns" :data="tableData" column-resize :pagination="false"
-    :style="{ height: tabsHeight + 'px' }" @sorter-change="sortedChangeEvent">
-    <template #mainDir="{ record }">
-      <a-link>{{ record.mainDir }}</a-link>
-    </template>
-    <template #groups="{ record }">
-      <a-tag v-for="item in record.groups" :key="item"> {{ item }}</a-tag>
-
-    </template>
-
+  <a-table :columns="tableColumns" style="min-height:300px" :data="tableData" column-resize :pagination="false"
+    @sorter-change="sortedChangeEvent">
   </a-table>
   <a-pagination class="paginationStyle" :total="pagination.total" :current="pagination.pageIndex"
     :page-size="pagination.pageSize" show-total show-page-size @change="handleVulnerabilityPageIndexChange"
@@ -37,8 +29,7 @@
 import { ref, reactive, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
-import { getHostUserList } from '@/api/scan/scan-record';
-import { getSeverityRatingText } from '@/hooks/status-options'
+import { getAssetInstallSoftwareList } from '@/api/asset/search';
 
 
 
@@ -49,23 +40,30 @@ const router = useRouter();
 // 列表表头
 const tableColumns = reactive([
   {
-    title: t('scan.record.host.user.username'),
-    dataIndex: 'username',
+    title: t('asset.search.detail.softWare.name'),
+    dataIndex: 'name',
+    slotName: 'name'
   },
   {
-    title: t('scan.record.host.user.groups'),
-    dataIndex: 'groups',
-    slotName: 'groups'
+    title: t('asset.search.detail.softWare.product'),
+    dataIndex: 'product',
   },
   {
-    title: t('scan.record.host.user.mainDir'),
-    dataIndex: 'mainDir',
-    slotName: 'mainDir'
-  }
+    title: t('asset.search.detail.softWare.family'),
+    dataIndex: 'family',
+  },
+  {
+    title: t('asset.search.detail.softWare.vendor'),
+    dataIndex: 'vendor',
 
+  }, {
+    title: t('asset.search.detail.softWare.version'),
+    dataIndex: 'version',
+
+  }
 ]);
 // 扫描配置ID
-const { scanId, hostId } = route.query;
+const { id } = route.query;
 // 列表分页参数
 const pagination = ref({
   total: 0,
@@ -73,19 +71,15 @@ const pagination = ref({
   pageSize: 10,
   order: 'desc',
   sort: 'severity',
-  keyword: '',
+  name: '',
 });
-// 卡片高度
-const tabsHeight = ref();
-// 头部实例
-const header = ref();
 // 列表数据
 const tableData = ref([]);
 // ==========================数据操纵模块==========================
 // 初始化列表数据
 const initTableData = async () => {
-  const response = await getHostUserList(
-    hostId,
+  const response = await getAssetInstallSoftwareList(
+    id,
     pagination.value
   );
   tableData.value = response.data;
@@ -98,12 +92,12 @@ const resetVulnerabilityList = () => {
   pagination.value.hotfixId = '';
   initTableData();
 };
-// 漏洞列表分页事件
+// 列表分页事件
 const handleVulnerabilityPageIndexChange = (pageIndex) => {
   pagination.value.pageIndex = pageIndex;
   initTableData();
 };
-// 漏洞分页事件
+// 分页事件
 const handleVulnerabilityPageSizeChange = (pageSize) => {
   pagination.value.pageSize = pageSize;
   initTableData();
@@ -117,18 +111,16 @@ const sortedChangeEvent = (field, direction) => {
   initTableData();
 };
 onMounted(() => {
-  // 动态计算高度
-  const height =
-    document.documentElement.clientHeight -
-    header.value.$el.offsetHeight -
-    300;
-  tabsHeight.value = height;
-  pagination.value.pageSize = Math.floor(height / 50);
   initTableData();
 });
 </script>
 <style scoped lang="less">
 /deep/ .arco-row-justify-start {
   justify-content: flex-end;
+}
+
+.paginationStyle {
+  justify-content: end;
+  margin-top: 20px;
 }
 </style>
