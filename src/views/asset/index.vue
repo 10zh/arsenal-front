@@ -58,15 +58,6 @@
         </div>
         <!-- 统计数值start -->
         <div class="static-wrap">
-          <!-- 服务 -->
-          <div class="static">
-            <i class="iconfont icon-zhujifangbingdu"></i>
-            <div class="static-item">
-              <span>{{ t('asset.mapping.services') }}</span>
-              <span class="nums">{{ staticCount.serviceNumber }}</span>
-            </div>
-
-          </div>
           <!-- 主机 -->
           <div class="static">
             <i class="iconfont icon-fuwu"></i>
@@ -76,6 +67,16 @@
             </div>
 
           </div>
+          <!-- 服务 -->
+          <div class="static">
+            <i class="iconfont icon-zhujifangbingdu"></i>
+            <div class="static-item">
+              <span>{{ t('asset.mapping.services') }}</span>
+              <span class="nums">{{ staticCount.serviceNumber }}</span>
+            </div>
+
+          </div>
+
           <!-- 漏洞 -->
           <div class="static">
             <i class="iconfont icon-loudongku"></i>
@@ -130,7 +131,7 @@ const staticCount = reactive<staticCounteReq>({
 // ==========================数据定义模块==========================
 const scroll = {
   x: '100%',
-  y: 200
+  y: 400
 }
 // 搜索历史列表颜色
 const linkColor = (key: number) => {
@@ -206,7 +207,7 @@ const handleSearch = async () => {
   autoCompleteData.value = [];
   if (response.data.length > 0) {
     response.data.forEach(item => {
-      autoCompleteData.value.push(`${item.title} | ${item.components} | ${item.query}`)
+      autoCompleteData.value.push(`${item.title} | ${item.component} | ${item.query}`)
     })
   }
 }
@@ -308,7 +309,7 @@ onMounted(() => {
   margin-top: 20px;
 
   .history {
-    max-height: 300px;
+    min-height: 350px;
     flex: 1;
     border: 1px solid var(--color-neutral-4);
     border-radius: 3px;

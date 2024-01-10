@@ -30,7 +30,7 @@ export default {
   'asset.tipTotal':'提示资产总数',
   'asset.safeTotal':'安全资产总数',
   'asset.total':'资产总数',
-  'vulns.statistics':'统计漏洞TOPN',
+  'vulns.statistics':'统计漏洞TOP',
   'asset.vulns.tend':'漏洞和资产趋势',
   'asset':'资产',
   'vulns':'漏洞'

@@ -4,9 +4,9 @@
 
     <a-card class="general-card" :title="$t('asset.list')" @tab-click="handleClick">
       <!-- 返回按钮 -->
-      <div class="back-btn">
+      <!-- <div class="back-btn">
         <a-button @click="goBack">{{ t('scan.add.config.goback') }}</a-button>
-      </div>
+      </div> -->
       <!-- 搜索框start -->
       <div class="search">
         <div class="search-wrap">
@@ -27,7 +27,8 @@
         <a-tabs type="rounded" @change="changeTabs">
           <!-- 搜索结果start -->
           <a-tab-pane key="1" :title="$t('asset.tabs.result')">
-            <searchList :card-list="cardList" :rightInfo="rightInfo" :searchText="searchText"></searchList>
+            <searchList :card-list="cardList" :rightInfo="rightInfo" :searchText="searchText"
+              @send-search="recieveSearch"></searchList>
           </a-tab-pane>
           <!-- 相关漏洞start -->
           <a-tab-pane key="2" :title="$t('asset.tabs.bug')">
@@ -126,6 +127,8 @@ const getInitInfo = async () => {
   const params = {
     q: searchText.value
   }
+  // 对拼接的&符号进行转码
+  params.q = params.q.replace(/&/g, '%26')
   const response = await getSearchInfo(params);
   Object.assign(rightInfo, response.data)
 }
@@ -135,6 +138,8 @@ const getInitData = async () => {
     ...pagination,
     q: searchText.value
   }
+  // 对拼接的&符号进行转码
+  params.q = params.q.replace(/&/g, '%26')
   const response = await getSearchList(params);
   cardList.value = response.data;
   pagination.total = response.totalCount;
@@ -164,6 +169,18 @@ const handleSelect = (val) => {
   splitSearchText.value = searchText.value;
   getInitData()
   getInitInfo()
+}
+// 接收来自子组件对search条件追加字段
+const recieveSearch = (title, name) => {
+  // 初始如果有搜索条件直接进行拼接
+  if (searchText.value) {
+    searchText.value += `&&${title}="${name}"`;
+  } else {
+    // 初始搜索条件为空则不需要&&符号进行拼接
+    searchText.value += `${title}="${name}"`;
+  }
+
+
 }
 // 搜索
 const search = () => {

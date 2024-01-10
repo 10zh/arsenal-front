@@ -86,10 +86,10 @@
     </div>
     <!-- 右侧聚合搜索信息start -->
     <div class="card-right"
-      :style="{ 'maxHeight': (rightInfo.components.length + rightInfo.webTitles.length) * 70 + 'px' }">
+      :style="{ 'maxHeight': (rightInfo.components.length + 6 + rightInfo.webTitles.length + 6) * 30 + 'px' }">
       <!-- 主机类型start -->
       <a-space direction="vertical" size="large" class="space-item" style="max-height: 100px;">
-        <a-descriptions :title="$t('asset.list.hostType')" align="left" :column="1">
+        <a-descriptions :title="$t('asset.list.hostType')" align="right" :column="1">
           <a-descriptions-item label="IPV4:">
             {{ rightInfo.ipv4Number }}
           </a-descriptions-item>
@@ -100,30 +100,32 @@
       </a-space>
       <a-divider />
       <!-- 组件信息start -->
-      <a-space direction="vertical" size="large" class="space-item"
-        :style="{ 'maxHeight': rightInfo.components.length * 40 + 'px' }">
-        <a-descriptions :title="$t('asset.list.components')" align="left" :column="1">
-          <template v-for="(item, index) in rightInfo.components" :key="index">
-            <a-descriptions-item :label="item.name">
-              {{ item.count }}
-            </a-descriptions-item>
-          </template>
+      <a-space direction="vertical" size="large" class="space-item hover"
+        :style="{ 'maxHeight': rightInfo.components.length * 42 + 'px' }">
+        <a-descriptions :title="$t('asset.list.components')" align="right" :column="1">
+          <a-descriptions-item v-for="(item, index) in rightInfo.components" :key="index">
+            <template #label>
+              <span @click="resetSearch('comp', item.name)"> {{ item.name }}</span>
+            </template>
+            <span>{{ item.count }}</span>
+          </a-descriptions-item>
         </a-descriptions>
-
       </a-space>
-      <div style="text-align:right;padding:10px">
+      <div style="text-align:right;padding:10px;">
         <a-link @click="handleMore('components')">{{ t('asset.searchList.more') }}</a-link>
       </div>
       <a-divider />
       <!-- Web标题信息start -->
-      <a-space direction="vertical" size="large" class="space-item"
-        :style="{ 'maxHeight': rightInfo.webTitles.length * 40 + 'px' }">
+      <a-space direction="vertical" size="large" class="space-item hover"
+        :style="{ 'maxHeight': rightInfo.webTitles.length * 60 + 'px' }">
         <a-descriptions :title="$t('asset.list.webTitles')" align="left" :column="1">
-          <template v-for="item in rightInfo.webTitles" :key="item">
-            <a-descriptions-item :label="item.name">
-              {{ item.count }}
-            </a-descriptions-item>
-          </template>
+          <a-descriptions-item v-for="item in rightInfo.webTitles" :key="item">
+            <template #label>
+              <div @click="resetSearch('title', item.name)"> {{ item.name }}</div>
+
+            </template>
+            <span> {{ item.count }}</span>
+          </a-descriptions-item>
         </a-descriptions>
       </a-space>
       <!-- 查看更多 -->
@@ -136,7 +138,7 @@
 </template>
 <script setup>
 // ==========================声明模块==========================
-import { ref, reactive, onMounted, defineProps } from 'vue';
+import { ref, reactive, onMounted, defineProps, defineEmits } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { addScanEngine } from '@/api/scan/scan-engine';
 import { Message } from '@arco-design/web-vue';
@@ -144,7 +146,8 @@ import { useRouter } from 'vue-router'
 
 
 const { t } = useI18n();
-const router = useRouter()
+const router = useRouter();
+const emits = defineEmits(['sendSearch'])
 
 // 接收来自父组件的值
 const props = defineProps({
@@ -186,6 +189,11 @@ const handleDetail = (id) => {
     }
   })
 }
+// 搜索条件追加字段将字段传递给父组件
+const resetSearch = (title, name) => {
+  emits('sendSearch', title, name)
+
+}
 onMounted(() => {
 
 })
@@ -215,6 +223,7 @@ onMounted(() => {
       padding: 10px;
       flex: 1;
       max-height: 100px;
+      // background: red;
     }
   }
 }
@@ -269,5 +278,10 @@ onMounted(() => {
 /deep/ .arco-tabs-nav {
   border-bottom: 1px solid var(--color-neutral-3);
   padding-bottom: 10px;
+}
+
+.hover /deep/.arco-descriptions-item-label:hover {
+  color: #307af2;
+  text-decoration: underline;
 }
 </style>

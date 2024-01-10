@@ -144,7 +144,7 @@ export function getAssetHostProcList(assetId:string, params:hostProcPageRequest)
 export function getAssetInstallSoftwareList(assetId:string, params:installSoftwarePageRequest){
   let url = `/asset/${assetId}/software?pageIndex=${params.pageIndex}&pageSize=${params.pageSize}`;
   if (params.name) {
-    url = `${url}&name-op=ct&port=${params.name}&name-ic=true`;
+    url = `${url}&name-op=ct&name=${params.name}&name-ic=true`;
   }
   return axios.get<HttpResponse>(url);
 }

@@ -19,7 +19,7 @@
                   <div class="circle color1"></div>
                   <span class="text">{{ $t('params.cpu.sys') }}</span>
                 </div>
-                <div class="nums">{{ paramsObj.cpu.sys }}</div>
+                <!-- <div class="nums">{{ paramsObj.cpu.sys }}</div> -->
               </div>
               <!-- 数据进度条 -->
               <a-progress size="large" color="#f4d135" :percent="operation(paramsObj.cpu.sys, 100, '/')" />
@@ -31,7 +31,7 @@
                   <div class="circle color1"></div>
                   <span class="text">{{ $t('params.cpu.used') }}</span>
                 </div>
-                <div class="nums">{{ paramsObj.cpu.used }}</div>
+                <!-- <div class="nums">{{ paramsObj.cpu.used }}</div> -->
               </div>
               <!-- 数据进度条 -->
               <a-progress size="large" color="#f4d135" :percent="operation(paramsObj.cpu.used, 100, '/')" />
@@ -98,10 +98,10 @@
                   <div class="circle color3"></div>
                   <span class="text">{{ $t('params.memory.usage') }}</span>
                 </div>
-                <!-- <div class="nums">{{ paramsObj.memory.usage * 100 }} %</div> -->
+                <div class="nums">{{ paramsObj.memory.usage * 100 }} %</div>
               </div>
               <!-- 数据进度条 -->
-              <a-progress size="large" color="#50a5db" :percent="paramsObj.memory.usage" />
+              <a-progress size="large" :show-text="false" color="#50a5db" :percent="paramsObj.memory.usage" />
 
             </div>
             <div class="wrapper-item">
@@ -114,7 +114,7 @@
                 <div class="nums">{{ paramsObj.memory.used }}GB/{{ paramsObj.memory.total }}GB</div>
               </div>
               <!-- 数据进度条 -->
-              <a-progress size="large" color="#50a5db"
+              <a-progress size="large" color="#50a5db" :show-text="false"
                 :percent="operation(paramsObj.memory.used, paramsObj.memory.total, '/')" />
             </div>
           </div>

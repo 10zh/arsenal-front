@@ -1,12 +1,12 @@
 <template>
-  <a-card class="general-card" :title="$t('vulns.statistics')" :header-style="{ paddingBottom: '0' }"
+  <a-card class="general-card" :title="$t('vulns.statistics') + number" :header-style="{ paddingBottom: '0' }"
     :body-style="{ padding: '15px 20px 13px 20px' }">
     <!-- 数量下拉框 -->
     <template #extra>
       <a-select v-model="number" @change="initVulnsTop" :style="{ width: '80px' }">
-        <a-option :value="10">10个</a-option>
-        <a-option :value="15">15个</a-option>
-        <a-option :value="20">20个</a-option>
+        <a-option :value="10">10</a-option>
+        <a-option :value="15">15</a-option>
+        <a-option :value="20">20</a-option>
       </a-select>
     </template>
     <div>
@@ -32,7 +32,7 @@ import { computed, defineProps, onMounted, ref } from 'vue';
 import { queryVulnsTop } from '@/api/dashboard'
 import { setRiskGradeColor, setRiskGradeText } from '@/hooks/status-options'
 
-const number = ref(20);
+const number = ref(10);
 const vulnsTop = ref();
 // ==========================初始化数据==========================
 // 查询漏洞top
@@ -50,8 +50,8 @@ onMounted(() => {
   display: flex;
   align-items: center;
   width: 100%;
-  height: 27px;
-  margin-bottom: 4px;
+  height: 40px;
+  margin-bottom: 5px;
 
   .item-content {
     flex: 1;

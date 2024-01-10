@@ -62,9 +62,10 @@ const { chartOption } = useChartOption((isDark) => {
       type: 'category',
       data: props.xAxis,
       axisLabel: {
-        show: true,
         interval: 0,
-        rotate: 30,
+        formatter(params) {
+          return params.split(' ').join('\n');
+        }
       }
     },
     yAxis: {

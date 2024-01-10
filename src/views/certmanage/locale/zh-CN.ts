@@ -23,7 +23,8 @@ export default {
   'cerManage.list.proPassword.placeHolder':'请输入权限提升密码',
   'cert.operator.delete.question':'删除该凭证',
   'cert.delete.success':'删除凭证成功',
-  'cert.add.success':'删除凭证成功',
+  'cert.add.success':'新增凭证成功',
+  'cert.edit.success':'修改成功',
 
   'cerManage.list.add':'新建凭证',
   'cerManage.list.edit':'编辑凭证',

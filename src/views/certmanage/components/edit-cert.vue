@@ -42,8 +42,7 @@ import { ref, reactive, computed, defineExpose, defineEmits, watch, onMounted } 
 import type { SelectOptionData } from '@arco-design/web-vue/es/select/interface';
 import { useI18n } from 'vue-i18n';
 import {
-  addCertRequest,
-  addCert,
+  editCert,
   getFormByAuthType,
   getSingleCert
 } from '@/api/certmanage/index';
@@ -88,9 +87,9 @@ const handleSubmit = () => {
   formRef.value.validate().then(async (res: any) => {
     if (!res) {
       try {
-        const data: HttpResponse | any = await addCert(formModel);
+        const data: HttpResponse | any = await editCert(certId.value, formModel);
         if (data.success) {
-          Message.success(t('cert.add.success'));
+          Message.success(t('cert.edit.success'));
           visible.value = false;
           emits('initData')
         }

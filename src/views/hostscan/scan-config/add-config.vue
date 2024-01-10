@@ -156,7 +156,7 @@
               },
             ]" :label="t('host.scan.config.continueTimeStatus')">
               <a-select v-model="form.scanPlan.continueTimeStatus"
-                :options="form.scanPlan.planType === 1 ? continueTimeStatusOptionsTwo : continueTimeStatusOptionsOne"
+                :options="form.scanPlan.planType === 1 ? continueTimeStatusOptionsOne : continueTimeStatusOptionsTwo"
                 :placeholder="t('host.scan.config.continueTimeStatus')" />
             </a-form-item>
             <a-form-item v-if="form.scanPlan.planType === 1" field="scanPlan.continueTime"
