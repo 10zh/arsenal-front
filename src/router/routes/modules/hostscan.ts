@@ -9,7 +9,7 @@ const HOSTSCAN: AppRouteRecordRaw = {
     locale: 'menu.hostscan',
     requiresAuth: true,
     icon: 'icon-find-replace',
-    order: 3,
+    order: 2,
   },
   children: [
     {

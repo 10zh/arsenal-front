@@ -1,7 +1,11 @@
 export default {
   'menu.list.scan.template': '扫描模板',
   'menu.list.scan.templateList': '模板列表',
-  // 模板列表
+  // 模板列表（系统扫描模板）
+  'scan.template.system':'系统扫描模板',
+  'scan.template.weak':'弱口令扫描模板',
+
+
   'scan.template.templateName': '模板名称',
   'scan.template.performance.assetConcurrency': '资产并发数',
   'scan.template.performance.singleAssetThread': '单个资产并发数',
@@ -47,7 +51,8 @@ export default {
   'menu.hostscan.addScanTemplate': '新建扫描模板',
   'menu.hostscan.editScanTemplate': '编辑扫描模板',
   'hostscan.addTemplate':'模板基本信息',
-  'hostscan.vulns':'漏洞库信息',
+  'hostscan.vulns':'漏洞库筛选',
+  'hostscan.weak':'弱口令筛选',
   'hostscan.addTemplate.hostDiscovery.nav': '主机发现',
   'hostscan.addTemplate.performParams.nav': '性能参数',
   'hostscan.addTemplate.serviceDiscovery.nav': '服务参数',
@@ -118,6 +123,15 @@ export default {
   'scan.template.enableVulnerabilityScan':'是否开启漏洞扫描',
   'scan.template.isPotential':'是否扫描潜在漏洞',
   'scan.template.isSafe':'是否执行安全检查',
+  // 弱口令
+  'scan.template.hasScanInsideDict':'是否使用内置库',
+  'scan.template.wkpSingleDictTimeout':'单个口令超时时间',
+  'scan.template.form.dbName':'数据库名称',
+  'scan.template.form.domain':'域名',
+  'scan.template.form.password':'密码',
+  'scan.template.form.serviceId':'服务名称',
+  'scan.template.form.username':'用户名',
+  
 
   'scan.template.cvss2':'cvss2',
   'scan.template.cvss2Score':'cvss2评分',

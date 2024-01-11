@@ -17,6 +17,8 @@ import localOrganizationChart from '@/views/manage/organization-chart/locale/zh-
 import localAsset from '@/views/asset/locale/zh-CN'
 // 凭证
 import localCert from '@/views/certmanage/locale/zh-CN'
+// 源数据
+import localSourceData from '@/views/sourcedata/locale/zh-CN'
 
 
 import localeStepForm from '@/views/form/step/locale/zh-CN';
@@ -42,7 +44,7 @@ import globalSettings from './zh-CN/global';
 import localeSettings from './zh-CN/settings';
 
 export default {
-  'menu.hostscan': '主机扫描',
+  'menu.hostscan': '扫描',
   'menu.hostscan.config': '主机扫描配置',
   'menu.hostscan.config.add': '添加主机扫描配置',
   'menu.hostscan.config.detail': '主机扫描配置详情',
@@ -62,6 +64,9 @@ export default {
   'menu.asset.clusterAnalysis':'聚合分析',
 
   'menu.certManage':'凭证管理',
+  'menu.sourceData':'源数据',
+  'menu.list.sourceData.weakPasswords':'弱口令',
+  'menu.list.sourceData.vulnerabilityLibrary':'漏洞库',
   
   'menu.dashboard': '仪表盘',
   'menu.server.dashboard': '仪表盘-服务端',
@@ -104,4 +109,5 @@ export default {
   ...localOrganizationChart,
   ...localAsset,
   ...localCert,
+  ...localSourceData,
 };

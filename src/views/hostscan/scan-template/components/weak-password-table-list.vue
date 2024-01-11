@@ -129,18 +129,19 @@
 
 <script lang="ts" setup>
 // ==========================声明模块==========================
-import { ref, onMounted, defineProps } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import {
-  getScanTemplates,
+  getWeakScanTemplates,
   HostScanTemplateRes,
   PortScanSpeedEnum,
   FieldSortedEnum,
-  deleteScanTemplates,
+  deleteWeakScanTemplates,
 } from '@/api/scan/scan-template';
 import BoolEnum from '@/api/common/enums';
 import { Message } from '@arco-design/web-vue';
 import { useRouter } from 'vue-router';
+import { active } from 'sortablejs';
 
 const { t } = useI18n();
 // 接收来自父组件的actvieKey
@@ -271,7 +272,7 @@ const router = useRouter();
 // ==========================数据操纵模块==========================
 // 初始化引擎列表
 const initHostScanTemplateList = async () => {
-  const response = await getScanTemplates(pagination.value);
+  const response = await getWeakScanTemplates(pagination.value);
   tableData.value = response.data;
   // 分页参数赋值
   pagination.value.total = response.totalCount;
@@ -290,6 +291,7 @@ onMounted(() => {
   } else {
     pagination.value.pageSize = Math.floor(height / 50);
   }
+
   // 初始化页面表格数据
   initHostScanTemplateList();
   // window.onresize = () => {
@@ -331,21 +333,21 @@ const reset = () => {
 };
 // 编辑
 const editTemplate = (record) => {
+  // 将当前激活的tab栏和分页数据进行存储
+  localStorage.setItem('activeTab', props.activeKey)
+  localStorage.setItem('pageIndex', pagination.value.pageIndex)
   router.push({
     name: 'editTemplate',
     query: {
       templateId: record.id,
-      type: 'system'
+      type: 'weak'
     },
   });
 };
 // 删除
 const deleteTemplate = async (record) => {
-  // 将当前激活的tab栏和分页数据进行存储
-  localStorage.setItem('activeTab', props.activeKey)
-  localStorage.setItem('pageIndex', pagination.value.pageIndex)
   try {
-    const data = await deleteScanTemplates(record.id);
+    const data = await deleteWeakScanTemplates(record.id);
     if (data.success) {
       Message.success(t('scan.delete.template.success'));
       initHostScanTemplateList();
@@ -361,7 +363,7 @@ const addScanTemplate = () => {
   router.push({
     name: 'addTemplate',
     query: {
-      type: 'system'
+      type: 'weak'
     }
   });
 };
@@ -374,7 +376,7 @@ const handleDetail = (templateId: string) => {
     name: 'showTemplate',
     query: {
       templateId,
-      type: 'system'
+      type: 'weak'
     },
   });
 };

@@ -53,7 +53,8 @@
               <a-col :span="4">
                 <a-form-item field="riskGrade" :label="t('scan.template.riskGrade')">
                   <a-select v-model="pagination.riskGrade" multiple :placeholder="t('scan.template.riskGrade')
-                    " allow-clear :options="riskGradeOptions" @change="selectItem('riskGrade', pagination.riskGrade)">
+                    " :max-tag-count="2" allow-clear :options="riskGradeOptions"
+                    @change="selectItem('riskGrade', pagination.riskGrade)">
                   </a-select>
                 </a-form-item>
               </a-col>
@@ -78,6 +79,7 @@
 
                 </a-form-item>
               </a-col>
+              <!-- 查询&重置按钮start -->
               <a-col :span="4">
                 <a-space :size="18">
                   <a-button type="primary" default-checked style="margin: 0 10px" @click="initVulnerabilityList">
@@ -95,14 +97,11 @@
                 </a-space>
               </a-col>
             </a-row>
+            <!-- 查询&重置按钮end -->
             <!-- <a-divider></a-divider> -->
 
           </a-form>
         </a-col>
-        <!-- 查询&重置按钮start -->
-        <a-divider style="height: 84px" direction="vertical"></a-divider>
-
-        <!-- 查询&重置按钮end -->
       </a-row>
     </template>
 
@@ -166,6 +165,7 @@ const columns = [
   {
     title: t('scan.template.vulnerabilityName'),
     dataIndex: 'vulnName',
+    width: 400
   },
   {
     title: t('scan.template.cvss2'),
@@ -211,7 +211,7 @@ const tableData = ref([]);
 const pagination = ref({
   total: 0,
   pageIndex: 1,
-  pageSize: 10,
+  pageSize: 4,
   order: 'desc',
   sort: 'createTime',
   vulnerabilityName: [],
@@ -244,6 +244,8 @@ const header = ref();
 const tableHeight = ref(0);
 // 表格加载中
 const dataLoading = ref(false)
+// 自动补全数据的数据总和
+const totalCount = ref(0)
 
 // ==========================数据定义模块==========================
 const riskGradeOptions = [{
@@ -277,18 +279,19 @@ const initVulnerabilityList = async () => {
   pagination.value.pageIndex = response.pageIndex;
   pagination.value.pageSize = response.pageSize;
 };
-
-// 当页面加载时，显示数据
-onMounted(() => {
+// 动态计算表格高度
+const getTableHeight = () => {
   // 动态计算表格的高度并进行分页
-  const height =
-    document.documentElement.clientHeight - header.value.offsetHeight - 340;
-  tableHeight.value = height;
-  pagination.value.pageSize = Math.floor(height / 50);
-  // 初始化页面表格数据
-  // initVulnerabilityList();
+  nextTick(() => {
+    const height =
+      document.documentElement.clientHeight - header.value.offsetHeight - 320;
+    tableHeight.value = height;
+    pagination.value.pageSize = Math.floor(height / 65);
+    // 获取列表
+    initVulnerabilityList()
+  })
+}
 
-});
 
 // ==========================事件响应模块==========================
 // 分页
@@ -344,11 +347,14 @@ const searchSingleField = async (table, field, value, flag = null) => {
   const res = await aotuCompleteByTableField(singleFieldPagination.value);
   loading.value = false;
   autoCompleteData.value = autoCompleteData.value.concat(res.data)
+  totalCount.value = res.totalCount;
 }
 // 下拉框加载更多
 const loadMore = (table, field, value) => {
-  singleFieldPagination.value.pageIndex += 1;
-  searchSingleField(table, field, value, 'more')
+  if (totalCount.value > autoCompleteData.value.length) {
+    singleFieldPagination.value.pageIndex += 1;
+    searchSingleField(table, field, value, 'more')
+  }
 }
 // 实时搜索(注意防抖节流)
 
@@ -402,12 +408,12 @@ const changeItem = () => {
 watch(() => props.activeName, (curVal, preVal) => {
   // 将筛选条件URL转化为对象形式，用于回显
   if (curVal === '2' && templateId) {
-    const { vulnerabilityName = '', riskGrade = '', tag = [], extraValue = '' } = props.vulnsData;
+    const { vulnerabilityName = '', riskGrade = '', tag = [], extraValue = '' } = props.vulnsData.vulnerabilityConfig;
     // 回显搜索条件以及筛选条件的值
-    emitValue.value.isSafe = props.vulnsData.isSafe;
-    emitValue.value.isPotential = props.vulnsData.isPotential;
-    emitValue.value.enableVulnerabilityScan = props.vulnsData.enableVulnerabilityScan;
-    emitValue.value.vulnerabilityFilterCondition = props.vulnsData.vulnerabilityFilterCondition;
+    emitValue.value.isSafe = props.vulnsData.vulnerabilityConfig.isSafe;
+    emitValue.value.isPotential = props.vulnsData.vulnerabilityConfig.isPotential;
+    emitValue.value.enableVulnerabilityScan = props.vulnsData.vulnerabilityConfig.enableVulnerabilityScan;
+    emitValue.value.vulnerabilityFilterCondition = props.vulnsData.vulnerabilityConfig.vulnerabilityFilterCondition;
     if (vulnerabilityName) {
       pagination.value.vulnerabilityName = vulnerabilityName.indexOf(',') !== -1 ? vulnerabilityName.split(',') : [vulnerabilityName];
     }
@@ -434,11 +440,11 @@ watch(() => props.activeName, (curVal, preVal) => {
       maps.set('tag', pagination.value.tag);
     }
     // 必须在此刻调用，筛选条件以及回显完毕之后
-    initVulnerabilityList()
+    getTableHeight()
 
   } else if (!templateId) {
     // 新增模板时，需要调用漏洞库列表
-    initVulnerabilityList()
+    getTableHeight()
   }
 }, { immediate: true, deep: true })
 </script>

@@ -148,3 +148,47 @@ export function getVulnerabilityList(params: vulnsRequest) {
   }
   return axios.get<HostScanTemplateRes[]>(encodeURI(url));
 }
+// 获取弱口令模板列表
+export function getWeakScanTemplates(params: TemplateRequest) {
+  let url = `/host/scan/templates/wkp/list?pageIndex=${params.pageIndex}&pageSize=${params.pageSize}&sort=${params.sort}&order=${params.order}`;
+  if (params.templateName) {
+    url = `${url}&templateName-op=ct&templateName=${params.templateName}`;
+  }
+  if (params.tcpPort) {
+    url = `${url}&tcpPort-op=ct&tcpPort=${params.tcpPort}`;
+  }
+  if (params.udpPort) {
+    url = `${url}&udpPort-op=ct&udpPort=${params.udpPort}`;
+  }
+  if (params.enableArp) {
+    url = `${url}&enableARP-op=eq&enableArp=${params.enableArp}`;
+  }
+  if (params.enableIcmp) {
+    url = `${url}&enableIcmp-op=eq&enableIcmp=${params.enableIcmp}`;
+  }
+  if (params.portScanSpeed) {
+    url = `${url}&portScanSpeed-op=eq&portScanSpeed=${params.portScanSpeed}`;
+  }
+  return axios.get<HostScanTemplateRes[]>(url);
+}
+// 添加弱口令模板
+export function addWeakScanTemplates(data: HostScanTemplateRes) {
+  return axios.post<HttpResponse>('/host/scan/templates/new/wkp', data);
+}
+// 编辑弱口令模板
+export function editWeakScanTemplates(data: HostScanTemplateRes) {
+  return axios.put<HttpResponse>(
+    `/host/scan/templates/${data.id}/wkp/template`,
+    data
+  );
+}
+// 查看单个弱口令模板数据
+export function getWeakSingleScanTemplates(templateId: string) {
+  return axios.get<HttpResponse>(`/host/scan/templates/${templateId}/wkp/template`);
+}
+// 删除弱口令模板
+export function deleteWeakScanTemplates(templateId: string) {
+  return axios.delete<HttpResponse>(
+    `/host/scan/templates/${templateId}/template`
+  );
+}

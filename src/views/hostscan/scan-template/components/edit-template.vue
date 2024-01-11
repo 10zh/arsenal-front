@@ -152,11 +152,11 @@
         </a-tab-pane>
         <!-- 漏洞库list -->
         <a-tab-pane key="2">
-          <template #title><icon-calendar /> {{ t('hostscan.vulns') }}
+          <template #title><icon-calendar /> {{ type === 'system' ? t('hostscan.vulns') : t('hostscan.weak') }}
           </template>
-          <selectVulnsLibrary :active-name="activeKey" @receive-filter="getFilterCondition"
-            :vulns-data="formModel.vulnerabilityConfig">
-          </selectVulnsLibrary>
+          <!-- 动态组件 -->
+          <component :is="activeComponent" :vulns-data="formModel" :active-name="activeKey"
+            @receive-filter="getFilterCondition"></component>
         </a-tab-pane>
       </a-tabs>
 
@@ -166,18 +166,21 @@
 
 <script lang="ts" setup>
 // ==========================声明模块==========================
-import { ref, reactive, computed, onMounted } from 'vue';
+import { ref, reactive, computed, onMounted, watch } from 'vue';
 import type { SelectOptionData } from '@arco-design/web-vue/es/select/interface';
 import { useI18n } from 'vue-i18n';
 import {
   HostScanTemplateRes,
   editScanTemplates,
+  editWeakScanTemplates,
   getSingleScanTemplates,
+  getWeakSingleScanTemplates,
 } from '@/api/scan/scan-template';
 import { HttpResponse } from '@/api/interceptor/axios';
 import { Message } from '@arco-design/web-vue';
 import { useRouter, useRoute } from 'vue-router';
 import selectVulnsLibrary from './select-vulns-library.vue';
+import selectWeakPassword from './select-weak-password.vue';
 
 const { t } = useI18n();
 const router = useRouter();
@@ -211,14 +214,18 @@ const formData = {
     tcpDetectType: '半连接',
   },
   vulnerabilityConfig: {},
+  wkpConfig: {},
   templateName: '',
   message: '',
 };
 const formModel = reactive<HostScanTemplateRes>({ ...formData });
 const formRef = ref();
 // 激活的tab栏
-const activeKey = ref()
-
+const activeKey = ref();
+// 导航栏上的type区分是系统模板还是弱口令模板
+const { type } = route.query
+// 动态组件
+const activeComponent = ref(selectVulnsLibrary)
 // 表单下拉框选项定义
 // 是否开启下拉框
 const enableOptions = computed<SelectOptionData[]>(() => [
@@ -267,14 +274,20 @@ const survivalOptions = computed<SelectOptionData[]>(() => [
 ]);
 // ===================初始化数据(回显)===========
 const initTemplateData = async () => {
-  const data: HttpResponse | any = await getSingleScanTemplates(
-    route.query.templateId
-  );
+  let data = {
+  };
+  if (type === 'system') {
+    data = await getSingleScanTemplates(
+      route.query.templateId
+    )
+  } else {
+    data = await getWeakSingleScanTemplates(
+      route.query.templateId)
+  }
   Object.assign(formModel, data.data);
   if (data.success) {
-    console.log(data.data)
     // 漏洞搜索条件进行数据格式化
-    if (data.data.vulnerabilityConfig
+    if (type === 'system' && data.data.vulnerabilityConfig
       .vulnerabilityFilterCondition) {
       const filterArr = data.data.vulnerabilityConfig
         .vulnerabilityFilterCondition.split("&");
@@ -283,6 +296,18 @@ const initTemplateData = async () => {
           const key = item.split('=')[0];
           const value = item.split('=')[1];
           formModel.vulnerabilityConfig[key] = value;
+        })
+      }
+      // 弱口令搜索条件进行格式化
+    } else if (type === 'weak' && data.data.wkpConfig
+      .wkpFilterCondition) {
+      const filterArrTwo = data.data.wkpConfig
+        .wkpFilterCondition.split("&");
+      if (filterArrTwo.length) {
+        filterArrTwo.forEach((item) => {
+          const key = item.split('=')[0];
+          const value = item.split('=')[1];
+          formModel.wkpConfig[key] = value;
         })
       }
     }
@@ -297,13 +322,24 @@ const handleSubmit = () => {
   formRef.value.validate().then(async (res: any) => {
     if (!res) {
       try {
-        const data: HttpResponse | any = await editScanTemplates(formModel);
-        if (data.success) {
-          Message.success(t('scan.edit.template.success'));
-          router.go(-1);
+        if (type === 'system') {
+          const data: HttpResponse | any = await editScanTemplates(formModel);
+          if (data.success) {
+            Message.success(t('scan.edit.template.success'));
+            router.go(-1);
+          } else {
+            Message.error(data.errMessage);
+          }
         } else {
-          Message.error(data.errMessage);
+          const response: HttpResponse | any = await editWeakScanTemplates(formModel);
+          if (response.success) {
+            Message.success(t('scan.edit.template.success'));
+            router.go(-1);
+          } else {
+            Message.error(response.errMessage);
+          }
         }
+
       } catch (error) {
         console.log(error);
       }
@@ -326,6 +362,15 @@ const getFilterCondition = (row: any) => {
 const changeTab = (value) => {
   activeKey.value = value
 }
+// 监听是扫描模板还是弱口令模板
+watch(() => type, (oldValue, newValue) => {
+  if (type === 'system') {
+    activeComponent.value = selectVulnsLibrary
+  } else {
+    activeComponent.value = selectWeakPassword
+  }
+
+}, { immediate: true })
 // 当页面加载时回显数据
 onMounted(() => {
   initTemplateData();
