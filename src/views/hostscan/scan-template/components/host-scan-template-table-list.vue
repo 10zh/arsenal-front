@@ -129,7 +129,7 @@
 
 <script lang="ts" setup>
 // ==========================声明模块==========================
-import { ref, onMounted, defineProps } from 'vue';
+import { ref, onMounted, defineProps, onUnmounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import {
   getScanTemplates,
@@ -143,12 +143,6 @@ import { Message } from '@arco-design/web-vue';
 import { useRouter } from 'vue-router';
 
 const { t } = useI18n();
-// 接收来自父组件的actvieKey
-const props = defineProps({
-  activeKey: {
-    type: String
-  }
-})
 
 // ==========================数据定义模块==========================
 // 扫描引擎表头
@@ -285,11 +279,7 @@ onMounted(() => {
   const height =
     document.documentElement.clientHeight - header.value.offsetHeight - 350;
   tableHeight.value = height;
-  if (localStorage.getItem('pageIndex')) {
-    pagination.value.pageSize = localStorage.getItem('pageIndex')
-  } else {
-    pagination.value.pageSize = Math.floor(height / 50);
-  }
+  pagination.value.pageSize = Math.floor(height / 50);
   // 初始化页面表格数据
   initHostScanTemplateList();
   // window.onresize = () => {
@@ -341,9 +331,6 @@ const editTemplate = (record) => {
 };
 // 删除
 const deleteTemplate = async (record) => {
-  // 将当前激活的tab栏和分页数据进行存储
-  localStorage.setItem('activeTab', props.activeKey)
-  localStorage.setItem('pageIndex', pagination.value.pageIndex)
   try {
     const data = await deleteScanTemplates(record.id);
     if (data.success) {
@@ -356,8 +343,6 @@ const deleteTemplate = async (record) => {
 };
 // 新增
 const addScanTemplate = () => {
-  // 将当前激活的tab栏和分页数据进行存储
-  localStorage.setItem('activeTab', props.activeKey)
   router.push({
     name: 'addTemplate',
     query: {
@@ -367,9 +352,6 @@ const addScanTemplate = () => {
 };
 // 详情
 const handleDetail = (templateId: string) => {
-  // 将当前激活的tab栏和分页数据进行存储
-  localStorage.setItem('activeTab', props.activeKey)
-  localStorage.setItem('pageIndex', pagination.value.pageIndex)
   router.push({
     name: 'showTemplate',
     query: {

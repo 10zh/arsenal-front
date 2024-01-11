@@ -141,16 +141,8 @@ import {
 import BoolEnum from '@/api/common/enums';
 import { Message } from '@arco-design/web-vue';
 import { useRouter } from 'vue-router';
-import { active } from 'sortablejs';
 
 const { t } = useI18n();
-// 接收来自父组件的actvieKey
-const props = defineProps({
-  activeKey: {
-    type: String
-  }
-})
-
 // ==========================数据定义模块==========================
 // 扫描引擎表头
 const columns = [
@@ -286,11 +278,7 @@ onMounted(() => {
   const height =
     document.documentElement.clientHeight - header.value.offsetHeight - 350;
   tableHeight.value = height;
-  if (localStorage.getItem('pageIndex')) {
-    pagination.value.pageSize = localStorage.getItem('pageIndex')
-  } else {
-    pagination.value.pageSize = Math.floor(height / 50);
-  }
+  pagination.value.pageSize = Math.floor(height / 50);
 
   // 初始化页面表格数据
   initHostScanTemplateList();
@@ -333,9 +321,6 @@ const reset = () => {
 };
 // 编辑
 const editTemplate = (record) => {
-  // 将当前激活的tab栏和分页数据进行存储
-  localStorage.setItem('activeTab', props.activeKey)
-  localStorage.setItem('pageIndex', pagination.value.pageIndex)
   router.push({
     name: 'editTemplate',
     query: {
@@ -358,8 +343,6 @@ const deleteTemplate = async (record) => {
 };
 // 新增
 const addScanTemplate = () => {
-  // 将当前激活的tab栏和分页数据进行存储
-  localStorage.setItem('activeTab', props.activeKey)
   router.push({
     name: 'addTemplate',
     query: {
@@ -369,9 +352,6 @@ const addScanTemplate = () => {
 };
 // 详情
 const handleDetail = (templateId: string) => {
-  // 将当前激活的tab栏和分页数据进行存储
-  localStorage.setItem('activeTab', props.activeKey)
-  localStorage.setItem('pageIndex', pagination.value.pageIndex)
   router.push({
     name: 'showTemplate',
     query: {
