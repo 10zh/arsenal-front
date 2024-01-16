@@ -3,7 +3,7 @@
     <Breadcrumb :items="[
       'menu.hostscan',
       'menu.hostscan.config',
-      id ? 'menu.hostscan.config.edit' : 'menu.hostscan.config.add',
+      id ? 'menu.weak.hostscan.config.edit' : 'menu.weak.hostscan.config.add',
     ]" />
     <a-card class="general-card" type="rounded">
       <!-- 返回按钮 -->
@@ -67,20 +67,14 @@
           <SelectEngineTable @receive-select="receiveSelectEngineRowKey" />
         </a-tab-pane>
         <!-- 扫描引擎end -->
-        <!-- 扫描模板start -->
+        <!-- 扫描弱口令模板start -->
         <a-tab-pane key="3">
           <template #title>
-            <icon-clock-circle /> {{ t('host.scan.config.template') }}</template>
+            <icon-clock-circle /> {{ t('host.scan.config.weak.template') }}</template>
           <SelectTemplateTable @receive-select="receiveSelectTemplateRowKey" />
         </a-tab-pane>
-        <!-- 主机凭证start -->
-        <a-tab-pane key="4">
-          <template #title>
-            <icon-bookmark /> {{ t('host.scan.config.proof') }}</template>
-          <SelectProofTable @receive-select="receiveSelectCertRowKey" />
-        </a-tab-pane>
         <!-- 扫描计划 start-->
-        <a-tab-pane key="5">
+        <a-tab-pane key="4">
           <template #title>
             <icon-storage /> {{ t('host.scan.config.scanPlan') }}</template>
           <a-form ref="formRef" :model="form" :style="{ width: '700px', marginLeft: '15px' }" auto-label-width
@@ -187,11 +181,10 @@
 import { Message } from '@arco-design/web-vue';
 import { onMounted, reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { insertHostScanConfig, getHostScanConfig, editHostScanConfig } from '@/api/scan/scan-config';
+import { insertWeakHostScanConfig, getWeakHostScanConfig, editWeakHostScanConfig } from '@/api/scan/scan-config';
 import { useRoute, useRouter } from 'vue-router';
-import SelectEngineTable from '@/views/hostscan/scan-config/components/select-engine.vue';
-import SelectTemplateTable from '@/views/hostscan/scan-config/components/select-template.vue';
-import SelectProofTable from './components/select-proof.vue';
+import SelectEngineTable from './components/select-engine.vue';
+import SelectTemplateTable from './components/select-template.vue';
 
 const router = useRouter();
 const route = useRoute();
@@ -205,7 +198,6 @@ const form = reactive({
   excludeTarget: '',
   engineId: '',
   templateId: '',
-  hostCredentials: [''],
   scanPlan: {
     continueTime: '',
     continueTimeStatus: null,
@@ -288,7 +280,7 @@ const handleSubmit = async (data: any) => {
   }
   if (id) {
     // 编辑接口
-    const res = await editHostScanConfig(id, data.values);
+    const res = await editWeakHostScanConfig(id, data.values);
     if (!res.success) {
       return;
     }
@@ -298,7 +290,7 @@ const handleSubmit = async (data: any) => {
     });
   } else {
     // 新增接口
-    const response: any = await insertHostScanConfig(data.values);
+    const response: any = await insertWeakHostScanConfig(data.values);
     // 调用新增扫描配置接口
     if (!response.success) {
       return;
@@ -322,10 +314,6 @@ const receiveSelectTemplateRowKey = (key: any) => {
 
   form.templateId = key.value;
 };
-// 收到扫描凭证模板选择的key
-const receiveSelectCertRowKey = (keysArr: any) => {
-  form.hostCredentials = keysArr;
-}
 // 返回
 const goBack = () => {
   router.go(-1);
@@ -340,7 +328,7 @@ const handleTabs = (key: any) => {
 };
 // 表单回显
 const initData = async () => {
-  const res = await getHostScanConfig(id);
+  const res = await getWeakHostScanConfig(id);
   Object.assign(form, res.data);
   console.log(form)
 }

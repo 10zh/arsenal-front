@@ -10,8 +10,10 @@ const HOSTSCAN: AppRouteRecordRaw = {
     requiresAuth: true,
     icon: 'icon-find-replace',
     order: 2,
+    keepAlive:true,
   },
   children: [
+    // -------------------------------------系统扫描配置------------------------------------
     {
       path: 'scanConfig', // The midline path complies with SEO specifications
       name: 'scanConfig',
@@ -21,14 +23,13 @@ const HOSTSCAN: AppRouteRecordRaw = {
         requiresAuth: true,
         roles: ['*'],
       },
-      
     },
      // 查看漏洞详情
      {
       path: 'leakDetail',
       name: 'leakDetail',
       component: () =>
-        import('@/views/hostscan/scan-config/leak-detail.vue'),
+      import('@/views/hostscan/scan-config/system-scan/leak-detail.vue'),
       meta: {
         requiresAuth: true,
         roles: ['*'],
@@ -38,7 +39,7 @@ const HOSTSCAN: AppRouteRecordRaw = {
     {
       path: 'addHostScanConfig',
       name: 'addHostScanConfig',
-      component: () => import('@/views/hostscan/scan-config/add-config.vue'),
+      component: () => import('@/views/hostscan/scan-config/system-scan/add-config.vue'),
       meta: {
         locale: 'menu.list.scan.config.add',
         requiresAuth: true,
@@ -46,10 +47,11 @@ const HOSTSCAN: AppRouteRecordRaw = {
         hideInMenu: true,
       },
     },
+    // 扫描详情
     {
       path: 'hostScanConfigDetail',
       name: 'hostScanConfigDetail',
-      component: () => import('@/views/hostscan/scan-config/config-detail.vue'),
+      component: () => import('@/views/hostscan/scan-config/system-scan/config-detail.vue'),
       meta: {
         locale: 'menu.hostscan.config.detail',
         requiresAuth: true,
@@ -61,7 +63,7 @@ const HOSTSCAN: AppRouteRecordRaw = {
       path: 'hostScanRecordDetail',
       name: 'hostScanRecordDetail',
       component: () =>
-        import('@/views/hostscan/scan-config/host-record-detail.vue'),
+      import('@/views/hostscan/scan-config/system-scan/host-record-detail.vue'),
       meta: {
         locale: 'menu.hostscan.config.record.host.detail',
         requiresAuth: true,
@@ -86,10 +88,13 @@ const HOSTSCAN: AppRouteRecordRaw = {
       meta: {
         locale: 'menu.list.scan.template',
         requiresAuth: true,
+        keepAlive: true,
+        // 标识是否是从详情页进入
+        isBack:false,
         roles: ['*'],
       },
     },
-    // 新增模板
+    // 新增系统模板
     {
       path: 'addTemplate',
       name: 'addTemplate',
@@ -102,7 +107,7 @@ const HOSTSCAN: AppRouteRecordRaw = {
         hideInMenu: true,
       },
     },
-    // 编辑模板
+    // 编辑系统模板
     {
       path: 'editTemplate',
       name: 'editTemplate',
@@ -115,7 +120,7 @@ const HOSTSCAN: AppRouteRecordRaw = {
         hideInMenu: true,
       },
     },
-    // 查看模板
+    // 查看系统模板
     {
       path: 'showTemplate',
       name: 'showTemplate',
@@ -128,6 +133,43 @@ const HOSTSCAN: AppRouteRecordRaw = {
         hideInMenu: true,
       },
     },
+ // -------------------------------------弱口令扫描配置------------------------------------
+  //  创建扫描配置
+      {
+        path: 'addWeakHostScanConfig',
+        name: 'addWeakHostScanConfig',
+        component: () => import('@/views/hostscan/scan-config/weak-scan/add-weak-config.vue'),
+        meta: {
+            locale: 'menu.list.scan.config.add',
+            requiresAuth: true,
+            roles: ['*'],
+            hideInMenu: true,
+          },
+        },
+    // 扫描详情
+    {
+      path: 'hostWeakScanConfigDetail',
+      name: 'hostWeakScanConfigDetail',
+      component: () => import('@/views/hostscan/scan-config/weak-scan/weak-config-detail.vue'),
+      meta: {
+          locale: 'menu.hostscan.config.detail',
+          requiresAuth: true,
+          roles: ['*'],
+          hideInMenu: true,
+        },
+      },
+      {
+        path: 'hostWeakScanRecordDetail',
+        name: 'hostWeakScanRecordDetail',
+        component: () =>
+        import('@/views/hostscan/scan-config/weak-scan/host-weak-record-detail.vue'),
+        meta: {
+          locale: 'menu.hostscan.config.record.host.detail',
+          requiresAuth: true,
+          roles: ['*'],
+          hideInMenu: true,
+        },
+      },
   ],
 };
 

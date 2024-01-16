@@ -1,0 +1,224 @@
+<template>
+  <div class="container">
+    <Breadcrumb :items="[
+      'menu.hostscan',
+      'menu.hostscan.config',
+      'menu.hostscan.config.record.host.detail',
+    ]" />
+    <div class="back-btn">
+      <a-button @click="goBack">{{ t('scan.add.config.goback') }}</a-button>
+    </div>
+    <a-tabs type="rounded" :active-key="activeKey" @tab-click="tabChange" style="padding: 0 10px">
+      <!--主机漏洞列表 start-->
+      <a-tab-pane key="2">
+        <template #title>
+          <icon-clock-circle /> {{ t('scan.record.host.risk') }}
+        </template>
+        <a-card>
+          <HostRisk></HostRisk>
+        </a-card>
+      </a-tab-pane>
+      <!--主机漏洞列表 end-->
+      <!-- windows补丁列表start -->
+      <a-tab-pane key="3">
+        <template #title>
+          <icon-save />
+          {{ t('scan.record.host.patch') }}
+        </template>
+        <a-card>
+          <WindowsPatch></WindowsPatch>
+        </a-card>
+      </a-tab-pane>
+      <!-- windows补丁列表 end-->
+      <!-- 主机进程列表start -->
+      <a-tab-pane key="4">
+        <template #title>
+          <icon-common />
+          {{ t('scan.record.host.process') }}
+        </template>
+        <a-card>
+          <HostProcess></HostProcess>
+        </a-card>
+      </a-tab-pane>
+      <!-- 主机进程列表end -->
+      <!-- 主机安装软件列表start -->
+      <a-tab-pane key="5">
+        <template #title>
+          <icon-tool />
+          {{ t('scan.record.host.softWare') }}
+        </template>
+        <a-card>
+          <InstallSoft></InstallSoft>
+        </a-card>
+      </a-tab-pane>
+      <!-- 主机安装软件列表end -->
+      <!-- 主机用户列表start -->
+      <a-tab-pane key="6">
+        <template #title>
+          <icon-user />
+          {{ t('scan.record.host.user') }}
+        </template>
+        <a-card>
+          <HostUser></HostUser>
+        </a-card>
+      </a-tab-pane>
+      <!-- 主机用户列表end -->
+      <!-- 主机用户组列表start -->
+      <a-tab-pane key="7">
+        <template #title>
+          <icon-user-group />
+          {{ t('scan.record.host.userGroup') }}
+        </template>
+        <a-card>
+          <HostGroups></HostGroups>
+        </a-card>
+      </a-tab-pane>
+      <!-- 主机用户组列表end -->
+    </a-tabs>
+  </div>
+</template>
+
+<script setup>
+// ==========================声明模块==========================
+import { ref, onMounted } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useRouter, useRoute } from 'vue-router';
+import {
+  getHostRecordDetailByScanHostId,
+  getHostServiceRecordDetailByScanHostId,
+} from '@/api/scan/scan-record';
+import HostRisk from '../system-scan/components/record-detail-host-risk.vue';
+import WindowsPatch from '../system-scan/components/record-detail-windows-patch.vue'
+import HostProcess from '../system-scan/components/record-detail-host-process.vue'
+import InstallSoft from '../system-scan/components/record-detail-install-software.vue'
+import HostUser from '../system-scan/components/record-detail-host-user.vue'
+import HostGroups from '../system-scan/components/record-detail-host-usergroup.vue'
+
+// ==========================数据定义模块==========================
+const { t } = useI18n();
+const router = useRouter();
+const route = useRoute();
+
+// 扫描配置ID
+const { scanId, hostId } = route.query;
+
+// 主机详情数据
+const hostDetail = ref({});
+
+// 服务详情数据
+const serviceDetail = ref([]);
+// 对应端口详情数据
+const tabDetail = ref({});
+// 激活的tab - key
+const activeKey = ref("2");
+
+// ==========================数据操纵模块==========================
+// 初始化主机详情
+const initHostScanRecordDetail = async () => {
+  const response = await getHostRecordDetailByScanHostId(scanId, hostId);
+  hostDetail.value = response.data;
+};
+// 初始化服务详情
+const initHostScanServiceRecordDetail = async () => {
+  const response = await getHostServiceRecordDetailByScanHostId(
+    scanId,
+    hostId
+  );
+  serviceDetail.value = response.data;
+  const data = response.data[0];
+  // 初始化右侧数据详情（默认显示第一个）
+  tabDetail.value = data;
+};
+// 返回
+const goBack = () => {
+  router.go(-1);
+};
+// 当页面加载时，显示数据
+onMounted(() => {
+  if (localStorage.getItem('tabsInfo')) {
+    activeKey.value = localStorage.getItem('tabsInfo')
+  }
+  initHostScanRecordDetail();
+  initHostScanServiceRecordDetail();
+});
+// ==========================事件响应模块==========================
+// 空间测绘子组件改变tabDetail值
+const changeTabDetail = (row) => {
+  tabDetail.value = row;
+};
+// 切换tabs标签(将activeKey存放到localStorage中便于放回当前tab)
+const tabChange = (key) => {
+  activeKey.value = key;
+  if (key === '2') {
+    localStorage.setItem('tabsInfo', key)
+  } else {
+    localStorage.removeItem('tabsInfo')
+  }
+}
+</script>
+
+<style lang="less">
+.left-card {
+  border-top: 2px solid #f2a20e;
+}
+
+.right-card {
+  border-top: 2px solid #41a4db;
+}
+
+.arco-anchor-link-item .arco-anchor-link {
+  padding: 0px;
+  width: 50px;
+}
+
+.arco-anchor {
+  width: auto;
+  margin-right: 20px;
+}
+
+.wrap-text {
+  position: relative;
+  white-space: pre-wrap;
+}
+
+.arco-typography-operation-copy {
+  position: absolute;
+  right: 0px;
+  top: -2px;
+}
+
+.arco-typography-operation-copied {
+  position: absolute;
+  right: 0px;
+  top: -2px;
+}
+
+.ellip-text {
+  white-space: nowrap;
+  cursor: pointer;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  width: 100px;
+}
+
+.paginationStyle {
+  margin-top: 10px;
+  justify-content: end;
+}
+
+.label {
+  display: inline-block;
+  padding-right: 10px;
+  padding-bottom: 10px;
+}
+
+.value {
+  color: #333;
+}
+
+.back-btn {
+  position: absolute;
+  right: 35px;
+  z-index: 99;
+}
+</style>

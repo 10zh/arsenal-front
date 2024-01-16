@@ -49,6 +49,9 @@ export default {
   'menu.hostscan.config.add': '添加主机扫描配置',
   'menu.hostscan.config.detail': '主机扫描配置详情',
   'menu.hostscan.config.record.host.detail': '主机记录详情',
+  'menu.weak.hostscan.config.edit':'编辑弱口令扫描',
+  'menu.weak.hostscan.config.add':'添加弱口令扫描',
+  'menu.weak.hostscan.config.detail':'弱口令扫描配置详情',
 
 
   'menu.manage':'系统管理',

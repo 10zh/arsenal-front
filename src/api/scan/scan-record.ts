@@ -233,8 +233,39 @@ export function resumeHostScan(scanId: string) {
   const url = `/host/scan/${scanId}/resume`;
   return axios.get<HttpResponse>(url);
 }
+
 // 漏洞详情
 export function getVulnerabilityRes(scanId: string,hostId:string,vulnerabilityId:string) {
   const url = `/host/scan/${scanId}/${hostId}/${vulnerabilityId}/vulnerability/records`;
+  return axios.get<HttpResponse>(url);
+}
+
+// ----------------------------------------------弱口令扫描接口----------------------------------------
+// 暂停弱口令主机扫描
+export function suspendWeakHostScan(scanId: string) {
+  const url = `/host/wkp/scan/${scanId}/suspend`;
+  return axios.get<HttpResponse>(url);
+}
+// 停止弱口令主机扫描
+export function stopWeakHostScan(scanId: string) {
+  const url = `/host/wkp/scan/${scanId}/stop`;
+  return axios.get<HttpResponse>(url);
+}
+// 继续弱口令主机扫描
+export function resumeWeakHostScan(scanId: string) {
+  const url = `/host/wkp/scan/${scanId}/resume`;
+  return axios.get<HttpResponse>(url);
+}
+// 弱口令扫描记录
+export function getWeakHostScanRecordList(
+  configId: number,
+  params: HostScanConfigRecordPageRequest
+) {
+  const url = `/host/wkp/scan/${configId}/records?pageIndex=${params.pageIndex}&pageSize=${params.pageSize}&sort=${params.sort}&order=${params.order}`;
+  return axios.get<HttpResponse>(url);
+}
+// 获取扫描记录详情
+export function getWeakHostScanRecordDetail(scanId: string) {
+  const url = `/host/wkp/${scanId}/record/detail`;
   return axios.get<HttpResponse>(url);
 }

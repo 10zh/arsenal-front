@@ -1,7 +1,7 @@
 export default {
   // 菜单
   'menu.list.scan.config': '扫描配置',
-  'menu.list.scan.configList': '配置列表',
+  'menu.list.scan.configList': '系统扫描',
   'menu.list.scan.config.add': '新增扫描配置',
   // 新增
   'button.scan': '扫描',
@@ -225,4 +225,20 @@ export default {
 'host.scan.scanPlan.scanType.two':'主机扫描',
 'menu.hostscan.config.edit':'编辑主机扫描配置',
 'host.scan.config.edit.success':'修改成功',
+// 弱口令
+'menu.list.scan.weak': '弱口令扫描',
+'host.scan.config.weak.template':'弱口令扫描模板',
+'weak.scan.record.host.list':'弱口令列表',
+'host.scan.config.wkpNumber':'弱口令数量',
+// 弱口令列表
+'scan.weak.record.dbName':'数据库名称',
+'scan.weak.record.ipv4':'ipv4',
+'scan.weak.record.ipv6':'ipv6',
+'scan.weak.record.domain':'域名',
+'scan.weak.record.password':'密码',
+'scan.weak.record.serviceId':'弱口令服务',
+'scan.weak.record.port':'弱口令服务端口',
+'scan.weak.record.transportProtocol':'运输层协议',
+'scan.weak.record.username':'用户名',
+'host.scan.config.weakName':'弱口令模板名称',
 };

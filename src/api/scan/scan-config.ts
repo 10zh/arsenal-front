@@ -23,7 +23,7 @@ export interface HostScanConfigInsertRequest {
   engineId: number;
   templateId: number;
 }
-
+// ----------------------------------------------系统扫描接口----------------------------------------
 // 获取主机扫描配置列表(带分页)
 export function getHostScanConfigPageList(params: HostScanConfigPageRequest) {
   let url = `/host/scan/configs?pageIndex=${params.pageIndex}&pageSize=${params.pageSize}&sort=${params.sort}&order=${params.order}`;
@@ -77,4 +77,50 @@ export function getHostScanConfig(configId: number) {
 export function editHostScanConfig(configId: number,data: HostScanConfigInsertRequest) {
   const url = `/host/scan/configs/${configId}/config`;
   return axios.put<HttpResponse>(url,data);
+}
+// ----------------------------------------------弱口令扫描接口----------------------------------------
+// 查看弱口令扫描列表(带分页)
+export function getWeakHostScanConfigPageList(params: HostScanConfigPageRequest) {
+  let url = `/host/scan/configs/wkp/list?pageIndex=${params.pageIndex}&pageSize=${params.pageSize}&sort=${params.sort}&order=${params.order}`;
+  if (params.configName) {
+    url = `${url}&configName-op=ct&configName=${params.configName}`;
+  }
+  if (params.engineName) {
+    url = `${url}&engineName-op=ct&engineName=${params.engineName}`;
+  }
+  if (params.templateName) {
+    url = `${url}&templateName-op=ct&templateName=${params.templateName}`;
+  }
+  if (params.target) {
+    url = `${url}&templateName-op=ct&templateName=${params.target}`;
+  }
+  if (params.scanStatus) {
+    url = `${url}&templateName-op=ct&templateName=${params.scanStatus}`;
+  }
+  return axios.get<HttpResponse>(url);
+}
+// 新增弱口令扫描配置
+export function insertWeakHostScanConfig(params: HostScanConfigInsertRequest) {
+  const url = '/host/scan/configs/new/wkp';
+  return axios.post<AxiosResponse<HttpResponse<any>>>(url, params);
+}
+// 编辑弱口令扫描配置
+export function editWeakHostScanConfig(configId: number,data: HostScanConfigInsertRequest) {
+  const url = `/host/scan/configs/${configId}/wkp/config`;
+  return axios.put<HttpResponse>(url,data);
+}
+// 查看弱口令扫描配置
+export function getWeakHostScanConfig(configId: number) {
+  const url = `/host/scan/configs/${configId}/wkp/config`;
+  return axios.get<HttpResponse>(url);
+}
+// 扫描弱口令配置详情
+export function getWeakHostScanConfigDetail(configId: number) {
+  const url = `/host/scan/configs/${configId}/wkp/detail`;
+  return axios.get<HttpResponse>(url);
+}
+// 发起弱扫描
+export function weakHostScan(configId: number) {
+  const url = `/host/wkp/scan/${configId}`;
+  return axios.get<HttpResponse>(url);
 }
