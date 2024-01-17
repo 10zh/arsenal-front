@@ -44,6 +44,7 @@ import globalSettings from './zh-CN/global';
 import localeSettings from './zh-CN/settings';
 
 export default {
+  'local.system.error':'服务器异常',
   'menu.hostscan': '扫描',
   'menu.hostscan.config': '主机扫描配置',
   'menu.hostscan.config.add': '添加主机扫描配置',

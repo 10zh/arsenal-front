@@ -15,8 +15,8 @@ const SOURCEDATA: AppRouteRecordRaw = {
   children: [
     // 漏洞库
     {
-      path: 'list', // The midline path complies with SEO specifications
-      name: 'list',
+      path: 'vulnsLibrary', // The midline path complies with SEO specifications
+      name: 'vulnsLibrary',
       component: () => import('@/views/sourcedata/vulns-library/index.vue'),
       meta: {
         requiresAuth: true,

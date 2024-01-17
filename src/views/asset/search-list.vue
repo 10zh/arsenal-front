@@ -170,6 +170,12 @@ const handleSelect = (val) => {
   getInitData()
   getInitInfo()
 }
+
+// 搜索
+const search = () => {
+  getInitData()
+  getInitInfo()
+}
 // 接收来自子组件对search条件追加字段
 const recieveSearch = (title, name) => {
   // 初始如果有搜索条件直接进行拼接
@@ -179,13 +185,9 @@ const recieveSearch = (title, name) => {
     // 初始搜索条件为空则不需要&&符号进行拼接
     searchText.value += `${title}="${name}"`;
   }
+  search()
 
 
-}
-// 搜索
-const search = () => {
-  getInitData()
-  getInitInfo()
 }
 // 分页
 const changePageEvent = (val) => {

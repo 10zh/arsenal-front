@@ -8,72 +8,17 @@
     <div class="back-btn">
       <a-button @click="goBack">{{ t('scan.add.config.goback') }}</a-button>
     </div>
-    <a-tabs type="rounded" :active-key="activeKey" @tab-click="tabChange" style="padding: 0 10px">
-      <!--主机漏洞列表 start-->
-      <a-tab-pane key="2">
+    <a-tabs type="rounded" :active-key="activeKey" style="padding: 0 10px">
+      <!--网络资产空间测绘 start-->
+      <a-tab-pane key="1">
         <template #title>
-          <icon-clock-circle /> {{ t('scan.record.host.risk') }}
+          <icon-calendar /> {{ t('scan.record.network.discovery') }}
         </template>
-        <a-card>
-          <HostRisk></HostRisk>
-        </a-card>
+        <SpaceMap :tab-detail="tabDetail" :service-detail="serviceDetail" :host-detail="hostDetail"
+          @changeTabDetail="changeTabDetail">
+        </SpaceMap>
       </a-tab-pane>
-      <!--主机漏洞列表 end-->
-      <!-- windows补丁列表start -->
-      <a-tab-pane key="3">
-        <template #title>
-          <icon-save />
-          {{ t('scan.record.host.patch') }}
-        </template>
-        <a-card>
-          <WindowsPatch></WindowsPatch>
-        </a-card>
-      </a-tab-pane>
-      <!-- windows补丁列表 end-->
-      <!-- 主机进程列表start -->
-      <a-tab-pane key="4">
-        <template #title>
-          <icon-common />
-          {{ t('scan.record.host.process') }}
-        </template>
-        <a-card>
-          <HostProcess></HostProcess>
-        </a-card>
-      </a-tab-pane>
-      <!-- 主机进程列表end -->
-      <!-- 主机安装软件列表start -->
-      <a-tab-pane key="5">
-        <template #title>
-          <icon-tool />
-          {{ t('scan.record.host.softWare') }}
-        </template>
-        <a-card>
-          <InstallSoft></InstallSoft>
-        </a-card>
-      </a-tab-pane>
-      <!-- 主机安装软件列表end -->
-      <!-- 主机用户列表start -->
-      <a-tab-pane key="6">
-        <template #title>
-          <icon-user />
-          {{ t('scan.record.host.user') }}
-        </template>
-        <a-card>
-          <HostUser></HostUser>
-        </a-card>
-      </a-tab-pane>
-      <!-- 主机用户列表end -->
-      <!-- 主机用户组列表start -->
-      <a-tab-pane key="7">
-        <template #title>
-          <icon-user-group />
-          {{ t('scan.record.host.userGroup') }}
-        </template>
-        <a-card>
-          <HostGroups></HostGroups>
-        </a-card>
-      </a-tab-pane>
-      <!-- 主机用户组列表end -->
+      <!--网络资产空间测绘 end-->
     </a-tabs>
   </div>
 </template>
@@ -87,13 +32,7 @@ import {
   getHostRecordDetailByScanHostId,
   getHostServiceRecordDetailByScanHostId,
 } from '@/api/scan/scan-record';
-import HostRisk from '../system-scan/components/record-detail-host-risk.vue';
-import WindowsPatch from '../system-scan/components/record-detail-windows-patch.vue'
-import HostProcess from '../system-scan/components/record-detail-host-process.vue'
-import InstallSoft from '../system-scan/components/record-detail-install-software.vue'
-import HostUser from '../system-scan/components/record-detail-host-user.vue'
-import HostGroups from '../system-scan/components/record-detail-host-usergroup.vue'
-
+import SpaceMap from '../system-scan/components/record-detail-space-map.vue';
 // ==========================数据定义模块==========================
 const { t } = useI18n();
 const router = useRouter();
@@ -103,20 +42,25 @@ const route = useRoute();
 const { scanId, hostId } = route.query;
 
 // 主机详情数据
-const hostDetail = ref({});
+const hostDetail = ref({
+
+});
 
 // 服务详情数据
 const serviceDetail = ref([]);
 // 对应端口详情数据
-const tabDetail = ref({});
+const tabDetail = ref({
+  supportSSLVersion: ''
+});
 // 激活的tab - key
-const activeKey = ref("2");
+const activeKey = ref("1");
 
 // ==========================数据操纵模块==========================
 // 初始化主机详情
 const initHostScanRecordDetail = async () => {
   const response = await getHostRecordDetailByScanHostId(scanId, hostId);
   hostDetail.value = response.data;
+  console.log("主机", hostDetail)
 };
 // 初始化服务详情
 const initHostScanServiceRecordDetail = async () => {
@@ -125,7 +69,8 @@ const initHostScanServiceRecordDetail = async () => {
     hostId
   );
   serviceDetail.value = response.data;
-  const data = response.data[0];
+  console.log(serviceDetail.value)
+  const data = response.data[0] || [];
   // 初始化右侧数据详情（默认显示第一个）
   tabDetail.value = data;
 };
@@ -135,26 +80,14 @@ const goBack = () => {
 };
 // 当页面加载时，显示数据
 onMounted(() => {
-  if (localStorage.getItem('tabsInfo')) {
-    activeKey.value = localStorage.getItem('tabsInfo')
-  }
   initHostScanRecordDetail();
   initHostScanServiceRecordDetail();
 });
 // ==========================事件响应模块==========================
-// 空间测绘子组件改变tabDetail值
+// // 空间测绘子组件改变tabDetail值
 const changeTabDetail = (row) => {
-  tabDetail.value = row;
+  // tabDetail.value = row;
 };
-// 切换tabs标签(将activeKey存放到localStorage中便于放回当前tab)
-const tabChange = (key) => {
-  activeKey.value = key;
-  if (key === '2') {
-    localStorage.setItem('tabsInfo', key)
-  } else {
-    localStorage.removeItem('tabsInfo')
-  }
-}
 </script>
 
 <style lang="less">

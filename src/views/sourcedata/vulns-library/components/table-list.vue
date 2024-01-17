@@ -17,7 +17,7 @@
             <a-col :span="8">
               <a-form-item field="riskGrade" :label="t('scan.template.riskGrade')">
                 <a-select v-model="pagination.riskGrade" multiple :placeholder="t('scan.template.riskGrade')
-                  " allow-clear :options="riskGradeOptions" @change="selectItem('riskGrade', pagination.riskGrade)">
+                  " allow-clear :options="riskGradeOptions">
                 </a-select>
               </a-form-item>
             </a-col>
@@ -109,6 +109,7 @@ import {
 import { aotuCompleteByTableField } from '@/api/common/common';
 import { setRiskGradeText, setRiskGradeColor, getSeverityRatingText, setSeverityRatingColor } from '@/hooks/status-options'
 import { useRoute } from 'vue-router';
+import { Message } from '@arco-design/web-vue';
 
 const { t } = useI18n();
 const route = useRoute()
@@ -224,15 +225,22 @@ const riskGradeOptions = [{
 
 // 初始化引擎列表
 const initVulnerabilityList = async () => {
-  dataLoading.value = true
-  const response = await getVulnerabilityList(pagination.value);
-  tableData.value = response.data;
-  dataLoading.value = false;
+  dataLoading.value = true;
+  try {
+    const response = await getVulnerabilityList(pagination.value);
+    tableData.value = response.data;
+    dataLoading.value = false;
+    // 分页参数赋值
+    pagination.value.total = response.totalCount;
+    pagination.value.pageIndex = response.pageIndex;
+    pagination.value.pageSize = response.pageSize;
+  } catch (e) {
+    Message.error(t('local.system.error'))
+    dataLoading.value = false;
+  }
 
-  // 分页参数赋值
-  pagination.value.total = response.totalCount;
-  pagination.value.pageIndex = response.pageIndex;
-  pagination.value.pageSize = response.pageSize;
+
+
 };
 
 // 当页面加载时，显示数据

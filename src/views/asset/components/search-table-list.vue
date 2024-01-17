@@ -101,7 +101,7 @@
       <a-divider />
       <!-- 组件信息start -->
       <a-space direction="vertical" size="large" class="space-item hover"
-        :style="{ 'maxHeight': rightInfo.components.length * 42 + 'px' }">
+        :style="{ 'maxHeight': rightInfo.components.length * 60 + 'px' }">
         <a-descriptions :title="$t('asset.list.components')" align="right" :column="1">
           <a-descriptions-item v-for="(item, index) in rightInfo.components" :key="index">
             <template #label>
@@ -282,6 +282,7 @@ onMounted(() => {
 
 .hover /deep/.arco-descriptions-item-label:hover {
   color: #307af2;
-  text-decoration: underline;
+  // text-decoration: underline;
+  cursor: pointer;
 }
 </style>

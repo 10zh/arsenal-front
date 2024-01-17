@@ -30,7 +30,7 @@
   </a-card>
   <!-- 单个扫描记录信息end -->
   <a-card :style="{ height: props.tableHeight - 132 + 'px' }">
-    <a-tabs type="rounded" @tab-click="changeClick">
+    <a-tabs type="rounded">
       <a-tab-pane key="1">
         <template #title>
           <icon-calendar /> {{ t('weak.scan.record.host.list') }}
@@ -142,7 +142,7 @@ const gotoHostDetail = (record: any) => {
     path: '/hostscan/hostWeakScanRecordDetail',
     query: {
       scanId: scanIdStore.scanId,
-      hostId: record.id,
+      hostId: record.hostId,
     },
   });
 };

@@ -3,7 +3,7 @@ import { AppRouteRecordRaw } from '../types';
 
 const CERTMAGE: AppRouteRecordRaw = {
   path: '/certificate',
-  name: '/certificate',
+  name: 'certificate',
   redirect:'/certificate/list',
   component: DEFAULT_LAYOUT,
   meta: {
