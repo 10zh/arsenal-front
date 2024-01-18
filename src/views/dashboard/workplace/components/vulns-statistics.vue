@@ -12,7 +12,7 @@
     </template>
     <div style="height:100%">
       <!-- 列表展示 -->
-      <a-scrollbar style="height:200px;overflow: auto;">
+      <a-scrollbar style="height:250px;overflow: auto;">
         <div v-for="(item, idx) in vulnsTop" :key="idx" class="item">
           <a-tag :color="setRiskGradeColor(item.grade)" size="small">{{ setRiskGradeText(item.grade)
           }}</a-tag>

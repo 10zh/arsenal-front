@@ -158,8 +158,8 @@ const props = defineProps({
 
 .col-avatar {
   margin: 0 10px;
-  width: 82px !important;
-  height: 60px !important;
+  min-width: 60px !important;
+  min-height: 60px !important;
 }
 
 .precess-wrap {

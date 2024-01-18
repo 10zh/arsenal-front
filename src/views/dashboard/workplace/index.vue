@@ -32,7 +32,7 @@
     </div>
     <!-- 右侧卡片 -->
     <div class="right-side">
-      <a-grid :cols="24" :row-gap="5" style="height:100%">
+      <a-grid :cols="24" :row-gap="10" style="height:calc(100% + 5px)">
         <a-grid-item :span="24">
           <!-- 资产数量统计 -->
           <assetNumber :asset-obj="assetNumberObj"></assetNumber>
@@ -158,7 +158,7 @@ export default {
   padding: 10px 15px;
   padding-bottom: 0;
   display: flex;
-  height: calc(100% - 75px);
+  height: calc(100% - 60px);
 }
 
 .bottom {
@@ -184,7 +184,7 @@ export default {
 .panel {
   // background-color: var(--color-bg-2);
   border-radius: 4px;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
   height: 33%;
 }
 
