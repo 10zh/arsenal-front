@@ -49,8 +49,6 @@
       </a-col>
       <!-- 查询&重置按钮start -->
       <a-divider style="height: 84px" direction="vertical"></a-divider>
-      <!-- 查询&重置按钮start -->
-      <a-divider style="height: 84px" direction="vertical"></a-divider>
       <a-col :flex="'86px'" style="text-align: right">
         <a-space :size="18" direction="vertical">
           <a-button type="primary" default-checked style="margin: 0 10px" @click="initVulnerabilityList">
