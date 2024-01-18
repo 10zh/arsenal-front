@@ -5,11 +5,13 @@ const ASSET: AppRouteRecordRaw = {
   path: '/asset',
   name: '/asset',
   component: DEFAULT_LAYOUT,
+  redirect:'/asset/assetSearch',
   meta: {
-    locale: 'menu.asset',
+    locale: 'menu.asset.search',
     requiresAuth: true,
-    icon: 'icon-find-replace',
+    icon: 'icon-safe',
     order: 3,
+    hideChildrenInMenu:true,
   },
   children: [
     {
@@ -20,6 +22,7 @@ const ASSET: AppRouteRecordRaw = {
         locale: 'menu.asset.search',
         requiresAuth: true,
         roles: ['*'],
+        
       },
     },{
       path: 'searchList', // The midline path complies with SEO specifications

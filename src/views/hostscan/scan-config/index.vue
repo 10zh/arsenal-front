@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <Breadcrumb :items="['menu.hostscan', 'menu.list.scan.config']" />
+    <!-- <Breadcrumb :items="['menu.hostscan', 'menu.list.scan.config']" /> -->
     <a-tabs type="rounded" style="margin-top:10px">
       <!-- 系统扫描模板 -->
       <a-tab-pane key="1" :title="$t('menu.list.scan.configList')">
@@ -17,8 +17,7 @@
     </a-tabs>
   </div>
 </template>
-
-<script lang="ts" setup>
+<script lang="ts" setup name="scanConfig">
 // ==========================声明模块==========================
 import ConfigTable from './system-scan/components/host-scan-config-table-list.vue';
 import WeakTable from './weak-scan/components/host-scan-weak-table-list.vue'

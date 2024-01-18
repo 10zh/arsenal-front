@@ -10,7 +10,6 @@ const HOSTSCAN: AppRouteRecordRaw = {
     requiresAuth: true,
     icon: 'icon-find-replace',
     order: 2,
-    keepAlive:true,
   },
   children: [
     // -------------------------------------系统扫描配置------------------------------------
@@ -22,6 +21,7 @@ const HOSTSCAN: AppRouteRecordRaw = {
         locale: 'menu.list.scan.config',
         requiresAuth: true,
         roles: ['*'],
+        ignoreCache:false,
       },
     },
      // 查看漏洞详情
@@ -72,16 +72,6 @@ const HOSTSCAN: AppRouteRecordRaw = {
       },
     },
     {
-      path: 'scanEngine', // The midline path complies with SEO specifications
-      name: 'scanEngine',
-      component: () => import('@/views/hostscan/scan-engine/index.vue'),
-      meta: {
-        locale: 'menu.list.scan.engine',
-        requiresAuth: true,
-        roles: ['*'],
-      },
-    },
-    {
       path: 'scanTemplate',
       name: 'scanTemplate',
       component: () => import('@/views/hostscan/scan-template/index.vue'),
@@ -92,6 +82,7 @@ const HOSTSCAN: AppRouteRecordRaw = {
         // 标识是否是从详情页进入
         isBack:false,
         roles: ['*'],
+        ignoreCache:false,
       },
     },
     // 新增系统模板
@@ -133,6 +124,17 @@ const HOSTSCAN: AppRouteRecordRaw = {
         hideInMenu: true,
       },
     },
+    {
+      path: 'scanEngine', // The midline path complies with SEO specifications
+      name: 'scanEngine',
+      component: () => import('@/views/hostscan/scan-engine/index.vue'),
+      meta: {
+        locale: 'menu.list.scan.engine',
+        requiresAuth: true,
+        roles: ['*'],
+      },
+    },
+    
  // -------------------------------------弱口令扫描配置------------------------------------
   //  创建扫描配置
       {

@@ -9,7 +9,7 @@ const CERTMAGE: AppRouteRecordRaw = {
   meta: {
     locale: 'menu.certManage',
     requiresAuth: true,
-    icon: 'icon-find-replace',
+    icon: 'icon-idcard',
     order: 4,
     hideChildrenInMenu:true,
   },

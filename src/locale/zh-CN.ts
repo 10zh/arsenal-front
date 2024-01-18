@@ -26,15 +26,10 @@ import localeGroupForm from '@/views/form/group/locale/zh-CN';
 
 import localeBasicProfile from '@/views/profile/basic/locale/zh-CN';
 
-import localeDataAnalysis from '@/views/visualization/data-analysis/locale/zh-CN';
-import localeMultiDAnalysis from '@/views/visualization/multi-dimension-data-analysis/locale/zh-CN';
 
 import localeSuccess from '@/views/result/success/locale/zh-CN';
 import localeError from '@/views/result/error/locale/zh-CN';
 
-import locale403 from '@/views/exception/403/locale/zh-CN';
-import locale404 from '@/views/exception/404/locale/zh-CN';
-import locale500 from '@/views/exception/500/locale/zh-CN';
 
 import localeUserInfo from '@/views/user/info/locale/zh-CN';
 import localeUserSetting from '@/views/user/setting/locale/zh-CN';
@@ -62,7 +57,7 @@ export default {
   'menu.manage.organization':'组织架构',
 
   'menu.asset':'资产',
-  'menu.asset.search':'资产搜索',
+  'menu.asset.search':'资产视图',
   'menu.asset.detail':'资产详情',
   'menu.asset.leak.detail':'漏洞详情',
   'menu.asset.clusterAnalysis':'聚合分析',
@@ -72,7 +67,7 @@ export default {
   'menu.list.sourceData.weakPasswords':'弱口令',
   'menu.list.sourceData.vulnerabilityLibrary':'漏洞库',
   
-  'menu.dashboard': '仪表盘',
+  'menu.dashboard.index': '首页',
   'menu.server.dashboard': '仪表盘-服务端',
   'menu.server.workplace': '工作台-服务端',
   'menu.server.monitor': '实时监控-服务端',
@@ -86,6 +81,7 @@ export default {
   'menu.faq': '常见问题',
   'navbar.docs': '文档中心',
   'navbar.action.locale': '切换为中文',
+  'searchTable.actions.columnSetting':'配置表格项',
   ...localeSettings,
   ...localeMessageBox,
   ...localeLogin,
@@ -97,13 +93,8 @@ export default {
   ...localeStepForm,
   ...localeGroupForm,
   ...localeBasicProfile,
-  ...localeDataAnalysis,
-  ...localeMultiDAnalysis,
   ...localeSuccess,
   ...localeError,
-  ...locale403,
-  ...locale404,
-  ...locale500,
   ...localeUserInfo,
   ...localeUserSetting,
   ...globalSettings,

@@ -1,29 +1,38 @@
 <template>
   <div class="container">
+
     <!-- 左侧卡片 -->
     <div class="left-side">
       <div class="panel">
         <!-- 系统参数 -->
         <systemParams :params-obj="sysParamsObj"></systemParams>
       </div>
-      <div class="panel" style="margin-top:20px">
+      <div class="panel">
         <!-- 资产漏洞统计 -->
         <assetVulnsStatistics></assetVulnsStatistics>
       </div>
-      <a-grid :cols="24" :col-gap="16" :row-gap="16" style="margin-top: 16px">
-        <a-grid-item :span="{ xs: 24, sm: 24, md: 24, lg: 12, xl: 12, xxl: 12 }">
+      <div style="display: flex;width:100%;height:calc(100% - 67%);">
+        <div style="flex:1;margin:0 10px 0 0px">
           <!-- 漏洞类别统计 -->
           <vulnsCategoryStatistics :x-axis="categoryAxis" :y-axis="categoryData"></vulnsCategoryStatistics>
-        </a-grid-item>
-        <a-grid-item :span="{ xs: 24, sm: 24, md: 24, lg: 12, xl: 12, xxl: 12 }">
+        </div>
+        <div style="flex:1">
           <!-- 风险维度统计 -->
           <riskDimensionStatistics :x-axis="sysAxis" :y-axis="sysData"></riskDimensionStatistics>
+        </div>
+      </div>
+      <!-- <a-grid style="margin-top: 5px;height:33%">
+        <a-grid-item :span="{ xs: 24, sm: 24, md: 24, lg: 12, xl: 12, xxl: 12 }">
+         
         </a-grid-item>
-      </a-grid>
+        <a-grid-item :span="{ xs: 24, sm: 24, md: 24, lg: 12, xl: 12, xxl: 12 }">
+         
+        </a-grid-item>
+      </a-grid> -->
     </div>
     <!-- 右侧卡片 -->
     <div class="right-side">
-      <a-grid :cols="24" :row-gap="24">
+      <a-grid :cols="24" :row-gap="5" style="height:100%">
         <a-grid-item :span="24">
           <!-- 资产数量统计 -->
           <assetNumber :asset-obj="assetNumberObj"></assetNumber>
@@ -46,7 +55,7 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref, reactive } from 'vue';
+import { onMounted, ref, reactive, nextTick } from 'vue';
 import { querySysParams, querySysVulns, queryVulnsByCategory, queryVulnsBySys, queryAssetNumber } from '@/api/dashboard'
 
 import systemParams from './components/system-params.vue';
@@ -126,12 +135,13 @@ const initAssetNumber = async () => {
   const res = await queryAssetNumber();
   assetNumberObj.value = res.data;
 }
-
-initVulnsNumber()
-initSysParam()
-initVulnsByCategory()
-initVulnsBySys()
-initAssetNumber()
+onMounted(() => {
+  initVulnsNumber()
+  initSysParam()
+  initVulnsByCategory()
+  initVulnsBySys()
+  initAssetNumber()
+})
 // initVulnsTop()
 </script>
 
@@ -145,25 +155,28 @@ export default {
 <style lang="less" scoped>
 .container {
   background-color: var(--color-fill-2);
-  padding: 16px 20px;
+  padding: 10px 15px;
   padding-bottom: 0;
   display: flex;
+  height: calc(100% - 75px);
 }
 
 .bottom {
   width: 100%;
   background-color: var(--color-fill-2);
   padding: 16px 20px;
-  height: 200px;
+  // height: 200px;
 }
 
 .left-side {
   flex: 1;
-  overflow: auto;
+  // overflow: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 .right-side {
-  width: 450px;
+  width: 480px;
 
   margin-left: 16px;
 }
@@ -171,7 +184,8 @@ export default {
 .panel {
   // background-color: var(--color-bg-2);
   border-radius: 4px;
-  overflow: auto;
+  margin-bottom: 5px;
+  height: 33%;
 }
 
 :deep(.panel-border) {

@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="panel">
-      <div class="search" style="width:70%">
+      <div class="search" style="width:80%">
         <!-- logo标题 start-->
         <div class="title">
           <img src="../../assets/images/logo.png">
@@ -260,7 +260,7 @@ onMounted(() => {
 .container {
   position: relative;
   width: 100vw;
-  height: calc(100vh - 100px);
+  height: calc(100vh - 200px);
 
 }
 
@@ -274,7 +274,7 @@ onMounted(() => {
   background-image: url(../../assets/images/asset-bg.png);
   background-repeat: no-repeat;
   background-size: cover;
-  width: 100%;
+  width: calc(100% - 220px);
   height: 100%;
   // margin: auto;
   display: flex;
@@ -310,7 +310,7 @@ onMounted(() => {
 
   .history {
     min-height: 350px;
-    flex: 1;
+    flex: 1.5;
     border: 1px solid var(--color-neutral-4);
     border-radius: 3px;
     background: #fff;

@@ -1,8 +1,8 @@
 <template>
-  <a-spin :loading="loading" style="width: 100%">
-    <a-card class="general-card" :header-style="{ paddingBottom: '0' }" :body-style="{
-      padding: '20px',
-    }">
+  <a-spin :loading="loading" style="width: 100%;height:100%">
+    <a-card class="general-card" :header-style="{ paddingBottom: '0', paddingTop: '10px' }" :body-style="{
+      padding: '0px', height: '100%'
+    }" style="height:100%">
       <!-- 标题 -->
       <template #title>
         {{ $t('asset.vulns.tend') }}
@@ -28,7 +28,7 @@
         </a-radio-group>
       </template>
       <!-- 趋势图表 -->
-      <Chart height="310px" :option="chartOption" />
+      <Chart height="100%" :option="chartOption" />
     </a-card>
   </a-spin>
 </template>

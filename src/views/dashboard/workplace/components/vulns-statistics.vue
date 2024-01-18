@@ -1,6 +1,7 @@
 <template>
-  <a-card class="general-card" :title="$t('vulns.statistics') + number" :header-style="{ paddingBottom: '0' }"
-    :body-style="{ padding: '15px 20px 13px 20px' }">
+  <a-card class="general-card" style="height:100%" :title="$t('vulns.statistics') + number"
+    :header-style="{ paddingBottom: '0', paddingTop: '5px' }"
+    :body-style="{ padding: '0px 20px 0px 20px', height: '100%' }">
     <!-- 数量下拉框 -->
     <template #extra>
       <a-select v-model="number" @change="initVulnsTop" :style="{ width: '80px' }">
@@ -9,9 +10,9 @@
         <a-option :value="20">20</a-option>
       </a-select>
     </template>
-    <div>
+    <div style="height:100%">
       <!-- 列表展示 -->
-      <a-scrollbar style="height:400px;overflow: auto;">
+      <a-scrollbar style="height:200px;overflow: auto;">
         <div v-for="(item, idx) in vulnsTop" :key="idx" class="item">
           <a-tag :color="setRiskGradeColor(item.grade)" size="small">{{ setRiskGradeText(item.grade)
           }}</a-tag>
@@ -50,8 +51,8 @@ onMounted(() => {
   display: flex;
   align-items: center;
   width: 100%;
-  height: 40px;
-  margin-bottom: 5px;
+  height: 30px;
+  margin: 4px 0;
 
   .item-content {
     flex: 1;

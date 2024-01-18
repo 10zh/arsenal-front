@@ -9,8 +9,8 @@ const SOURCEDATA: AppRouteRecordRaw = {
   meta: {
     locale: 'menu.sourceData',
     requiresAuth: true,
-    icon: 'icon-find-replace',
-    order: 7,
+    icon: 'icon-storage',
+    order: 5,
   },
   children: [
     // 漏洞库

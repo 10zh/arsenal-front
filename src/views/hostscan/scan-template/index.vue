@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <Breadcrumb :items="['menu.hostscan', 'menu.list.scan.template']" />
+    <!-- <Breadcrumb :items="['menu.hostscan', 'menu.list.scan.template']" /> -->
     <a-tabs type="rounded" style="margin-top:10px">
       <!-- 系统扫描模板 -->
       <a-tab-pane key="1" :title="$t('scan.template.system')">
@@ -19,7 +19,7 @@
   </div>
 </template>
 
-<script lang="ts" setup>
+<script lang="ts" setup name="scanTemplate">
 // ==========================声明模块==========================
 import { onMounted, onUnmounted, ref } from 'vue'
 import TemplateTable from '@/views/hostscan/scan-template/components/host-scan-template-table-list.vue';

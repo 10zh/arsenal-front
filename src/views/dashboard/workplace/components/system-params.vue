@@ -1,6 +1,6 @@
 <template>
-  <h3>{{ $t('workplace.system.params') }}</h3>
-  <a-card :header-style="{ paddingBottom: '0' }" :body-style="{ padding: '24px 20px 0 20px' }">
+  <!-- <h3>{{ $t('workplace.system.params') }}</h3> -->
+  <a-card style="height:100%">
     <a-row :gutter="24">
       <!-- CPU信息 -->
       <a-col :span="8" class="wrapper">
@@ -53,7 +53,7 @@
           </div>
         </div>
       </a-col>
-      <a-divider style="height:180px" direction="vertical" />
+      <a-divider style="height:100%" direction="vertical" />
       <!-- 磁盘信息 -->
       <a-col :span="7" class="wrapper">
         <span class="title">{{ $t('workplace.system.params.disk') }}</span>
@@ -80,7 +80,7 @@
           </div>
         </div>
       </a-col>
-      <a-divider style="height:180px" direction="vertical" />
+      <a-divider style="height:100%" direction="vertical" />
       <!-- 内存信息 -->
       <a-col :span="8" class="wrapper">
         <span class="title">{{ $t('workplace.system.params.memory') }}</span>
@@ -121,7 +121,7 @@
         </div>
       </a-col>
     </a-row>
-    <a-divider class="split-line" style="margin: 0" />
+
   </a-card>
 </template>
 <script lang="ts" setup>
@@ -141,14 +141,18 @@ const props = defineProps({
   padding-bottom: 20px;
 }
 
-.icon {
-  margin: 10px 0;
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  height: 100%;
 }
 
 .icon {
   display: flex;
-  min-height: 180px;
+  // min-height: 180px;
   align-items: center;
+  flex: auto;
 
 }
 
@@ -198,6 +202,11 @@ const props = defineProps({
   font-size: 40px;
 }
 
+/deep/ .arco-card-body {
+  // padding: 10px 10px 10px 10px;
+  height: 100%;
+}
+
 .color1 {
   border: 2px solid #f4d135
 }
@@ -213,5 +222,10 @@ const props = defineProps({
 .title {
   font-size: 16px;
   font-weight: 700;
+}
+
+/deep/ .arco-row-justify-start {
+  flex-wrap: nowrap;
+  height: 100%;
 }
 </style>

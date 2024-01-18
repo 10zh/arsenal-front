@@ -234,3 +234,12 @@ const tabChange = (key) => {
   z-index: 99;
 }
 </style>
+<style scoped lang="less">
+/deep/ .arco-tabs-tab-active {
+  background: #fff;
+}
+
+/deep/ .arco-tabs-tab-active:hover {
+  background: #fff;
+}
+</style>

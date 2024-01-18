@@ -8,8 +8,8 @@ const MANAGE: AppRouteRecordRaw = {
   meta: {
     locale: 'menu.manage',
     requiresAuth: true,
-    icon: 'icon-find-replace',
-    order: 5,
+    icon: 'icon-settings',
+    order: 6,
   },
   children: [
     {

@@ -5,11 +5,15 @@ const DASHBOARD: AppRouteRecordRaw = {
   path: '/dashboard',
   name: 'dashboard',
   component: DEFAULT_LAYOUT,
+  redirect:'/dashboard/workplace',
   meta: {
-    locale: 'menu.dashboard',
+    locale: 'menu.dashboard.index',
+    // locale: 'menu.dashboard',
     requiresAuth: true,
-    icon: 'icon-dashboard',
+    icon: 'icon-computer',
     order: 1,
+    hideChildrenInMenu:true,
+    ignoreCache:false,
   },
   children: [
     {

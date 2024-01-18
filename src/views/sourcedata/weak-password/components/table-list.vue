@@ -97,6 +97,9 @@
       <a-tag :color="setSeverityRatingColor(record.severity)" size="small">{{ getSeverityRatingText(record.severity)
       }}</a-tag>
     </template>
+    <template #isInside="{ record }">
+      {{ record.isInside === 1 ? '是' : '否' }}
+    </template>
 
   </a-table>
   <a-pagination class="paginationStyle" :total="pagination.total" :current="pagination.pageIndex" @change="changeIndex"
@@ -133,8 +136,12 @@ const route = useRoute()
 // 扫描引擎表头
 const columns = [
   {
-    title: t('weak.password.form.dbName'),
-    dataIndex: 'dbName',
+    title: t('weak.password.form.username'),
+    dataIndex: 'username',
+  },
+  {
+    title: t('weak.password.form.password'),
+    dataIndex: 'password',
   },
   {
     title: t('weak.password.form.domain'),
@@ -145,17 +152,15 @@ const columns = [
     },
   },
   {
-    title: t('weak.password.form.password'),
-    dataIndex: 'password',
+    title: t('weak.password.form.dbName'),
+    dataIndex: 'dbName',
   },
+
   {
     title: t('weak.password.form.serviceId'),
     dataIndex: 'serviceId',
   },
-  {
-    title: t('weak.password.form.username'),
-    dataIndex: 'username',
-  },
+
   {
     title: t('weak.password.list.isInside'),
     dataIndex: 'isInside',
@@ -218,7 +223,7 @@ const initWeakPasswordList = async () => {
 onMounted(() => {
   // 动态计算表格的高度并进行分页
   const height =
-    document.documentElement.clientHeight - header.value.offsetHeight - 340;
+    document.documentElement.clientHeight - header.value.offsetHeight - 280;
   tableHeight.value = height;
   pagination.value.pageSize = Math.floor(height / 45);
   // 初始化页面表格数据

@@ -3,7 +3,7 @@
   "colorWeak": false,
   "navbar": true,
   "menu": true,
-  "topMenu": true,
+  "topMenu": false,
   "hideMenu": false,
   "menuCollapse": false,
   "footer": true,
@@ -11,7 +11,56 @@
   "menuWidth": 220,
   "globalSettings": false,
   "device": "desktop",
-  "tabBar": false,
+  "tabBar": true,
   "menuFromServer": false,
-  "serverMenu": []
+  "serverMenu": [
+    {
+      "path": "/hostscan",
+      "name": "/hostscan",
+      "meta": {
+        "locale": "menu.hostscan",
+        "requiresAuth": true,
+        "icon": "icon-dashboard",
+        "order": 1
+      },
+      "children": [
+        {
+          "path": "scanConfig",
+          "name": "scanConfig",
+          "meta": {
+            "locale": "menu.list.scan.config",
+            "requiresAuth": true
+          }
+        }
+      ]
+    },
+    {
+      "path": "/dashboard",
+      "name": "dashboard",
+      "meta": {
+        "locale": "menu.server.dashboard",
+        "requiresAuth": true,
+        "icon": "icon-dashboard",
+        "order": 1
+      },
+      "children": [
+        {
+          "path": "workplace",
+          "name": "Workplace",
+          "meta": {
+            "locale": "menu.server.workplace",
+            "requiresAuth": true
+          }
+        },
+        {
+          "path": "https://arco.design",
+          "name": "arcoWebsite",
+          "meta": {
+            "locale": "menu.arcoWebsite",
+            "requiresAuth": true
+          }
+        }
+      ]
+    }
+  ]
 }

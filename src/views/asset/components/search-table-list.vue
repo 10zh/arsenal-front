@@ -7,7 +7,8 @@
         <div class="card-left">
           <a-typography>
             <a-typography-paragraph copyable>
-              <a-link @click="handleDetail(cardItem.id)"> <span style="font-size:20px">{{ cardItem.ipv4 }}</span></a-link>
+              <a-link @click="handleDetail(cardItem.id)"> <span style="font-size:20px">{{ cardItem.ipv4 || cardItem.ipv6
+              }}</span></a-link>
 
             </a-typography-paragraph>
             <a-typography-paragraph>

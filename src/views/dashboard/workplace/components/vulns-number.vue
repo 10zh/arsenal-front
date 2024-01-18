@@ -1,11 +1,14 @@
 <template>
-  <h3>{{ $t('vulns.number') }}</h3>
-  <a-card :header-style="{ paddingBottom: '0' }" :body-style="{ padding: '24px 20px 0 20px' }">
-    <div v-for="(index, item ) in vulnsObj" :key="index" class="item-row">
-      <div class="item" :style="{ background: EnumColor(item) }">
-        <span>{{ vulnsObj[item] }}</span>
+  <a-card :header-style="{ paddingBottom: '0' }" style="height:100%">
+    <span class="title">{{ $t('vulns.number') }}</span>
+    <div class="card-container">
+      <div v-for="(index, item ) in vulnsObj" :key="index" class="item-row">
+        <div class="item" :style="{ background: EnumColor(item) }">
+          <span>{{ vulnsObj[item] }}</span>
+        </div>
+        <span>{{ vulnsLevel(item) }}</span>
       </div>
-      <span>{{ vulnsLevel(item) }}</span>
+
     </div>
   </a-card>
 </template>
@@ -50,6 +53,8 @@ const EnumColor = (item => {
 .card-container {
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
+  flex: auto;
 
 }
 
@@ -69,6 +74,11 @@ const EnumColor = (item => {
   span {
     font-weight: 700;
   }
+}
+
+.title {
+  font-size: 16px;
+  font-weight: 700;
 }
 
 .color1 {
@@ -112,18 +122,19 @@ const EnumColor = (item => {
   width: 200px;
 }
 
-/deep/ .arco-card-body {
-  display: flex;
-  flex-wrap: wrap;
-}
-
 .item {
-  height: 50px;
+  min-height: 35px;
   text-align: center;
-  line-height: 50px;
+  line-height: 35px;
   width: 50px;
-  margin: 11px;
+  margin: 8px;
   font-size: 18px;
   color: #fff;
+}
+
+/deep/ .arco-card-body {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 </style>

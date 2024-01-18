@@ -199,7 +199,6 @@ const vulnerabilityPagination: any = ref({
 const vulnerabilityData: any = ref([]);
 // 初始化进度条文本数据
 const initProgressTextData = async () => {
-  debugger
   const response = await getHostScanRecordDetail(scanIdStore.scanId);
   progressTextData.value = response.data;
   nextTick(() => {

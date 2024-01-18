@@ -173,7 +173,7 @@
         </a-card>
       </a-layout-content>
       <!-- 组件层级start -->
-      <a-layout-sider>
+      <a-layout-sider style="margin-top:25px">
         <a-space direction="vertical" style="width:100%">
           <a-row style="margin: 10px 10px 20px 10px">
             <span>

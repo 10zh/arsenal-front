@@ -1,14 +1,17 @@
 <template>
   <!-- 标题 -->
-  <h3>{{ $t('asset.number') }}</h3>
-  <a-card :header-style="{ paddingBottom: '10' }" :body-style="{ padding: '24px 20px 10px 20px' }">
-    <div v-for="(index, item ) in assetObj" :key="index" class="item-row">
-      <!-- 字段名称 -->
-      <div class="item" :style="{ background: EnumColor(item) }">
-        <span>{{ assetObj[item] }}</span>
+
+  <a-card style="height:100%">
+    <span class="title">{{ $t('asset.number') }}</span>
+    <div class="card-container">
+      <div v-for="(index, item ) in assetObj" :key="index" class="item-row">
+        <!-- 字段名称 -->
+        <div class="item" :style="{ background: EnumColor(item) }">
+          <span>{{ assetObj[item] }}</span>
+        </div>
+        <!-- 字段值 -->
+        <span>{{ assetLevel(item) }}</span>
       </div>
-      <!-- 字段值 -->
-      <span>{{ assetLevel(item) }}</span>
     </div>
   </a-card>
 </template>
@@ -58,24 +61,37 @@ const EnumColor = (item => {
   flex-wrap: wrap;
 }
 
+.title {
+  font-size: 16px;
+  font-weight: 700;
+}
+
 .item-row {
   display: flex;
   align-items: center;
   width: 200px;
+
 }
 
-/deep/ .arco-card-body {
+.card-container {
   display: flex;
   flex-wrap: wrap;
+  flex: auto;
 }
 
 .item {
-  height: 50px;
+  height: 35px;
   text-align: center;
-  line-height: 50px;
+  line-height: 35px;
   width: 50px;
-  margin: 10px;
+  margin: 8px;
   font-size: 18px;
   color: #fff;
+}
+
+/deep/ .arco-card-body {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 </style>

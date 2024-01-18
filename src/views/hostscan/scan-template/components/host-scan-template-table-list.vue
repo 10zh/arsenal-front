@@ -277,7 +277,7 @@ const initHostScanTemplateList = async () => {
 onMounted(() => {
   // 动态计算表格的高度并进行分页
   const height =
-    document.documentElement.clientHeight - header.value.offsetHeight - 350;
+    document.documentElement.clientHeight - header.value.offsetHeight - 250;
   tableHeight.value = height;
   pagination.value.pageSize = Math.floor(height / 50);
   // 初始化页面表格数据

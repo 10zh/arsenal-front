@@ -57,8 +57,8 @@
     <!--数据搜索模块 end-->
     <a-divider style="margin-top: 0"></a-divider>
     <!-- 新增按钮start -->
-    <a-row style="margin-bottom: 16px">
-      <a-col :span="2" style="
+    <a-row style="margin-bottom: 16px" :gutter="24">
+      <a-col :span="12" style="
           display: flex;
           justify-content: space-between;
           align-items: center;
@@ -78,11 +78,15 @@
           </a-button>
         </a-space>
       </a-col>
+      <a-col :span="12" style="display: flex;justify-content: end;">
+        <!-- 配置表单的按钮 -->
+        <ConfigBtn :columns="columns" @changeTableColumn="changeColumn"></ConfigBtn>
+      </a-col>
     </a-row>
   </div>
   <!--凭证数据表格 start-->
-  <a-table :columns="columns" :style="{ height: tableHeight + 'px' }" :data="tableData" :bordered="false"
-    :row-selection="rowSelection" row-key="id" v-model:selectedKeys="selectedKeys" :pagination="false"
+  <a-table :columns="(cloneColumns as TableColumnData[])" :style="{ height: tableHeight + 'px' }" :data="tableData"
+    :bordered="false" :row-selection="rowSelection" row-key="id" v-model:selectedKeys="selectedKeys" :pagination="false"
     @sorter-change="sortedChangeEvent">
     <template #updateTime="{ record }">
       {{ formatDate(record.updateTime, 'YYYY-MM-DD hh:mm:ss') }}
@@ -113,34 +117,43 @@
 
 <script lang="ts" setup>
 // ==========================声明模块==========================
-import { ref, onMounted, reactive, computed } from 'vue';
+import { ref, onMounted, reactive, computed, watch } from 'vue';
 import type { SelectOptionData } from '@arco-design/web-vue/es/select/interface';
 import { useI18n } from 'vue-i18n';
 import { Message } from '@arco-design/web-vue';
 import { useRouter } from 'vue-router';
 import formatDate from '@/utils/times';
+import cloneDeep from 'lodash/cloneDeep';
+import type { TableColumnData } from '@arco-design/web-vue/es/table/interface';
 import {
   getCertList,
   deleteCert,
   batchDeleteCert
 } from '@/api/certmanage/index';
+import ConfigBtn from '@/components/config-btn/index.vue'
 import AddCertModal from './add-cert.vue'
 import EditCertModal from './edit-cert.vue'
 
+
+
 const { t } = useI18n();
+type Column = TableColumnData & { checked?: true };
+const cloneColumns = ref<Column[]>([]);
 
 // ==========================数据定义模块==========================
-// 扫描引擎表头
-const columns = [
+// 配置展开的表各项
+const showColumns = ref<Column[]>([]);
+// 表头
+const columns = computed<TableColumnData[]>(() => [
 
   {
     title: t('cerManage.list.authType'),
     dataIndex: 'authType',
+    checked: true,
   },
   {
     title: t('cerManage.list.createBy'),
     dataIndex: 'createBy',
-
   },
   {
     title: t('cerManage.list.createTime'),
@@ -154,11 +167,13 @@ const columns = [
   {
     title: t('cerManage.list.name'),
     dataIndex: 'name',
+    checked: true,
 
   },
   {
     title: t('cerManage.list.password'),
     dataIndex: 'password',
+    checked: true,
 
   },
   {
@@ -169,6 +184,7 @@ const columns = [
   {
     title: t('cerManage.list.target'),
     dataIndex: 'target',
+    checked: true,
   },
   {
     title: t('cerManage.list.updateTime'),
@@ -183,17 +199,20 @@ const columns = [
   {
     title: t('cerManage.list.username'),
     dataIndex: 'username',
+    checked: true,
   },
   {
     title: t('cerManage.list.port'),
     dataIndex: 'port',
+    checked: true,
   },
   {
     title: t('scan.engine.operations'),
     dataIndex: 'operations',
     slotName: 'operations',
+    checked: true,
   },
-];
+]);
 // 表单下拉框选项定义
 // 认证类型下拉框
 const authTypeOptions = computed<SelectOptionData[]>(() => [
@@ -249,7 +268,7 @@ const initCertList = async () => {
 onMounted(() => {
   // 动态计算表格的高度并进行分页
   const height =
-    document.documentElement.clientHeight - header.value.offsetHeight - 350;
+    document.documentElement.clientHeight - header.value.offsetHeight - 300;
   tableHeight.value = height;
   pagination.value.pageSize = Math.floor(height / 50);
   // 初始化页面表格数据
@@ -325,6 +344,25 @@ const changePageIndex = (val) => {
   pagination.value.pageIndex = val;
   initCertList();
 };
+// 自定义配置展示的表单项
+const changeColumn = (colums) => {
+  cloneColumns.value = colums
+}
+watch(
+  () => columns.value,
+  (val) => {
+
+    // cloneColumns.value = cloneDeep(val);
+    val.forEach((item, index) => {
+      if (item.checked) {
+        cloneColumns.value.push(item)
+      }
+
+    });
+    showColumns.value = cloneDeep(val);
+  },
+  { deep: true, immediate: true }
+);
 </script>
 
 <style scoped lang="less">

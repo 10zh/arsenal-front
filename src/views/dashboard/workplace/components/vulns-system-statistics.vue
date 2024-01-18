@@ -1,12 +1,12 @@
 <template>
-  <a-spin :loading="loading" style="width: 100%">
-    <a-card class="general-card" :header-style="{ paddingBottom: '0' }" :body-style="{
-      padding: '20px',
-    }">
+  <a-spin :loading="loading" style="width: 100%;height:100%">
+    <a-card class="general-card" :header-style="{ paddingBottom: '0px', paddingTop: '10px' }" :body-style="{
+      padding: '0px', height: '100%'
+    }" style="height:100%">
       <template #title>
         {{ $t('vulns.system.statistics') }}
       </template>
-      <Chart height="310px" :option="chartOption" />
+      <Chart height="90%" :option="chartOption" />
     </a-card>
   </a-spin>
 </template>
@@ -70,6 +70,11 @@ const { chartOption } = useChartOption((isDark) => {
     },
     yAxis: {
       type: 'value',
+    },
+    grid: {
+      containLabel: true,
+      top: '10%',
+      bottom: '15%'
     },
 
     series: [

@@ -3,6 +3,7 @@ import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import vueJsx from '@vitejs/plugin-vue-jsx';
 import svgLoader from 'vite-svg-loader';
+import VueSetupExtend from 'vite-plugin-vue-setup-extend'
 import configArcoStyleImportPlugin from './plugin/arcoStyleImport';
 
 export default defineConfig({
@@ -11,6 +12,7 @@ export default defineConfig({
     vueJsx(),
     svgLoader({ svgoConfig: {} }),
     configArcoStyleImportPlugin(),
+    VueSetupExtend()
   ],
   resolve: {
     alias: [

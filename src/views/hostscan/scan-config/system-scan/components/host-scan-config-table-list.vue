@@ -63,8 +63,8 @@
     <a-divider style="margin-top: 0" />
     <!--分割线 end-->
     <!--添加主机扫描配置 start-->
-    <a-row style="margin-bottom: 16px">
-      <a-col :span="24" style="
+    <a-row style="margin-bottom: 16px" :gutter="24">
+      <a-col :span="12" style="
           display: flex;
           justify-content: space-between;
           align-items: center;
@@ -78,12 +78,17 @@
           </a-button>
         </a-space>
       </a-col>
+      <a-col :span="12" style="display: flex;justify-content: end;">
+        <!-- 配置表单的按钮 -->
+        <ConfigBtn :columns="columns" @changeTableColumn="changeColumn"></ConfigBtn>
+      </a-col>
+
     </a-row>
     <!--添加主机扫描配置 end-->
   </div>
   <!--主机扫描配置数据表格 start-->
-  <a-table row-key="id" :columns="columns" :style="{ height: tableHeight + 'px' }" :bordered="false" :data="tableData"
-    :pagination="false" @sorter-change="sortedChangeEvent">
+  <a-table row-key="id" :columns="(cloneColumns as TableColumnData[])" :style="{ height: tableHeight + 'px' }"
+    :bordered="false" :data="tableData" :pagination="false" @sorter-change="sortedChangeEvent">
     <template #configName="{ record }">
       <a-link @click="gotoScanConfigDetail(record)">{{
         record.configName
@@ -154,12 +159,13 @@
 
 <script lang="ts" setup>
 // ==========================声明模块==========================
-import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { ref, onMounted, onBeforeUnmount, watch, computed, nextTick } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 import formatDate from '@/utils/times';
 import { getStatusColor, getStatusText } from '@/hooks/status-options';
 import { Message } from '@arco-design/web-vue';
+import cloneDeep from 'lodash/cloneDeep';
 import {
   getHostScanConfigPageList,
   deleteHostScanConfig,
@@ -170,27 +176,36 @@ import {
   stopHostScan,
   resumeHostScan,
 } from '@/api/scan/scan-record';
+import ConfigBtn from '@/components/config-btn/index.vue'
+import type { TableColumnData } from '@arco-design/web-vue/es/table/interface';
+
 
 const router = useRouter();
 const { t } = useI18n();
-
+type Column = TableColumnData & { checked?: true };
+const cloneColumns = ref<Column[]>([]);
 // ==========================数据定义模块==========================
 // 配置模板表格数据
 const tableData = ref<any>([]);
+// 配置展开的表各项
+const showColumns = ref<Column[]>([]);
 // 扫描主机扫描配置表头
-const columns = [
+const columns = computed<TableColumnData[]>(() => [
   {
     title: t('host.scan.config.configName'),
     dataIndex: 'configName',
     slotName: 'configName',
+    checked: true,
   },
   {
     title: t('host.scan.config.engineName'),
     dataIndex: 'engine.engineName',
+    checked: true,
   },
   {
     title: t('host.scan.config.templateName'),
     dataIndex: 'template.templateName',
+    checked: true,
   },
   {
     title: t('host.scan.config.target'),
@@ -214,7 +229,9 @@ const columns = [
     sortable: {
       sorter: true,
       sortDirections: ['descend'],
+
     },
+    checked: true,
   },
   {
     title: t('host.scan.config.scanStartTime'),
@@ -222,8 +239,10 @@ const columns = [
     sortable: {
       sorter: true,
       sortDirections: ['descend'],
+
     },
     slotName: 'scanStartTime',
+    checked: true,
   },
   {
     title: t('host.scan.config.scanEndTime'),
@@ -233,6 +252,7 @@ const columns = [
       sortDirections: ['descend'],
     },
     slotName: 'scanEndTime',
+    checked: true,
   },
   {
     title: t('host.scan.config.scanStatus'),
@@ -242,14 +262,16 @@ const columns = [
       sorter: true,
       sortDirections: ['ascend', 'descend'],
     },
+    checked: true,
   },
   {
     title: t('global.operations'),
     dataIndex: 'operations',
     slotName: 'operations',
     width: 250,
+    checked: true,
   },
-];
+])
 // 扫描状态下拉框选项
 const scanStatusOptions = [
   {
@@ -316,7 +338,7 @@ const initListTimer = ref();
 onMounted(() => {
   // 动态计算表格的高度并进行分页
   const height =
-    document.documentElement.clientHeight - header.value.offsetHeight - 350;
+    document.documentElement.clientHeight - header.value.offsetHeight - 250;
   tableHeight.value = height;
   pagination.value.pageSize = Math.floor(height / 50);
   // 初始化主机扫描配置页面表格数据
@@ -466,6 +488,25 @@ const pageIndexChangeEvent = async (pageIndex: number) => {
   // 重新刷新列表
   await initConfigList();
 };
+// 自定义配置展示的表单项
+const changeColumn = (colums) => {
+  cloneColumns.value = colums
+}
+watch(
+  () => columns.value,
+  (val) => {
+
+    // cloneColumns.value = cloneDeep(val);
+    val.forEach((item, index) => {
+      if (item.checked) {
+        cloneColumns.value.push(item)
+      }
+
+    });
+    showColumns.value = cloneDeep(val);
+  },
+  { deep: true, immediate: true }
+);
 </script>
 
 <style lang="less">

@@ -3,20 +3,26 @@
   import { useI18n } from 'vue-i18n';
   import { useRoute, useRouter, RouteRecordRaw } from 'vue-router';
   import type { RouteMeta } from 'vue-router';
-  import { useAppStore } from '@/store';
+  import { useAppStore, useTabBarStore } from '@/store';
   import { listenerRouteChange } from '@/utils/route-listener';
   import { openWindow, regexUrl } from '@/utils';
   import useMenuTree from './use-menu-tree';
+
+
 
   export default defineComponent({
     emit: ['collapse'],
     setup() {
       const { t } = useI18n();
       const appStore = useAppStore();
+      const tabBarStore = useTabBarStore();
       const router = useRouter();
       const route = useRoute();
       const { menuTree } = useMenuTree();
-      const collapsed = computed({
+      const tagList = computed(() => {
+        return tabBarStore.getTabList;
+      });
+            const collapsed = computed({
         get() {
           if (appStore.device === 'desktop') return appStore.menuCollapse;
           return false;
@@ -83,7 +89,7 @@
             activeMenu || menuOpenKeys[menuOpenKeys.length - 1],
           ];
         }
-      }, true);
+      },true);
       const setCollapse = (val: boolean) => {
         if (appStore.device === 'desktop')
           appStore.updateSettings({ menuCollapse: val });
@@ -146,15 +152,16 @@
 </script>
 
 <style lang="less" scoped>
-  :deep(.arco-menu-inner) {
-    .arco-menu-inline-header {
-      display: flex;
-      align-items: center;
-    }
-    .arco-icon {
-      &:not(.arco-icon-down) {
-        font-size: 18px;
-      }
+:deep(.arco-menu-inner) {
+  .arco-menu-inline-header {
+    display: flex;
+    align-items: center;
+  }
+
+  .arco-icon {
+    &:not(.arco-icon-down) {
+      font-size: 18px;
     }
   }
+}
 </style>
