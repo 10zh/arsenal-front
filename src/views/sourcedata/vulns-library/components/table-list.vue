@@ -245,7 +245,7 @@ const initVulnerabilityList = async () => {
 onMounted(() => {
   // 动态计算表格的高度并进行分页
   const height =
-    document.documentElement.clientHeight - header.value.offsetHeight - 340;
+    document.documentElement.clientHeight - header.value.offsetHeight - 300;
   tableHeight.value = height;
   pagination.value.pageSize = Math.floor(height / 63);
   // 初始化页面表格数据
