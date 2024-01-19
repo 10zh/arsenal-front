@@ -121,6 +121,9 @@
       <a-tag :color="setRiskGradeColor(record.riskGrade)" size="small">{{ setRiskGradeText(record.riskGrade)
       }}</a-tag>
     </template>
+    <template #isInside="{ record }">
+      {{ record.isInside === 1 ? '是' : '否' }}
+    </template>
     <template #severity="{ record }">
       <a-tag :color="setSeverityRatingColor(record.severity)" size="small">{{ getSeverityRatingText(record.severity)
       }}</a-tag>
@@ -162,8 +165,16 @@ const props = defineProps({
 // 扫描引擎表头
 const columns = [
   {
-    title: t('weak.password.form.dbName'),
-    dataIndex: 'dbName',
+    title: t('weak.password.form.serviceId'),
+    dataIndex: 'serviceId',
+  },
+  {
+    title: t('weak.password.form.username'),
+    dataIndex: 'username',
+  },
+  {
+    title: t('weak.password.form.password'),
+    dataIndex: 'password',
   },
   {
     title: t('weak.password.form.domain'),
@@ -174,17 +185,10 @@ const columns = [
     },
   },
   {
-    title: t('weak.password.form.password'),
-    dataIndex: 'password',
+    title: t('weak.password.form.dbName'),
+    dataIndex: 'dbName',
   },
-  {
-    title: t('weak.password.form.serviceId'),
-    dataIndex: 'serviceId',
-  },
-  {
-    title: t('weak.password.form.username'),
-    dataIndex: 'username',
-  },
+
   {
     title: t('weak.password.list.isInside'),
     dataIndex: 'isInside',
@@ -360,9 +364,9 @@ const selectItem = (field, value) => {
   // 对于Map数据结构中的值进行字符串拼接
   maps.forEach((item, key) => {
     if (key === 'riskGrade') {
-      mergeValue += `${key}=${item.length > 1 ? item.join(',') : item[0]}&riskGrade-op=il${maps.size > 1 ? "&" : ''}`
+      mergeValue += `${key}=${encodeURI(JSON.stringify(item))}&riskGrade-op=il${maps.size > 1 ? "&" : ''}`
     } else {
-      mergeValue += `${key}=${item.length > 1 ? item.join(',') : item[0]}&${key}-op=il&${key}-ic=true${maps.size > 1 ? "&" : ''}`
+      mergeValue += `${key}=${encodeURI(JSON.stringify(item))}&${key}-op=il&${key}-ic=true${maps.size > 1 ? "&" : ''}`
     }
   })
   // 用于删除拼接字符串的最后一个&符号

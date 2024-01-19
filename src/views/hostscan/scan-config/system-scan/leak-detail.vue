@@ -31,8 +31,8 @@ import { Message } from '@arco-design/web-vue';
 import { useRoute, useRouter } from 'vue-router';
 import { getVulnerabilityRes } from '@/api/scan/scan-record'
 import { getLeakDetail } from '@/api/asset/search'
-import leakMessage from '../components/system-scan/leak-message.vue'
-import leakTabs from '../components/system-scan/leak-tabs.vue'
+import leakMessage from './components/leak-message.vue'
+import leakTabs from './components/leak-tabs.vue'
 
 
 

@@ -159,7 +159,7 @@
 
 <script lang="ts" setup>
 // ==========================声明模块==========================
-import { ref, onMounted, onBeforeUnmount, watch, computed, nextTick } from 'vue';
+import { ref, onMounted, onBeforeUnmount, watch, computed, nextTick, onUnmounted, onDeactivated } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 import formatDate from '@/utils/times';
@@ -178,6 +178,7 @@ import {
 } from '@/api/scan/scan-record';
 import ConfigBtn from '@/components/config-btn/index.vue'
 import type { TableColumnData } from '@arco-design/web-vue/es/table/interface';
+import { onActivated } from 'vue';
 
 
 const router = useRouter();
@@ -344,15 +345,19 @@ onMounted(() => {
   // 初始化主机扫描配置页面表格数据
   initConfigList();
   // 每10s刷新数据
+
+});
+onActivated(() => {
   initListTimer.value = setInterval(() => {
     initConfigList();
   }, 10000);
-});
-// 当页面卸载时
-onBeforeUnmount(() => {
+})
+// 因为使用了keep-alive缓存页面，需要使用onDeactivated清除定时器
+onDeactivated(() => {
   clearInterval(initListTimer.value);
   initListTimer.value = null;
-});
+})
+
 
 // ==========================事件响应模块==========================
 // 过滤后端排序字段

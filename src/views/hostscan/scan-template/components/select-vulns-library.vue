@@ -372,6 +372,7 @@ const handleSearch = (value, table, field) => {
 // 将筛选条件全部传递给父组件
 const emits = defineEmits(['receiveFilter'])
 const sendFilterCondition = () => {
+  console.log(emitValue)
   emits('receiveFilter', emitValue);
 }
 // 使用Map存放多个筛选条件
@@ -388,9 +389,9 @@ const selectItem = (field, value) => {
   // 对于Map数据结构中的值进行字符串拼接
   maps.forEach((item, key) => {
     if (key === 'riskGrade') {
-      mergeValue += `${key}=${item.length > 1 ? item.join(',') : item[0]}&riskGrade-op=il${maps.size > 1 ? "&" : ''}`
+      mergeValue += `${key}=${encodeURI(JSON.stringify(item))}&riskGrade-op=il${maps.size > 1 ? "&" : ''}`
     } else {
-      mergeValue += `${key}=${item.length > 1 ? item.join(',') : item[0]}&${key}-op=il&${key}-ic=true${maps.size > 1 ? "&" : ''}`
+      mergeValue += `${key}=${encodeURI(JSON.stringify(item))}&${key}-op=il&${key}-ic=true${maps.size > 1 ? "&" : ''}`
     }
   })
   // 用于删除拼接字符串的最后一个&符号

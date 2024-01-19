@@ -133,8 +133,11 @@ const props = defineProps({
 })
 const route = useRoute()
 // ==========================数据定义模块==========================
-// 扫描引擎表头
 const columns = [
+  {
+    title: t('weak.password.form.serviceId'),
+    dataIndex: 'serviceId',
+  },
   {
     title: t('weak.password.form.username'),
     dataIndex: 'username',
@@ -154,11 +157,6 @@ const columns = [
   {
     title: t('weak.password.form.dbName'),
     dataIndex: 'dbName',
-  },
-
-  {
-    title: t('weak.password.form.serviceId'),
-    dataIndex: 'serviceId',
   },
 
   {

@@ -273,6 +273,7 @@ const survivalOptions = computed<SelectOptionData[]>(() => [
 // 提交
 const handleSubmit = () => {
   formRef.value.validate().then(async (res: any) => {
+    console.log(formModel)
     if (!res) {
       try {
         if (type === 'system') {
