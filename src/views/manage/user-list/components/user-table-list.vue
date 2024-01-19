@@ -39,7 +39,7 @@
         <a-popconfirm v-if="item.status === 1" :content="t('manage.user.set1.question')" @ok="handleUse(item)">
           <a-button type="primary" status="warning" style="margin-left:10px">{{ t('manage.user.use') }}</a-button>
         </a-popconfirm>
-        <a-popconfirm v-else :content="t('manage.user.set.question')" @ok="handleUse(item)">
+        <a-popconfirm v-else :content="t('manage.user.set.question')" @ok="handleNoUse(item)">
           <a-button type="primary" style="margin-left:10px">{{ t('manage.user.nouse') }}</a-button>
         </a-popconfirm>
 
@@ -56,7 +56,7 @@
 import { ref, reactive, onMounted, defineProps, defineEmits } from 'vue';
 import { useI18n } from 'vue-i18n';
 import formatDate from '@/utils/times'
-import { deleteUser, setUser } from '@/api/manage/user'
+import { deleteUser, setUser, setNoUser } from '@/api/manage/user'
 import { Message } from '@arco-design/web-vue';
 import editDialog from './edit-dialog.vue'
 
@@ -92,11 +92,19 @@ const handleDelete = async (id) => {
   }
 
 }
-// 禁用/启用
+// 启用
 const handleUse = async (item) => {
-
-  item.status = Number(!item.status)
-  const res = await setUser(item.id, item);
+  const res = await setUser(item.id);
+  if (res.success) {
+    Message.success(t('user.response.set'));
+    emits('initData')
+  } else {
+    Message.error(res.errMessage);
+  }
+}
+// 禁用
+const handleNoUse = async (item) => {
+  const res = await setNoUser(item.id);
   if (res.success) {
     Message.success(t('user.response.set'));
     emits('initData')

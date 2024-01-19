@@ -1,11 +1,11 @@
 <template>
   <!--编辑表单对话层 start-->
-  <a-modal v-model:visible="visible" width="700" :title="t('organization.list.add')"
+  <a-modal v-model:visible="visible" width="700" :title="t('organization.list.edit')"
     @cancel="handleEditOrganizationVisible(false)" @before-ok="handleBeforeOk">
     <a-form ref="formRef" auto-label-width :model="form">
       <a-form-item field="parentId" :label="t('organization.form.parentId')">
-        <a-tree-select v-model="form.parentId" :placeholder="t('organization.form.parentId')" :blockNode="true"
-          :checkable="true" :data="treeData" :fieldNames="{
+        <a-tree-select v-model="form.parentId" @focus="initOrganizationList"
+          :placeholder="t('organization.form.parentId')" :data="treeData" :fieldNames="{
             key: 'id',
             title: 'companyName',
             children: 'children',
@@ -27,8 +27,9 @@
         :rules="[{ required: true, message: t('organization.form.useIds.placeholder') }]">
         <a-select :style="{
           width: '100%'
-        }" :placeholder="t('organization.form.useIds.placeholder')" v-model="form.users" multiple>
-          <a-option v-for="item in manageList" :value="item.id" :key="item.id">{{ item.userName }}</a-option>
+        }" :placeholder="t('organization.form.useIds.placeholder')" v-model="form.users" multiple
+          @search="handleSearch" @dropdown-reach-bottom="loadMore">
+          <a-option v-for="item in manageList" :value="item.id" :key="item.id">{{ item.username }}</a-option>
         </a-select>
       </a-form-item>
     </a-form>
@@ -40,7 +41,7 @@
 // ==========================声明模块==========================
 import { ref, reactive, watch, defineEmits } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { getManageUser } from '@/api/manage/user'
+import { getUserPageList } from '@/api/manage/user'
 import { querySingleCompany, getOrganizationPageList, editCompany } from '@/api/manage/organization-chart'
 import { Message } from '@arco-design/web-vue';
 
@@ -51,7 +52,7 @@ const form = reactive({
   companyName: '',
   sort: '',
   users: [],
-  parentId: null,
+  parentId: '',
 });
 // 是否可见
 const visible = ref(false);
@@ -59,6 +60,14 @@ const visible = ref(false);
 const formRef = ref();
 // 管理员列表
 const manageList = ref([])
+// 管理员列表需要分页
+const pagination = ref({
+  pageIndex: 1,
+  pageSize: 10,
+  keyword: '',
+})
+// 远程搜索的防抖函数
+const timers = ref()
 // 组织id
 const companyId = ref()
 // 组织树
@@ -92,22 +101,35 @@ const handleEditOrganizationVisible = (flag, id) => {
   }
 };
 // 查询管理员用户
-const getUserByRoleId = async () => {
-  const data = await getManageUser()
-  manageList.value = data.data;
+const getUserByRoleId = async (flag = null) => {
+  if (flag) {
+    pagination.value.pageIndex = 1;
+    manageList.value = [];
+  }
+  const data = await getUserPageList(pagination.value)
+  manageList.value = manageList.value.concat(data.data);
+  pagination.value.total = data.totalCount;
+};
+// 加载更多
+const loadMore = () => {
+  if (pagination.value.total > manageList.value.length) {
+    pagination.value.pageIndex += 1;
+    getUserByRoleId()
+  }
+}
+// 远程搜索用户
+const handleSearch = (val) => {
+  clearTimeout(timers.value)
+  timers.value = setTimeout(() => {
+    pagination.value.keyword = val;
+    getUserByRoleId('init')
+  }, 500)
 }
 // 表单数据回显
 const initForm = async () => {
   const res = await querySingleCompany(companyId.value)
-  let newAdmins = [];
-  if (res.data.admins.length > 0) {
-    newAdmins = res.data.admins.map(item => item.toString())
-  }
-  console.log(res.data.admins)
-  form.companyAddress = res.data.companyAddress;
-  form.companyName = res.data.companyName;
-  form.sort = res.data.sort;
-  form.users = newAdmins;
+  Object.assign(form, res.data);
+  form.users = res.data.admins;
   form.parentId = res.data.parentId || null;
 }
 // 初始化上级组织

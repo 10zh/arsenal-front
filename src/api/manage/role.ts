@@ -7,7 +7,7 @@ interface roleListRequest {
 }
 // 查询角色列表
 export function getRolePageList(params: roleListRequest) {
-  const url = `/system/roles/list?pageIndex=${params.pageIndex}&pageSize=${params.pageSize}`;
+  const url = `/system/roles?pageIndex=${params.pageIndex}&pageSize=${params.pageSize}`;
   return axios.get<HttpResponse>(url);
 }
 // 查看当个角色信息
@@ -29,4 +29,9 @@ export function deleteRole(roleId: string) {
 export function editRole(roleId: string,data) {
   const url = `/system/roles/${roleId}/role`;
   return axios.put<HttpResponse>(url,data);
+}
+// 获取所有未禁用角色接口
+export function getUseRole() {
+  const url = `/system/roles/list`;
+  return axios.get<HttpResponse>(url);
 }

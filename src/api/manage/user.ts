@@ -4,6 +4,8 @@ import { HttpResponse } from '../interceptor/axios';
 interface userListRequest {
   pageIndex:number,
   pageSize:number,
+  keyword:string,
+  status?:string
 }
 interface companyIdReq {
   companyId:string
@@ -30,7 +32,13 @@ export function queryAllCompanyId() {
 }
 // 查询用户列表
 export function getUserPageList(params:userListRequest) {
-  const url = `/system/user?pageIndex=${params.pageIndex}&pageSize=${params.pageSize}`;
+  let url = `/system/user?pageIndex=${params.pageIndex}&pageSize=${params.pageSize}`;
+  if(params.keyword){
+    url = `${url}&keyword=${params.keyword}`;
+  }
+  if(params.status){
+    url = `${url}&status=${params.status}&status-op=eq`;
+  }
   return axios.get<HttpResponse>(url);
 }
 // 添加用户
@@ -64,7 +72,12 @@ export function deleteUser(id:string) {
   return axios.delete<HttpResponse>(url);
 }
 // 禁用
+export function setNoUser(id:string,data) {
+  const url = `/system/user/disable/${id}`;
+  return axios.put<HttpResponse>(url);
+}
+// 启用
 export function setUser(id:string,data) {
-  const url = `/system/user/${id}`;
-  return axios.put<HttpResponse>(url,data);
+  const url = `/system/user/enable/${id}`;
+  return axios.put<HttpResponse>(url);
 }

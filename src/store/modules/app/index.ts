@@ -54,6 +54,15 @@ const useAppStore = defineStore('app', {
         });
         const { data } = await getMenuList();
         this.serverMenu = data;
+        this.serverMenu.forEach(item=>{
+          if(item.children.length > 0){
+            item.children.forEach(item2=>{
+              item2.meta = JSON.parse(item2.meta)
+            })
+          }
+          item.meta = JSON.parse(item.meta)
+        })
+        console.log("菜单",this.serverMenu)
         notifyInstance = Notification.success({
           id: 'menuNotice',
           content: 'success',

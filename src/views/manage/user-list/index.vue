@@ -6,22 +6,23 @@
       <!-- 搜索框&新增按钮 -->
       <div class="search">
         <a-space>
-          <a-input-search :style="{ width: '250px' }" placeholder="Please enter something" @search="search" />
+          <a-input-search v-model="page.keyword" :style="{ width: '250px' }" placeholder="Please enter something"
+            @search="search" />
           <a-button type="primary" @click="handleAdd">{{ t('manage.user.add') }}</a-button>
         </a-space>
       </div>
       <!-- tabs栏 -->
-      <a-tabs type="rounded" :style="{ height: (tableHeight - 150) + 'px' }">
+      <a-tabs type="rounded" :style="{ height: (tableHeight - 150) + 'px' }" @tab-click="handleClick">
         <!-- 全部用户 -->
-        <a-tab-pane key="1" :title="$t('manage.user.all')">
+        <a-tab-pane key="3" :title="$t('manage.user.all')">
           <userTableList :card-data="cardList" @init-data="initData"></userTableList>
         </a-tab-pane>
         <!-- 正常用户 -->
-        <a-tab-pane key="2" :title="$t('manage.user.normal')">
+        <a-tab-pane key="0" :title="$t('manage.user.normal')">
           <userTableList :card-data="cardList" @init-data="initData"></userTableList>
         </a-tab-pane>
         <!-- 锁定用户 -->
-        <a-tab-pane key="3" :title="$t('manage.user.lock')">
+        <a-tab-pane key="1" :title="$t('manage.user.lock')">
           <userTableList :card-data="cardList" @init-data="initData"></userTableList>
         </a-tab-pane>
       </a-tabs>
@@ -53,20 +54,26 @@ const addUserRef = ref()
 const page = reactive({
   pageSize: 10,
   pageIndex: 1,
-  total: 10
+  total: 10,
+  keyword: '',
+  status: '',
 })
 // 列表的高度
 const tableHeight = ref()
 // ==========================事件响应模块==========================
-const initData = async () => {
+const initData = async (status) => {
   const data = await getUserPageList(page);
   cardList.value = data.data;
   page.total = data.totalCount;
 }
-
-
 // 切换tab栏
-const handleClick = () => {
+const handleClick = (e) => {
+  if (e === '3') {
+    page.status = null
+  } else {
+    page.status = e;
+  }
+  initData()
 
 }
 

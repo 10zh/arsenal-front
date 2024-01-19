@@ -3,25 +3,16 @@
   <a-modal v-model:visible="visible" width="700" :title="t('role.add')" @cancel="handleAddRoleVisible(false)"
     @before-ok="handleBeforeOk">
     <a-form ref="formRef" auto-label-width :model="form">
-      <a-form-item field="companyId" :label="t('role.list.companyId')">
-        <a-select v-model="form.companyId" :placeholder="t('role.list.companyId')">
-          <a-option v-for="item in companyIdList" :key="item.value" :value="item.value">{{ item.label }}</a-option>
+      <a-form-item field="name" :label="t('role.list.name')" :rules="[{ required: true, message: t('role.list.name') }]">
+        <a-input v-model="form.name" :placeholder="t('role.list.name')" />
+      </a-form-item>
+      <a-form-item field="menuIds" :label="t('role.list.menuIds')">
+        <a-select v-model="form.menuIds" :placeholder="t('role.list.menuIds')">
+          <a-option v-for="item in menuIdsList" :key="item.value" :value="item.value">{{ item.label }}</a-option>
         </a-select>
       </a-form-item>
-      <a-form-item field="name" :label="t('role.list.roleName')"
-        :rules="[{ required: true, message: t('role.list.roleName') }]">
-        <a-input v-model="form.name" :placeholder="t('role.list.roleName')" />
-      </a-form-item>
-      <a-form-item field="type" :rules="[{ required: true, message: t('role.list.roleType') }]"
-        :label="t('role.list.roleType')">
-        <a-select v-model="form.type" :placeholder="t('role.list.roleType')">
-          <a-option value="default">{{ t('role.select.type.default') }}</a-option>
-          <a-option value="custom">{{ t('role.select.type.custom') }}</a-option>
-        </a-select>
-
-      </a-form-item>
-      <a-form-item field="roleDescription" :label="t('role.list.roleDescription')">
-        <a-input v-model="form.description" :placeholder="t('role.list.roleDescription')" />
+      <a-form-item field="description" :label="t('role.list.description')">
+        <a-input v-model="form.description" :placeholder="t('role.list.description')" />
       </a-form-item>
       <a-form-item field="sort" :label="t('role.list.sort')" :rules="[{ required: true, message: t('role.list.sort') }]">
         <a-input-number v-model="form.sort" :placeholder="t('role.list.sort')" class="input-demo" :min="0" :max="100" />
@@ -46,7 +37,6 @@ const { t } = useI18n();
 const emits = defineEmits(['initRefresh'])
 // 表单参数
 const form = reactive({
-  companyId: null,
   menuIds: [],
   description: '',
   sort: 4,
@@ -63,8 +53,8 @@ const statusOptions = [{
   label: '启用',
   value: 0
 }]
-// 所属组织架构select数据
-const companyIdList = []
+// 菜单select数据
+const menuIdsList = []
 // 是否可见
 const visible = ref(false);
 // 表单引用

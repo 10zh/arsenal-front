@@ -2,13 +2,12 @@
   <div ref="header">
     <!-- 表单数据start -->
     <a-row>
-
       <a-col :flex="1">
         <a-form :model="form" label-align="left" auto-label-width>
           <a-row :gutter="24">
             <a-col :span="8">
-              <a-form-item field="roleName" :label="t('role.list.roleName')">
-                <a-input v-model="pagination.roleName" :placeholder="t('role.list.roleName')"></a-input>
+              <a-form-item field="name" :label="t('role.list.name')">
+                <a-input v-model="pagination.name" :placeholder="t('role.list.name')"></a-input>
               </a-form-item>
             </a-col>
             <a-col :span="8">
@@ -62,28 +61,31 @@
       <span>{{ formatDate(record.creatTime, 'YYYY-MM-DD hh:mm:ss') }}</span>
 
     </template>
+    <template #isInside="{ record }">
+      <a-tag :color="record.isInside ? 'green' : 'red'">{{ record.isInside ? '是' : '否' }}</a-tag>
+    </template>
     <template #status="{ record }">
       <a-switch v-model="record.status" :checked-value="0" :unchecked-value="1" />
     </template>
     <template #operations="{ record }">
-      <a-button v-if="record.type === 'custom'" type="text" size="small" style="padding: 0 5px"
-        @click="handleEdit(record)">
 
-        {{ $t('manage.role.operator.edit') }}
-      </a-button>
-      <a-popconfirm :content="t('manage.role.operator.delete.question')" @ok="handleDelete(record)">
-        <a-button type="text" v-if="record.type === 'custom'" status="danger" size="small">
-
-          {{ $t('manage.role.operator.delete') }}
-        </a-button>
-      </a-popconfirm>
-      <a-button type="text" size="small" status="success" style="padding: 0 5px" @click="handleEdit(record)">
+      <!-- <a-button type="text" size="small" status="success" style="padding: 0 5px" @click="handleEdit(record)">
         {{ $t('manage.role.operator.menu') }}
       </a-button>
       <a-button type="text" size="small" status="warning" style="padding: 0 5px" @click="handleEdit(record)">
 
         {{ $t('manage.role.operator.user') }}
+      </a-button> -->
+      <a-button v-if="!record.isInside" type="text" size="small" style="padding: 0 5px" @click="handleEdit(record)">
+
+        {{ $t('manage.role.operator.edit') }}
       </a-button>
+      <a-popconfirm :content="t('manage.role.operator.delete.question')" @ok="handleDelete(record)">
+        <a-button type="text" v-if="!record.isInside" status="danger" size="small">
+
+          {{ $t('manage.role.operator.delete') }}
+        </a-button>
+      </a-popconfirm>
     </template>
   </a-table>
   <!-- 分页栏 -->
@@ -124,19 +126,20 @@ const pagination = reactive({
 // ==========================数据定义模块==========================
 // 角色列表表头
 const columns = [{
-  title: t('role.list.roleName'),
+  title: t('role.list.name'),
   dataIndex: 'name',
 },
-// {
-//   title: t('role.list.roleType'),
-//   dataIndex: 'roleType',
-// },
 {
   title: t('role.list.userNum'),
   dataIndex: 'userNum',
 }, {
-  title: t('role.list.roleDescription'),
-  dataIndex: 'roleDescription',
+  title: t('role.list.description'),
+  dataIndex: 'description',
+},
+{
+  title: t('role.list.isInside'),
+  dataIndex: 'isInside',
+  slotName: 'isInside'
 },
 {
   title: t('role.list.createBy'),
@@ -191,7 +194,7 @@ const changePageIndex = (val) => {
 onMounted(() => {
   // 动态计算表格的高度并进行分页
   const height =
-    document.documentElement.clientHeight - header.value.offsetHeight - 350;
+    document.documentElement.clientHeight - header.value.offsetHeight - 300;
   tableHeight.value = height;
   pagination.pageSize = Math.floor(height / 50);
   initRoleList()

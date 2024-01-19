@@ -1,7 +1,8 @@
 export default {
-  
+  'password.message':'提示：创建用户后初始密码为arsenal@666',
   'menu.manage.organization.list': '组织架构列表',
   'organization.list.add':'新增组织架构',
+  'organization.list.edit':'编辑组织架构',
   'organization.form.companyAddress':'公司地址',
   'organization.form.companyName':'公司名称',
   'organization.form.sort':'排序',
@@ -9,6 +10,8 @@ export default {
   
   'organization.form.parentId':'上级组织',
   'organization.form.admins':'管理员',
+  'organization.form.admins.nickName':'昵称',
+  'organization.form.admins.userName':'用户名',
   'organization.form.createBy':'创建人',
   'organization.form.creatTime':'创建时间',
   'organization.form.companyAddress.placeholder':'请输入公司地址',

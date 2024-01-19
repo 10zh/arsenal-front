@@ -5,7 +5,7 @@
     <a-form ref="formRef" auto-label-width :model="form">
       <a-form-item field="parentId" :label="t('organization.form.parentId')">
         <a-tree-select v-model="form.parentId" @focus="initOrganizationList"
-          :placeholder="t('organization.form.parentId')" :blockNode="true" :checkable="true" :data="treeData" :fieldNames="{
+          :placeholder="t('organization.form.parentId')" :data="treeData" :fieldNames="{
             key: 'id',
             title: 'companyName',
             children: 'children',
@@ -27,8 +27,9 @@
         :rules="[{ required: true, message: t('organization.form.useIds.placeholder') }]">
         <a-select :style="{
           width: '100%'
-        }" :placeholder="t('organization.form.useIds.placeholder')" v-model="form.users" multiple>
-          <a-option v-for="item in manageList" :value="item.id" :key="item.id">{{ item.userName }}</a-option>
+        }" :placeholder="t('organization.form.useIds.placeholder')" v-model="form.users" multiple
+          @search="handleSearch" @dropdown-reach-bottom="loadMore">
+          <a-option v-for="item in manageList" :value="item.id" :key="item.id">{{ item.username }}</a-option>
         </a-select>
       </a-form-item>
     </a-form>
@@ -40,10 +41,10 @@
 // ==========================声明模块==========================
 import { ref, reactive, watch, defineEmits } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { getManageUser } from '@/api/manage/user'
 import { addCompany } from '@/api/manage/organization-chart'
 import { Message } from '@arco-design/web-vue';
 import { getOrganizationPageList } from '@/api/manage/organization-chart'
+import { getUserPageList } from '@/api/manage/user'
 
 const { t } = useI18n();
 // 表单参数
@@ -62,8 +63,16 @@ const visible = ref(false);
 const formRef = ref();
 // 管理员列表
 const manageList = ref([])
+// 管理员列表需要分页
+const pagination = ref({
+  pageIndex: 1,
+  pageSize: 10,
+  keyword: '',
+})
 // 调用父组件列表接口，刷新
 const emits = defineEmits(['initData'])
+// 远程搜索的防抖函数
+const timers = ref()
 // ==========================事件响应模块==========================
 // 点击确认事件
 const handleBeforeOk = (done) => {
@@ -87,10 +96,30 @@ const handleAddOrganizationVisible = (flag) => {
   visible.value = flag;
 };
 // 查询管理员用户
-const getUserByRoleId = async () => {
-  const data = await getManageUser()
-  manageList.value = data.data;
+const getUserByRoleId = async (flag = null) => {
+  if (flag) {
+    pagination.value.pageIndex = 1;
+    manageList.value = [];
+  }
+  const data = await getUserPageList(pagination.value)
+  manageList.value = manageList.value.concat(data.data);
+  pagination.value.total = data.totalCount;
 };
+// 加载更多
+const loadMore = () => {
+  if (pagination.value.total > manageList.value.length) {
+    pagination.value.pageIndex += 1;
+    getUserByRoleId()
+  }
+}
+// 远程搜索用户
+const handleSearch = (val) => {
+  clearTimeout(timers.value)
+  timers.value = setTimeout(() => {
+    pagination.value.keyword = val;
+    getUserByRoleId('init')
+  }, 500)
+}
 // 初始化上级组织
 const initOrganizationList = async () => {
   const res = await getOrganizationPageList();
@@ -105,7 +134,7 @@ defineExpose({
 // ==========================监听模块==========================
 watch(visible, (newValue, oldValue) => {
   if (newValue) {
-    getUserByRoleId()
+    getUserByRoleId('init')
     formRef.value.resetFields()
 
   }

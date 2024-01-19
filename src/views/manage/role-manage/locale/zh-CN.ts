@@ -1,18 +1,15 @@
 export default {
   
   'manage.role.list': '角色列表',
-  'role.list.roleName':'角色名称',
-  'role.list.roleType':'角色类型',
+  'role.list.name':'角色名称',
   'role.list.userNum':'关联用户数',
-  'role.list.roleDescription':'角色名描述',
+  'role.list.description':'角色名描述',
   'role.list.creatTime':'创建时间',
   'role.list.createBy':'创建人',
   'role.list.menuIds':'菜单列表',
+  'role.list.isInside':'是否内置',
   'role.list.sort':'排序',
   'role.list.status':'角色状态',
-  'role.list.companyId':'所属组织',
-  'role.select.type.default':'系统角色',
-  'role.select.type.custom':'用户角色',
 
 
   'role.list.add':"新增角色",

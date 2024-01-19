@@ -47,7 +47,7 @@
   <a-table row-key="id" :columns="columns" :style="{ height: tableHeight + 'px' }" :data="organizationList"
     :pagination="false">
     <template #admins="{ record }">
-      <span v-for="item in record.admins" :key="item.userId">{{ item.username }} </span>
+      <a-tag v-for="item in record.admins" :key="item.userId" style="margin:5px">{{ item.username }} </a-tag>
 
     </template>
     <template #creatTime="{ record }">
@@ -113,7 +113,7 @@ const columns = [{
 {
   title: t('organization.form.admins'),
   dataIndex: 'admins',
-  slotName: 'admins'
+  slotName: 'admins',
 
 }, {
   title: t('organization.form.createBy'),

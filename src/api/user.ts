@@ -28,7 +28,7 @@ export function getUserInfo() {
 }
 
 export function getMenuList() {
-  return axios.post<RouteRecordNormalized[]>('/api/user/menu');
+  return axios.get<RouteRecordNormalized[]>('/system/menus/list');
 }
 export function getCaptchaImg() {
   return axios.get<captchaRes>('/captcha');

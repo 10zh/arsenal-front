@@ -2,8 +2,9 @@
   <!--添加引擎表单对话层 start-->
   <a-modal v-model:visible="visible" width="700" :title="t('manage.user.add')" @cancel="handleAddRoleVisible(false)"
     @before-ok="handleBeforeOk">
+    <a-alert style="margin:0px 0 20px 0">{{ t('password.message') }}</a-alert>
     <a-form ref="formRef" auto-label-width :model="form">
-      <a-form-item field="companyIds" @change="handleChangeCompany" :label="t('manage.user.companyId')"
+      <a-form-item field="companyIds" :label="t('manage.user.companyId')"
         :rules="[{ required: true, message: t('manage.user.companyId') }]">
         <a-tree-select v-model="form.companyIds" @focus="initOrganizationList" :placeholder="t('manage.user.companyId')"
           :blockNode="true" :tree-checkable="true" :checkable="true" :data="organizationList" :fieldNames="{
@@ -53,7 +54,8 @@
 // ==========================声明模块==========================
 import { ref, reactive, watch, defineEmits } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { queryAllRoles, addUser } from '@/api/manage/user';
+import { addUser } from '@/api/manage/user';
+import { getUseRole } from '@/api/manage/role'
 import { getOrganizationPageList } from '@/api/manage/organization-chart'
 import { Message } from '@arco-design/web-vue';
 
@@ -109,22 +111,15 @@ const handleBeforeOk = (done) => {
 const handleAddRoleVisible = (flag) => {
   visible.value = flag;
 };
-// 查询角色列表
+// 查询未禁用的角色列表
 const queryAllRolesList = async () => {
-  const res = await queryAllRoles(form.companyIds);
+  const res = await getUseRole();
   roleList.value = res.data;
-
-
 }
 // 查询组织架构列表
 const queryAllCompanyIdList = async () => {
   const res = await getOrganizationPageList();
   organizationList.value = res.data;
-}
-// 切换组织架构时查询不同的角色
-const handleChangeCompany = async () => {
-  queryAllRolesList()
-
 }
 // ==========================父子组件通信模块==========================
 defineExpose({
@@ -133,10 +128,8 @@ defineExpose({
 // ==========================对话框监听模块==========================
 watch(visible, (newValue, oldValue) => {
   if (newValue) {
-    queryAllCompanyIdList()
-    if (!form.companyId) {
-      queryAllRolesList()
-    }
+    queryAllCompanyIdList();
+    queryAllRolesList()
     formRef.value.resetFields()
   }
 

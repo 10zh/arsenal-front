@@ -4,8 +4,8 @@
     @before-ok="handleBeforeOk">
     <a-form ref="formRef" auto-label-width :model="form">
       <a-form-item field="companyIds" :label="t('manage.user.companyId')">
-        <a-tree-select v-model="form.companyIds" @change="handleChangeCompany" placeholder="t('manage.user.companyId')"
-          :blockNode="true" :checkable="true" :data="organizationList" :tree-checkable="true" multiple :fieldNames="{
+        <a-tree-select v-model="form.companyIds" placeholder="t('manage.user.companyId')" :blockNode="true"
+          :checkable="true" :data="organizationList" :tree-checkable="true" multiple :fieldNames="{
             key: 'id',
             title: 'companyName',
             children: 'children',
@@ -49,8 +49,9 @@
 // ==========================声明模块==========================
 import { ref, reactive, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { queryAllRoles, getSingleUser, addUser, updateSingleUser } from '@/api/manage/user';
+import { getSingleUser, addUser, updateSingleUser } from '@/api/manage/user';
 import { getOrganizationPageList } from '@/api/manage/organization-chart'
+import { getUseRole } from '@/api/manage/role'
 import { Message } from '@arco-design/web-vue';
 
 const { t } = useI18n();
@@ -115,7 +116,7 @@ const handleEditVisible = (flag, id) => {
 };
 // 查询角色列表
 const queryAllRolesList = async () => {
-  const res = await queryAllRoles(form.companyIds);
+  const res = await getUseRole();
   roleList.value = res.data;
 
 
@@ -125,17 +126,10 @@ const queryAllCompanyIdList = async () => {
   const res = await getOrganizationPageList();
   organizationList.value = res.data;
 }
-// 切换组织架构时查询不同的角色
-const handleChangeCompany = async () => {
-  queryAllRolesList()
-
-}
 // 回显用户信息
 const initUserInfo = async () => {
   const res = await getSingleUser(userId.value)
   Object.assign(form, res.data);
-
-  form.roleId = res.data.roleId.toString();
 
   console.log(form)
 
