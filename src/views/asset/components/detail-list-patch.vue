@@ -24,7 +24,7 @@
     @page-size-change="handleVulnerabilityPageSizeChange" />
 </template>
 
-<script setup>
+<script setup lang="ts">
 // ==========================声明模块==========================
 import { ref, reactive, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';

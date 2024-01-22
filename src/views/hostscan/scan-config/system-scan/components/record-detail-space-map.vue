@@ -1,10 +1,10 @@
 <template>
   <!-- 网络空间测绘 -->
-  <a-layout>
+  <div>
 
     <a-card ref="header">
 
-      <a-layout-header style="padding: 10px; background: #f6f8fa">
+      <div style="padding: 10px; background: #f6f8fa">
         <a-row :gutter="24">
           <a-col :span="8" v-if="props.hostDetail.ipv4">
             <span class="label">{{ t('scan.record.ipv4') }}: </span>
@@ -59,11 +59,11 @@
             <span class="value">{{ props.hostDetail.isp }}</span>
           </a-col>
         </a-row>
-      </a-layout-header>
+      </div>
     </a-card>
 
-    <a-layout style="margin-top: 10px">
-      <a-layout-slider :style="{ height: tabsHeight + 105 + 'px' }">
+    <div style="margin-top: 10px;display:flex">
+      <div :style="{ height: tabsHeight + 105 + 'px', width: '200px' }">
         <a-scrollbar style="height: 280px; overflow: auto">
           <a-space direction="vertical">
             <a-row style="padding: 10px">
@@ -79,9 +79,9 @@
             </a-row>
           </a-space>
         </a-scrollbar>
-      </a-layout-slider>
+      </div>
 
-      <a-layout-content :style="{ marginLeft: '10px' }">
+      <div :style="{ marginLeft: '10px', flex: 1 }">
         <a-breadcrumb>
           <a-breadcrumb-item :style="{ fontWeight: 'bold' }">
             {{ props.tabDetail.port }}
@@ -171,9 +171,9 @@
 
           </a-tabs>
         </a-card>
-      </a-layout-content>
+      </div>
       <!-- 组件层级start -->
-      <a-layout-sider style="margin-top:25px">
+      <div style="margin-top:25px;width: 200px">
         <a-space direction="vertical" style="width:100%">
           <a-row style="margin: 10px 10px 20px 10px">
             <span>
@@ -194,20 +194,19 @@
           }}</a-list-item>
         </a-list> -->
 
-      </a-layout-sider>
-    </a-layout>
-  </a-layout>
+      </div>
+    </div>
+  </div>
 </template>
-
-<script lang="ts" setup>
+<script setup lang="ts" >
 // ==========================声明模块==========================
 import { ref, onMounted, defineProps, defineEmits } from 'vue';
 import { useI18n } from 'vue-i18n';
 import formatDate from '@/utils/times';
 import { getLevelText } from '@/hooks/status-options'
+
 // ==========================数据定义==========================
 const { t } = useI18n();
-
 // 头部实例
 const header = ref();
 // 动态高度
@@ -240,7 +239,7 @@ onMounted(() => {
   tabsHeight.value = height;
 });
 </script>
-<style lang="less" scoped>
+<style scoped lang="less">
 .level {
   width: 100%;
   padding: 10px 0px;

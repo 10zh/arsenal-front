@@ -51,7 +51,7 @@
 
   </div>
 </template>
-<script setup>
+<script setup lang="ts">
 // ==========================声明模块==========================
 import { ref, reactive, onMounted, defineProps, defineEmits } from 'vue';
 import { useI18n } from 'vue-i18n';

@@ -50,7 +50,7 @@
     </a-card>
   </div>
 </template>
-<script setup>
+<script setup lang="ts">
 // ==========================声明模块==========================
 import { ref, reactive, onMounted, defineProps } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -61,7 +61,6 @@ import { getSearchList, getSearchAutoComplete, getSearchInfo, getBarChartList } 
 import { graphic } from 'echarts';
 import useChartOption from '@/hooks/chart-option';
 import html2canvas from "html2canvas"
-import axios from 'axios';
 
 const { t } = useI18n();
 const router = useRouter();

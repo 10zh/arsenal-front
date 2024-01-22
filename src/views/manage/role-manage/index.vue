@@ -7,7 +7,7 @@
     </a-card>
   </div>
 </template>
-<script setup>
+<script setup lang="ts">
 
 // ==========================声明模块==========================
 import { ref, reactive } from 'vue';

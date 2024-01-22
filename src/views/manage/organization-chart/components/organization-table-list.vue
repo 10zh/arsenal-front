@@ -73,7 +73,7 @@
   <!-- 编辑组织架构对话框 -->
   <editDialog ref="editOrganizationRef" @init-data="initOrganizationList"></editDialog>
 </template>
-<script setup>
+<script setup lang="ts">
 // ==========================声明模块==========================
 import { ref, reactive, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
