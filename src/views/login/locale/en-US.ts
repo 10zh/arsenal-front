@@ -1,5 +1,5 @@
 export default {
-  'login.form.title': 'Vulnerability scanning management system',
+  'login.form.title': 'Login',
   'login.form.userName.errMsg': 'Username cannot be empty',
   'login.form.password.errMsg': 'Password cannot be empty',
   'login.form.captcha.errMsg': 'captcha cannot be empty',

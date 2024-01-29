@@ -98,7 +98,7 @@
                   <div class="circle color3"></div>
                   <span class="text">{{ $t('params.memory.usage') }}</span>
                 </div>
-                <div class="nums">{{ paramsObj.memory.usage * 100 }} %</div>
+                <div class="nums">{{ operation(paramsObj.memory.usage, 100, '*') }} %</div>
               </div>
               <!-- 数据进度条 -->
               <a-progress size="large" :show-text="false" color="#50a5db" :percent="paramsObj.memory.usage" />

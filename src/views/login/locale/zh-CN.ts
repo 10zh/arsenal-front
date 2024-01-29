@@ -1,5 +1,5 @@
 export default {
-  'login.form.title': '漏洞扫描管理系统',
+  'login.form.title': '登录',
   'login.form.userName.errMsg': '用户名不能为空',
   'login.form.password.errMsg': '密码不能为空',
   'login.form.captcha.errMsg': '验证码不能为空',
@@ -11,7 +11,6 @@ export default {
   'login.form.captcha.placeholder': '验证码',
   'login.form.rememberPassword': '记住密码',
   'login.form.forgetPassword': '忘记密码',
-  'login.form.login': '登录',
   'login.form.register': '注册账号',
   'login.banner.slogan1': '开箱即用的高质量模板',
   'login.banner.subSlogan1': '丰富的的页面模板，覆盖大多数典型业务场景',

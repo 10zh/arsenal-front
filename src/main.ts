@@ -14,7 +14,7 @@ import App from './App.vue';
 import '@/assets/style/global.less';
 import '@/api/interceptor/axios';
 // 引入阿里图标
-import './assets/fonts/iconfont/iconfont.css'
+import '@/assets/fonts/iconfont/iconfont.css'
 
 const app = createApp(App);
 

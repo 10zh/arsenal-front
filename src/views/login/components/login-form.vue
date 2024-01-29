@@ -1,8 +1,18 @@
 <template>
   <div class="login-form-wrapper">
-    <div class="login-form-title">{{ $t('login.form.title') }}</div>
+    <!-- <div class="login-form-title">{{ $t('login.form.title') }}</div> -->
     <!-- <div class="login-form-sub-title">VULNERABILITY SCANNING MANAGEMENT SYSTEM</div> -->
     <div class="login-form-error-msg">{{ errorMessage }}</div>
+    <div class="login-title">
+      <p style="font-size:20px">{{ $t('login.form.title') }}</p>
+      <div>
+        <icon-translate />
+        <a-select size="mini" @change="changeLocale" v-model="currentLocale" :style="{ width: '80px' }" :bordered="false"
+          placeholder="Select" :trigger-props="{ autoFitPopupMinWidth: true }">
+          <a-option v-for="item in locales" :key="item.value" :value="item.value"> {{ item.label }}</a-option>
+        </a-select>
+      </div>
+    </div>
     <a-form ref="loginForm" :model="userInfo" class="login-form" layout="vertical" @submit="handleSubmit">
       <a-form-item field="username" :rules="[{ required: true, message: $t('login.form.userName.errMsg') }]"
         :validate-trigger="['change', 'blur']" hide-label>
@@ -30,19 +40,19 @@
         </div>
       </a-form-item>
       <a-space :size="16" direction="vertical">
-        <div class="login-form-password-actions">
+        <!-- <div class="login-form-password-actions">
           <a-checkbox checked="rememberPassword" :model-value="loginConfig.rememberPassword"
             @change="setRememberPassword as any">
             {{ $t('login.form.rememberPassword') }}
           </a-checkbox>
           <a-link>{{ $t('login.form.forgetPassword') }}</a-link>
-        </div>
+        </div> -->
         <a-button type="primary" html-type="submit" long :loading="loading">
-          {{ $t('login.form.login') }}
+          {{ $t('login.form.title') }}
         </a-button>
-        <a-button type="text" long class="login-form-register-btn">
+        <!-- <a-button type="text" long class="login-form-register-btn">
           {{ $t('login.form.register') }}
-        </a-button>
+        </a-button> -->
       </a-space>
     </a-form>
   </div>
@@ -59,12 +69,15 @@ import { useUserStore } from '@/store';
 import useLoading from '@/hooks/loading';
 import type { LoginData } from '@/api/user';
 import { getCaptchaImg } from '@/api/user';
+import useLocale from '@/hooks/locale';
+import { LOCALE_OPTIONS } from '@/locale';
 
 const router = useRouter();
 const { t } = useI18n();
 const errorMessage = ref('');
 const { loading, setLoading } = useLoading();
 const userStore = useUserStore();
+const locales = [...LOCALE_OPTIONS];
 
 const loginConfig = useStorage('login-config', {
   rememberPassword: true,
@@ -86,6 +99,8 @@ async function getCaptcha() {
   captchaImg.value = data.data.image;
   userInfo.captchaKey = data.data.key;
 }
+// 切换语言
+const { changeLocale, currentLocale } = useLocale();
 
 const handleSubmit = async ({
   errors,
@@ -130,10 +145,17 @@ onMounted(() => {
 </script>
 
 <style lang="less" scoped>
+.login-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
 .login-form {
   &-wrapper {
     width: 380px;
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+
     padding: 30px 20px;
     text-align: center;
   }
